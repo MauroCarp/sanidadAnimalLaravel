@@ -339,7 +339,7 @@ return [
         // ],
         [
             'text'    => 'BruTur',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'icon-jeringa',
             'submenu' => [
                 [
                     'text' => 'Alertas',
