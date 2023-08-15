@@ -194,8 +194,8 @@ return [
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
-    'classes_topnav_nav' => 'navbar-expand',
+    'classes_topnav' => 'navbar',
+    'classes_topnav_nav' => 'navbar navbar-light shadow-sm',
     'classes_topnav_container' => 'container',
 
     /*
@@ -290,27 +290,6 @@ return [
     */
 
     'menu' => [
-        // // Navbar items:
-        // [
-        //     'type'         => 'navbar-search',
-        //     'text'         => 'search',
-        //     'topnav_right' => true,
-        // ],
-        // [
-        //     'type'         => 'fullscreen-widget',
-        //     'topnav_right' => true,
-        // ],
-
-        // Sidebar items:
-        // [
-        //     'type' => 'sidebar-menu-search',
-        //     'text' => 'search',
-        // ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
         [
             'text'        => 'inicio',
             'url'         => 'inicio',
@@ -319,27 +298,16 @@ return [
         [
             'text'        => 'Productores',
             'url'         => 'productores',
-            'icon'        => 'far fa fa-fw fa-circle',
+            'icon'        => 'icon-tractor',
         ],
         [
             'text'        => 'Vacunadores',
             'url'         => 'vacunadores',
-            'icon'        => 'far fa fa-fw fa-circle',
+            'icon'        => 'icon-jeringa',
         ],
-        // ['header' => 'account_settings'],
-        // [
-        //     'text' => 'profile',
-        //     'url'  => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-user',
-        // ],
-        // [
-        //     'text' => 'change_password',
-        //     'url'  => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-lock',
-        // ],
         [
             'text'    => 'BruTur',
-            'icon'    => 'icon-jeringa',
+            'icon'    => 'icon-brutur',
             'submenu' => [
                 [
                     'text' => 'Alertas',
@@ -349,13 +317,21 @@ return [
                 ],
                 [
                     'text' => 'Actualizar Status',
-                    'url'  => 'actualizarStatus',
+                    'url' => '#',
+                    'data' => [
+                        'toggle' => 'modal',
+                        'target' => '#ventanaModalModificarStatus',
+                    ],
                     'icon' => 'far fa fa-fw fa-tasks',
 
                 ],
                 [
                     'text' => 'Informe General',
-                    'url'  => 'informeGeneral',
+                    'url' => '#',
+                    'data' => [
+                        'toggle' => 'modal',
+                        'target' => '#ventanaModalInforme',
+                    ],
                     'icon' => 'far fa fa-fw fa-file',
 
                 ],
@@ -382,7 +358,7 @@ return [
         ],
         [
             'text'    => 'Aftosa',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'icon-aftosa',
             'submenu' => [
                 [
                     'text' => 'Vacunas',
@@ -409,13 +385,20 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Cargar Acta',
-                            'url'  => 'acta',
+                            'url' => '#',
                             'icon' => 'far fa fa-fw fa-pencil-square',
-
+                            'data' => [
+                                'toggle' => 'modal',
+                                'target' => '#ventanaModalRenspaActa',
+                            ],
                         ],
                         [
                             'text' => 'Actas por Productor',
-                            'url'  => 'actasProductor',
+                            'url' => '#',
+                            'data' => [
+                                'toggle' => 'modal',
+                                'target' => '#ventanaModalRenspaActaProductor',
+                            ],
                             'icon' => 'far fa fa-fw fa-circle',
 
                         ],
@@ -455,13 +438,21 @@ return [
                 ],
                 [
                     'text' => 'Situación Productor',
-                    'url'  => 'situacionProductor',
+                    'url' => '#',
+                    'data' => [
+                        'toggle' => 'modal',
+                        'target' => '#ventanaModalRenspaSituacionProductor',
+                    ],
                     'icon' => 'far fa fa-fw fa-circle',
 
                 ],
                 [
                     'text' => 'Campaña',
-                    'url'  => 'campania',
+                    'url' => '#',
+                    'data' => [
+                        'toggle' => 'modal',
+                        'target' => '#ventanaModalEditarCampania',
+                    ],
                     'icon' => 'far fa fa-fw fa-circle',
 
                 ],
@@ -473,22 +464,6 @@ return [
             'url'         => 'usuarios',
             'icon'        => 'far fa fa-fw fa-user',
         ],
-        // ['header' => 'labels'],
-        // [
-        //     'text'       => 'important',
-        //     'icon_color' => 'red',
-        //     'url'        => '#',
-        // ],
-        // [
-        //     'text'       => 'warning',
-        //     'icon_color' => 'yellow',
-        //     'url'        => '#',
-        // ],
-        // [
-        //     'text'       => 'information',
-        //     'icon_color' => 'cyan',
-        //     'url'        => '#',
-        // ],
     ],
 
     /*
@@ -593,6 +568,36 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Icomoon' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/icomoon/css/icomoon.css',
+                ],
+                [
+                    'type' => 'eot',
+                    'asset' => true,
+                    'location' => 'vendor/icomoon/fonts/icomoon.eot',
+                ],
+                [
+                    'type' => 'svg',
+                    'asset' => true,
+                    'location' => 'vendor/icomoon/fonts/icomoon.svg',
+                ],
+                [
+                    'type' => 'ttf',
+                    'asset' => true,
+                    'location' => 'vendor/icomoon/fonts/icomoon.ttf',
+                ],
+                [
+                    'type' => 'woff',
+                    'asset' => true,
+                    'location' => 'vendor/icomoon/fonts/icomoon.woff',
                 ],
             ],
         ],
