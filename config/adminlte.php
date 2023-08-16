@@ -302,7 +302,7 @@ return [
         ],
         [
             'text'        => 'Vacunadores',
-            'url'         => 'vacunadores',
+            'route'         => 'vacunadores',
             'icon'        => 'icon-jeringa',
         ],
         [

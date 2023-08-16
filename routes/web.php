@@ -25,4 +25,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/producers','ProducersController@index')->name('productores');
-Route::get('/veterinaries','ProducersController@index')->name('veterinarios');
+Route::get('/veterinaries','VeterinariesController@index')->name('vacunadores');
