@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Middleware;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::view('/', 'welcome');
+// Route::view('/', 'welcome');
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/producers','ProducersController@index')->name('productores');
+Route::get('/veterinaries','ProducersController@index')->name('veterinarios');

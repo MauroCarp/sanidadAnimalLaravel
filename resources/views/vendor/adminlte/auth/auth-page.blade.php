@@ -11,9 +11,20 @@
 @section('adminlte_css')
     @stack('css')
     @yield('css')
+
+    <style>
+        .login-page{
+            background-image: url('img/plantilla/background.png');
+            background-size: cover;
+            background-color: rgb(8, 0, 49)
+        }
+            
+    </style>
 @stop
 
-@section('classes_body'){{ ($auth_type ?? 'login') . '-page' }}@stop
+@section('classes_body')
+{{ ($auth_type ?? 'login') . '-page' }}
+@stop
 
 @section('body')
     <div class="{{ $auth_type ?? 'login' }}-box">

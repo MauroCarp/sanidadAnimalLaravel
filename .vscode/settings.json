@@ -1,0 +1,4 @@
+{
+    "emmet.triggerExpansionOnTab": true, // habilitar la pestaña para expandir las etiquetas emmet
+    "blade.format.enable": true
+}

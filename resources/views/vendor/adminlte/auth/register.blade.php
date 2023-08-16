@@ -11,6 +11,17 @@
     @php( $register_url = $register_url ? url($register_url) : '' )
 @endif
 
+@section('adminlte_css')
+    <style>
+        .register-page{
+            background-image: url('img/plantilla/background.png');
+            background-size: cover;
+            background-color: rgb(8, 0, 49)
+        }
+            
+    </style>
+@stop
+
 @section('auth_header', __('adminlte::adminlte.register_message'))
 
 @section('auth_body')

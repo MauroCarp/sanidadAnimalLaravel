@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'img/plantilla/logo-blanco-lineal.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -291,13 +291,13 @@ return [
 
     'menu' => [
         [
-            'text'        => 'inicio',
-            'url'         => 'inicio',
+            'text'        => 'Inicio',
+            'url'         => 'home',
             'icon'        => 'far fa fa-fw fa-home',
         ],
         [
             'text'        => 'Productores',
-            'url'         => 'productores',
+            'route'       => 'productores',
             'icon'        => 'icon-tractor',
         ],
         [
@@ -322,7 +322,7 @@ return [
                         'toggle' => 'modal',
                         'target' => '#ventanaModalModificarStatus',
                     ],
-                    'icon' => 'far fa fa-fw fa-tasks',
+                    'icon' => 'far fa fa-fw fa-recycle',
 
                 ],
                 [
@@ -367,13 +367,13 @@ return [
                         [
                             'text' => 'Recepción',
                             'url'  => 'recepcion',
-                            'icon' => 'far fa fa-fw fa-download',
+                            'icon' => 'fa fa-sign-in-alt',
 
                         ],
                         [
                             'text' => 'Distribución',
                             'url'  => 'distribucion',
-                            'icon' => 'far fa fa-fw fa-share',
+                            'icon' => 'fa fa-sign-out-alt',
 
                         ],
                     ]
@@ -386,7 +386,7 @@ return [
                         [
                             'text' => 'Cargar Acta',
                             'url' => '#',
-                            'icon' => 'far fa fa-fw fa-pencil-square',
+                            'icon' => 'far fa fa-fw fa-edit',
                             'data' => [
                                 'toggle' => 'modal',
                                 'target' => '#ventanaModalRenspaActa',
@@ -502,22 +502,22 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/dataTables.bootstrap4.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/css/dataTables.bootstrap4.min.css',
                 ],
             ],
         ],
