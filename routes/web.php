@@ -26,3 +26,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/producers','ProducersController@index')->name('productores');
 Route::get('/veterinaries','VeterinariesController@index')->name('vacunadores');
+Route::get('/veterinaries/export','VeterinariesController@export')->name('exportarExcel');

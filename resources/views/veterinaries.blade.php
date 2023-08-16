@@ -15,7 +15,7 @@
                 Nuevo Vacunador
             </button>
 
-            <a href="#">
+            <a href="{{ route('exportarExcel') }}">
                 <button class="btn btn-success" style="margin-top: 5px;">Descargar Nómina en Excel</button>
             </a>
 
