@@ -461,7 +461,7 @@ return [
         ],
         [
             'text'        => 'Usuarios',
-            'url'         => 'usuarios',
+            'route'         => 'usuarios',
             'icon'        => 'far fa fa-fw fa-user',
         ],
     ],

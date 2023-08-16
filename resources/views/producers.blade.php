@@ -9,7 +9,7 @@
 
     <div class="box-header with-border mb-2">
 
-        <button class="btn btn-primary" id="btnNuevoProductor" data-toggle="modal" data-target="#modalAgregarProductor">
+        <button class="btn btn-primary" id="btnNuevoProductor" data-toggle="modal" data-target="#modalNuevoProductor">
         
         Nuevo Productor / Establecimiento
 
@@ -19,7 +19,7 @@
 
     <div class="box-body">
         
-        <table class="table table-bordered table-striped dt-responsive tablas"  id="tablaProductores"  width="100%">
+        <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
         
         <thead>
         

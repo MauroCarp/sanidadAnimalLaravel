@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\VeterinariesExport;
-use App\Veterinarie;
+use App\User;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
-
-class VeterinariesController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +14,7 @@ class VeterinariesController extends Controller
      */
     public function index()
     {
-
-        return view('veterinaries',['veterinarios'=> Veterinarie::all()]);
-
+        return view('users',['usuarios'=>User::all()]);
     }
 
     /**
@@ -86,9 +81,5 @@ class VeterinariesController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function export(){   
-        return Excel::download(new VeterinariesExport, 'veterinaries.xls');
     }
 }

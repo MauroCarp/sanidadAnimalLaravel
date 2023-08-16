@@ -1,11 +1,11 @@
-@extends('modals/layout',['idModal'=>'modalNuevoVeterinario','seccion'=>'Vacunador'])
+@extends('modals/layout',['idModal'=>'modalNuevoUsuario','seccion'=>'Usuario'])
 
 @section('modal')
 
     <div class="row">
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>Nombre</label>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>Matricula</label>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>Domicilio</label>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>Telefono</label>
@@ -95,13 +95,13 @@
             </div>
         
         </div>
-
+    
     </div>
-
+    
     <div class="row">
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>E-mail</label>
@@ -124,7 +124,7 @@
         </div>
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>CUIT</label>
@@ -147,7 +147,7 @@
         </div>
 
         <div class="col-md-3">
-
+    
             <div class="form-group">
 
                 <label>Tipo</label>
@@ -174,7 +174,7 @@
             </div>
         
         </div>
-
+    
     </div>
 
 @endsection
