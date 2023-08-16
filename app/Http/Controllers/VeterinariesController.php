@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\VeterinariesExport;
 use App\Veterinarie;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class VeterinariesController extends Controller
 {
@@ -83,5 +86,9 @@ class VeterinariesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export(){   
+        return Excel::download(new VeterinariesExport, 'veterinaries.xls')ç;
     }
 }
