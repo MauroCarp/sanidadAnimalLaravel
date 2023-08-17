@@ -1,30 +1,7 @@
 
-<div id="modalEditarProductor" class="modal fade" role="dialog">
-  
-  <div class="modal-dialog modal-lg">
+@extends('modals/layout',['idModal'=>'modalEditarProductor','seccion'=>'Productor/Establecimiento','action'=>''])
 
-    <div class="modal-content">
-
-      <form role="form" method="post">
-
-        <!--=====================================
-        CABEZA DEL MODAL
-        ======================================-->
-        <div class="modal-header" style="background: #3c8dbc; color: white">
-
-            <h4 class="modal-title">Editar Productor/Establecimiento</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-        </div>
-
-
-        <!--=====================================
-        CUERPO DEL MODAL
-        ======================================-->
-
-        <div class="modal-body">
-
-          <div class="box-body">
+@section('modal')
 
             <div class="row">
 
@@ -407,25 +384,9 @@
                 </div>
             
             </div>
-        
-          </div>
 
-        </div>
+@endsection
 
-        <!--=====================================
-        PIE DEL MODAL
-        ======================================-->
-
-        <div class="modal-footer">
-
-          <button type="submit" class="btn btn-primary">Guardar cambios</button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-</div>
+@section('submit')
+    <button type="submit" class="btn btn-primary">Modificar Productor</button>
+@endsection

@@ -4,8 +4,9 @@
 
     <div class="modal-content">
 
-      <form role="form" method="post">
+        <form role="form" action="{{ route($action) ?? '' }}" method="post">
 
+          @csrf
         <!--=====================================
         CABEZA DEL MODAL
         ======================================-->
@@ -38,8 +39,8 @@
 
         <div class="modal-footer">
 
-          <button type="submit" class="btn btn-primary">Cargar {{ $seccion }}</button>
-
+          @yield('submit')
+          
         </div>
 
       </form>

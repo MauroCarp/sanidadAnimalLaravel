@@ -1,4 +1,4 @@
-@extends('modals/layout',['idModal'=>'modalNuevoVeterinario','seccion'=>'Vacunador'])
+@extends('modals/layout',['idModal'=>'modalNuevoVeterinario','seccion'=>'Vacunador','action'=>'nuevoVeterinario'])
 
 @section('modal')
 
@@ -112,7 +112,7 @@
                     
                         <span class="input-group-text"><i class="fa fa-at"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail">
+                        <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail" required>
 
                     </div>
 
@@ -135,7 +135,7 @@
                     
                         <span class="input-group-text"><i class="fa fa-credit-card"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="cuit" placeholder="CUIT">
+                        <input type="text" class="form-control form-control-lg" name="cuit" placeholder="CUIT" required>
 
                     </div>
 
@@ -177,4 +177,8 @@
 
     </div>
 
+@endsection
+
+@section('submit')
+    <button type="submit" class="btn btn-primary">Cargar Veterinario</button>
 @endsection

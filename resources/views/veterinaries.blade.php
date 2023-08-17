@@ -63,11 +63,33 @@
                 <td>
                     <div class="btn-group">
                         
-                        <button class="btn btn-warning btnEditarVeterinario" data-toggle="modal" data-target="#modalEditarVeterinario" idVeterinario="{{ $veterinario->id }}"><i class="fas fa-pencil-alt"></i></button>
-                        
-                        
-                        <button class="btn btn-danger btnEliminarVeterinario" idVeterinario="{{ $veterinario->id }}"><i class="fa fa-times"></i></button>
+                        {{-- <div class="input-group">
+
+                            <form action="{{ route('eliminarVeterinario',$veterinario->id) }}" method="POST">
+
+                                @csrf
+
+                                <button type="" class="btn btn-warning btnEditarVeterinario" data-toggle="modal" data-target="#modalEditarVeterinario" idVeterinario="{{ $veterinario->id }}"><i class="fas fa-pencil-alt"></i></button>
+                            
+                            </form>
+
+                        </div>   --}}
+
+                        <div class="input-group">
+
+                            <form action="{{ route('eliminarVeterinario',$veterinario->id) }}" method="POST">
+
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="id" value="{{ $veterinario->id }}">
+                                <button class="btn btn-danger btnEliminarVeterinario"><i class="fa fa-times"></i></button>
+
+                            </form>
+
                         </div>  
+
+                    </div>  
+
                 </td>
             </tr>
         @endforeach

@@ -1,4 +1,4 @@
-@extends('modals/layout',['idModal'=>'modalNuevoProductor','seccion'=>'Productor'])
+@extends('modals/layout',['idModal'=>'modalNuevoProductor','seccion'=>'Productor','action'=>'producers.store'])
 
 @section('modal')
 
@@ -419,4 +419,8 @@
 
     </div>
 
+@endsection
+
+@section('submit')
+    <button type="submit" class="btn btn-primary">Cargar Productor</button>
 @endsection

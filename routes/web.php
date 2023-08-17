@@ -2,7 +2,9 @@
 
 use GuzzleHttp\Middleware;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/producers','ProducersController@index')->name('productores');
+
 Route::get('/veterinaries','VeterinariesController@index')->name('vacunadores');
 Route::get('/veterinaries/export','VeterinariesController@export')->name('exportarExcel');
+Route::get('/veterinaries/store','VeterinariesController@store')->name('nuevoVeterinario');
+Route::delete('/veterinaries/{id}','VeterinariesController@destroy')->name('eliminarVeterinario');
+
 Route::get('/users','UsersController@index')->name('usuarios');

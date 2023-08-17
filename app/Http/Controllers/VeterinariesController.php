@@ -38,9 +38,21 @@ class VeterinariesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+
+        $fields = $request->validate([
+            'nombre' => 'required',
+            'matricula' => 'required',
+            'domicilio' => 'required',
+            'telefono' => 'required',
+            'email' => 'required',
+            'cuit' => 'required',
+            'tipo' => 'required',
+        ]);
+
+        Veterinarie::create($fields);
+
+        return redirect()->route('vacunadores');
     }
 
     /**
@@ -83,9 +95,14 @@ class VeterinariesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+
+        $veterinario = Veterinarie::findOrFail($request->id);
+        $veterinario->delete();
+
+        return redirect()->route('vacunadores');
+
     }
 
     public function export(){   

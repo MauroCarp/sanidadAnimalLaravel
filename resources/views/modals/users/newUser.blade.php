@@ -1,180 +1,91 @@
-@extends('modals/layout',['idModal'=>'modalNuevoUsuario','seccion'=>'Usuario'])
+@extends('modals/layout',['idModal'=>'modalNuevoUsuario','seccion'=>'Usuario','action'=>'register'])
 
 @section('modal')
 
-    <div class="row">
+    @csrf
 
-        <div class="col-md-3">
-    
-            <div class="form-group">
+    {{-- Name field --}}
+    <div class="input-group mb-3">
+        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+            value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
 
-                <label>Nombre</label>
-            
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-user"></i></span> 
-
-                        <input type="text" class="form-control form-control-lg" name="nombre" placeholder="Nombre" required>
-
-                    </div>
-
-
-                </div>
-
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
-        
         </div>
 
-        <div class="col-md-3">
-    
-            <div class="form-group">
-
-                <label>Matricula</label>
-            
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-id-card-alt"></i></span> 
-
-                        <input type="text" class="form-control form-control-lg" name="matricula" placeholder="Matricula" required>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-        
-        </div>
-
-        <div class="col-md-3">
-    
-            <div class="form-group">
-
-                <label>Domicilio</label>
-
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-map-marker"></i></span> 
-
-                        <input type="text" class="form-control form-control-lg" name="domicilio" placeholder="Domicilio" required>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-        
-        </div>
-
-        <div class="col-md-3">
-    
-            <div class="form-group">
-
-                <label>Telefono</label>
-            
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-phone"></i></span> 
-
-                        <input type="text" class="form-control form-control-lg" name="telefono" placeholder="Telefono" required>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-        
-        </div>
-    
+        @error('name')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
     </div>
-    
-    <div class="row">
 
-        <div class="col-md-3">
-    
-            <div class="form-group">
+    {{-- Email field --}}
+    <div class="input-group mb-3">
+        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+            value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
 
-                <label>E-mail</label>
-            
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-at"></i></span> 
-
-                        <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail">
-
-                    </div>
-
-
-                </div>
-
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
-        
         </div>
 
-        <div class="col-md-3">
-    
-            <div class="form-group">
-
-                <label>CUIT</label>
-            
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-credit-card"></i></span> 
-
-                        <input type="text" class="form-control form-control-lg" name="cuit" placeholder="CUIT">
-
-                    </div>
-
-
-                </div>
-
-            </div>
-        
-        </div>
-
-        <div class="col-md-3">
-    
-            <div class="form-group">
-
-                <label>Tipo</label>
-            
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
-                    
-                        <span class="input-group-text"><i class="fa fa-list-ul"></i></span> 
-
-                        <select name="tipo" id="tipo" class="form-control form-control-lg" required>
-
-                            <option value="Veterinario">Veterinario</option>
-                            
-                            <option value="Idóneo">Id&oacute;neo</option>
-                            
-                        </select>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-        
-        </div>
-    
+        @error('email')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
     </div>
+
+    {{-- Password field --}}
+    <div class="input-group mb-3">
+        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+            placeholder="{{ __('adminlte::adminlte.password') }}">
+
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
+            </div>
+        </div>
+
+        @error('password')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+
+    {{-- Confirm password field --}}
+    <div class="input-group mb-3">
+        <input type="password" name="password_confirmation"
+            class="form-control @error('password_confirmation') is-invalid @enderror"
+            placeholder="{{ __('adminlte::adminlte.retype_password') }}">
+
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
+            </div>
+        </div>
+
+        @error('password_confirmation')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+
+@endsection
+        
+@section('submit')
+
+    <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
+
+        <span class="fas fa-user-plus"></span>
+        {{ __('adminlte::adminlte.register') }}
+        
+    </button>
 
 @endsection
