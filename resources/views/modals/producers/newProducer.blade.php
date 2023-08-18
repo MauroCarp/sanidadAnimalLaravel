@@ -1,4 +1,8 @@
-@extends('modals/layout',['idModal'=>'modalNuevoProductor','seccion'=>'Productor','action'=>'producers.store'])
+@extends('modals/layout',[
+    'idModal'=>'modalNuevoProductor',
+    'title'=>'Nuevo Productor',
+    'action'=>'producers.store',
+])
 
 @section('modal')
 

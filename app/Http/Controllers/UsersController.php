@@ -35,8 +35,15 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $fields = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        User::create($fields);
+
+        return redirect()->route('users.index')->with('crear','ok');    }
 
     /**
      * Display the specified resource.

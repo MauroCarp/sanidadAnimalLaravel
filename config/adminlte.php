@@ -302,7 +302,7 @@ return [
         ],
         [
             'text'        => 'Vacunadores',
-            'route'         => 'vacunadores',
+            'route'         => 'veterinaries.index',
             'icon'        => 'icon-jeringa',
         ],
         [
@@ -461,7 +461,7 @@ return [
         ],
         [
             'text'        => 'Usuarios',
-            'route'         => 'usuarios',
+            'route'         => 'users.index',
             'icon'        => 'far fa fa-fw fa-user',
         ],
     ],
@@ -547,7 +547,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

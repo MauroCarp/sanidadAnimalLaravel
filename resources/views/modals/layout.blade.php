@@ -4,16 +4,21 @@
 
     <div class="modal-content">
 
-        <form role="form" action="{{ route($action) ?? '' }}" method="post">
+        <form 
+          role="form" 
+          action="{{ route($action) ?? '' }}"
+          method="post" 
+          class="{{ $formClass ?? ''}}">
 
           @csrf
+
         <!--=====================================
         CABEZA DEL MODAL
         ======================================-->
 
         <div class="modal-header" style="background:#3c8dbc; color:white">
     
-            <h4 class="modal-title">Nuevo {{ $seccion }}</h4>
+            <h4 class="modal-title">{{ $title }}</h4>
             
             <button type="button" class="close" data-dismiss="modal">&times;</button>
 

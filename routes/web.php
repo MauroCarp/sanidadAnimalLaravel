@@ -27,10 +27,16 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/producers','ProducersController@index')->name('productores');
+Route::get('/producers/store','ProducersController@store')->name('producers.store');
+Route::get('/producers/update','ProducersController@update')->name('producers.update');
 
-Route::get('/veterinaries','VeterinariesController@index')->name('vacunadores');
-Route::get('/veterinaries/export','VeterinariesController@export')->name('exportarExcel');
-Route::get('/veterinaries/store','VeterinariesController@store')->name('nuevoVeterinario');
-Route::delete('/veterinaries/{id}','VeterinariesController@destroy')->name('eliminarVeterinario');
+// Route::get('/veterinaries','VeterinariesController@index')->name('veterinaries.index');
+Route::get('/veterinaries/export','VeterinariesController@export')->name('veterinaries.export');
+// Route::post('/veterinaries/store','VeterinariesController@store')->name('veterinaries.store');
+// Route::post('/veterinaries/update','VeterinariesController@update')->name('veterinaries.update');
+// Route::delete('/veterinaries/{veterinarie}','VeterinariesController@destroy')->name('veterinaries.destroy');
+Route::resource('veterinaries','VeterinariesController');
 
-Route::get('/users','UsersController@index')->name('usuarios');
+Route::resource('users','UsersController');
+
+// Route::get('/users','UsersadminController@index')->name('usuarios');

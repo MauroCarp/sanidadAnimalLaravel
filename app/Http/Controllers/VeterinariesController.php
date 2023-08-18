@@ -52,7 +52,7 @@ class VeterinariesController extends Controller
 
         Veterinarie::create($fields);
 
-        return redirect()->route('vacunadores');
+        return redirect()->route('veterinaries.index')->with('crear','ok');
     }
 
     /**
@@ -84,9 +84,32 @@ class VeterinariesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        //
+        
+        $request->validate([
+            'nombre' => 'required',
+            'matricula' => 'required',
+            'domicilio' => 'required',
+            'telefono' => 'required',
+            'email' => 'required',
+            'cuit' => 'required',
+            'tipo' => 'required',
+        ]);
+        
+        $vet = Veterinarie::find($id);
+
+        $vet->nombre = $request->nombre;
+        $vet->matricula = $request->matricula;
+        $vet->domicilio = $request->domicilio;
+        $vet->telefono = $request->telefono;
+        $vet->email = $request->email;
+        $vet->cuit = $request->cuit;
+        $vet->tipo = $request->tipo;
+        $vet->save();
+
+        return redirect()->route('veterinaries.index')->with('editar','ok');
+
     }
 
     /**
@@ -95,13 +118,14 @@ class VeterinariesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request,$id)
     {
 
-        $veterinario = Veterinarie::findOrFail($request->id);
-        $veterinario->delete();
+        $vet = Veterinarie::find($id);
 
-        return redirect()->route('vacunadores');
+        $vet->delete();
+
+        return redirect()->route('veterinaries.index')->with('eliminar','ok');
 
     }
 

@@ -60,7 +60,8 @@
                         
                         
                         <button class="btn btn-danger btnEliminarProductor" idProductor="{{ $productor->id }}"><i class="fa fa-times"></i></button>
-                        </div>  
+                        
+                    </div>  
                 </td>
             </tr>
         @endforeach

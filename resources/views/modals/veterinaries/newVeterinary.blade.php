@@ -1,10 +1,14 @@
-@extends('modals/layout',['idModal'=>'modalNuevoVeterinario','seccion'=>'Vacunador','action'=>'nuevoVeterinario'])
+@extends('modals/layout',[
+    'idModal'=>'modalNuevoVeterinario',
+    'title'=>'Nuevo Vacunador',
+    'action'=>'veterinaries.store'
+])
 
 @section('modal')
 
     <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-6">
 
             <div class="form-group">
 
@@ -27,7 +31,7 @@
         
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-6">
 
             <div class="form-group">
 
@@ -50,7 +54,11 @@
         
         </div>
 
-        <div class="col-md-3">
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
 
             <div class="form-group">
 
@@ -73,7 +81,7 @@
         
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-6">
 
             <div class="form-group">
 
@@ -100,7 +108,7 @@
 
     <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-6">
 
             <div class="form-group">
 
@@ -123,7 +131,7 @@
         
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-6">
 
             <div class="form-group">
 
@@ -146,7 +154,11 @@
         
         </div>
 
-        <div class="col-md-3">
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
 
             <div class="form-group">
 

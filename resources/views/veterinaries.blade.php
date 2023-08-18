@@ -15,7 +15,7 @@
                 Nuevo Vacunador
             </button>
 
-            <a href="{{ route('exportarExcel') }}">
+            <a href="{{ route('veterinaries.export') }}">
                 <button class="btn btn-success" style="margin-top: 5px;">Descargar Nómina en Excel</button>
             </a>
 
@@ -61,32 +61,18 @@
                 <td>{{ $veterinario->email }}</td>
                 <td>{{ $veterinario->tipo }}</td>
                 <td>
+                     
                     <div class="btn-group">
+   
+                        <button type="button" class="btn btn-warning btnEditarVeterinario" data-toggle="modal" data-target="#modalEditarVeterinario" data="{{ $veterinario }}"><i class="fas fa-pencil-alt"></i></button>
                         
-                        {{-- <div class="input-group">
+                        <form style="all:unset" class="formEliminarVeterinario" action="{{ route('veterinaries.destroy',$veterinario->id) }}" method="POST">
 
-                            <form action="{{ route('eliminarVeterinario',$veterinario->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger" type="submit"><i class="fa fa-times"></i></button>
 
-                                @csrf
-
-                                <button type="" class="btn btn-warning btnEditarVeterinario" data-toggle="modal" data-target="#modalEditarVeterinario" idVeterinario="{{ $veterinario->id }}"><i class="fas fa-pencil-alt"></i></button>
-                            
-                            </form>
-
-                        </div>   --}}
-
-                        <div class="input-group">
-
-                            <form action="{{ route('eliminarVeterinario',$veterinario->id) }}" method="POST">
-
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{ $veterinario->id }}">
-                                <button class="btn btn-danger btnEliminarVeterinario"><i class="fa fa-times"></i></button>
-
-                            </form>
-
-                        </div>  
+                        </form>
 
                     </div>  
 
@@ -106,7 +92,90 @@
 @endsection
 
 @include('modals/veterinaries/newVeterinary')
-{{-- @include('modals/producers/updateProducer') --}}
+@include('modals/veterinaries/updateVeterinary')
 
 @section('css')
 @stop
+
+@section('js')
+    
+    @if(session('eliminar') == 'ok')
+        <script>
+            Swal.fire(
+            'Vacunador Eliminado',
+            'Ha sido eliminado correctamente',
+            'success'
+            )
+        </script>
+    @endif
+
+    @if(session('crear') == 'ok')
+        <script>
+            Swal.fire(
+            'Vacunador Creado',
+            'Ha sido creado correctamente',
+            'success'
+            )
+        </script>
+    @endif
+
+    @if(session('editar') == 'ok')
+        <script>
+            Swal.fire(
+            'Vacunador Modificado',
+            'Ha sido modificado correctamente',
+            'success'
+            )
+        </script>
+    @endif
+
+    <script>
+        $('.formEliminarVeterinario').each(function(){
+
+            $(this).on('click',function(e){
+    
+                e.preventDefault()
+
+                Swal.fire({
+                    title: 'Eliminar Vacunador?',
+                    text: "Si no estas seguro, puedes cancerlar esta accion!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar',
+                    }).then((result) => {
+
+                        if (result.value) {
+                            $(this).submit()
+                        }
+    
+                    })
+    
+            })
+
+        })
+
+
+        
+        $('.btnEditarVeterinario').each(function(){
+
+            $(this).on('click',function(e){
+
+                let data = JSON.parse($(this).attr('data'))
+
+                $('#formEditarVeterinario input[name="nombre"]').val(data.nombre) 
+                $('#formEditarVeterinario input[name="matricula"]').val(data.matricula) 
+                $('#formEditarVeterinario input[name="domicilio"]').val(data.domicilio) 
+                $('#formEditarVeterinario input[name="telefono"]').val(data.telefono) 
+                $('#formEditarVeterinario input[name="email"]').val(data.email) 
+                $('#formEditarVeterinario input[name="cuit"]').val(data.cuit) 
+                $('#formEditarVeterinario input[name="tipo"]').val(data.tipo) 
+
+                $('#formEditarVeterinario').attr('action',`/veterinaries/${data.id}`)
+
+            })
+        })
+
+    </script>
+
+@endsection
