@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\District;
 use App\Producer;
+use App\Veterinarie;
 use Illuminate\Http\Request;
 
 class ProducersController extends Controller
@@ -14,10 +16,15 @@ class ProducersController extends Controller
      */
     public function index()
     {
-        $preRenspa = '20.001.0';
+        $preRenspa = '20.008.0';
+
+        $departamento = 'IRIONDO';
 
         return view('producers',[
             'preRenspa'=>$preRenspa,
+            'departamento'=>$departamento,
+            'distritos'=>District::get(['key','name']),
+            'vacunadores'=>Veterinarie::orderby('nombre','asc')->get(['nombre','matricula']),
             'productores'=> Producer::all()
         ]);
 
@@ -41,7 +48,32 @@ class ProducersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fields = $request->validate([
+            'renspa' => 'required',
+            'propietario' => 'required',
+            'establecimiento' => 'required',
+            'explotacion' => 'required',
+            'regimen' => 'required',
+            'tipoDoc' => 'required',
+            'numDoc' => 'required',
+            'iva' => 'nullable',
+            'telefono' => 'nullable',
+            'email' => 'required|email',
+            'domicilio' => 'required',
+            'localidad' => 'required',
+            'provincia' => 'required',
+            'departamento' => 'required',
+            'distrito_id' => 'required',
+            'veterinario' => 'required',
+        ]);
+
+        $departamento = ProducersController::getDepartmentId($fields['departamento']);
+
+        $fields['departamento'] = $departamento;
+        
+        Producer::create($fields);
+
+        return redirect()->route('producers.index')->with('crear','ok');
     }
 
     /**
@@ -75,7 +107,48 @@ class ProducersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'renspa' => 'required',
+            'propietario' => 'required',
+            'establecimiento' => 'required',
+            'explotacion' => 'required',
+            'regimen' => 'required',
+            'tipoDoc' => 'required',
+            'numDoc' => 'required',
+            'iva' => 'nullable',
+            'telefono' => 'nullable',
+            'email' => 'required|email',
+            'domicilio' => 'required',
+            'localidad' => 'required',
+            'provincia' => 'required',
+            'departamento' => 'required',
+            'distrito_id' => 'required',
+            'veterinario' => 'required',
+        ]);
+        
+        $productor = Producer::find($id);
+
+        $productor->renspa = $request->renspa;
+        $productor->propietario = $request->propietario;
+        $productor->establecimiento = $request->establecimiento;
+        $productor->explotacion = $request->explotacion;
+        $productor->regimen = $request->regimen;
+        $productor->tipoDoc = $request->tipoDoc;
+        $productor->numDoc = $request->numDoc;
+        $productor->iva = $request->iva;
+        $productor->telefono = $request->telefono;
+        $productor->email = $request->email;
+        $productor->domicilio = $request->domicilio;
+        $productor->localidad = $request->localidad;
+        $productor->provincia = $request->provincia;
+        $productor->departamento = ProducersController::getDepartmentId($request->departamento);
+        $productor->distrito_id = $request->distrito_id;
+        $productor->veterinario = $request->veterinario;
+
+        $productor->save();
+
+        return redirect()->route('producers.index')->with('editar','ok');
     }
 
     /**
@@ -86,7 +159,20 @@ class ProducersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $productor = Producer::find($id);
+
+        $productor->delete();
+
+        return redirect()->route('producers.index')->with('eliminar','ok');
+    
+    }
+
+    public function getDepartmentId($name){
+
+        $departamentos = array(8 => 'IRIONDO',6 => 'BELGRANO');
+
+        return array_search($name,$departamentos);
+
     }
 
 }

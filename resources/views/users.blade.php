@@ -50,10 +50,15 @@
                 <td>
                     <div class="btn-group">
                         
-                        <button class="btn btn-warning btnEditarUsuario" data-toggle="modal" data-target="#modalEditarUsuario" idUsuario="{{ $usuario->id }}"><i class="fas fa-pencil-alt"></i></button>
+                        <button type="button" class="btn btn-warning btnEditarUsuario" data-toggle="modal" data-target="#modalEditarUsuario" data="{{ $usuario }}"><i class="fas fa-pencil-alt"></i></button>
                         
-                        <button class="btn btn-danger btnEliminarUsuario" idUsuario="{{ $usuario->id }}"><i class="fa fa-times"></i></button>
+                        <form style="all:unset" class="formEliminarUsuario" action="{{ route('users.destroy',$usuario->id) }}" method="POST">
 
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger" type="submit"><i class="fa fa-times"></i></button>
+
+                        </form>
                     </div>  
 
                 </td>
@@ -74,7 +79,86 @@
 @endsection
 
 @include('modals/users/newUser')
-{{-- @include('modals/producers/updateProducer') --}}
+@include('modals/users/updateUser')
+
+@section('js')
+    
+    @if(session('eliminar') == 'ok')
+        <script>
+            Swal.fire(
+            'Usuario Eliminado',
+            'Ha sido eliminado correctamente',
+            'success'
+            )
+        </script>
+    @endif
+
+    @if(session('crear') == 'ok')
+        <script>
+            Swal.fire(
+            'Usuario Creado',
+            'Ha sido creado correctamente',
+            'success'
+            )
+        </script>
+    @endif
+
+    @if(session('editar') == 'ok')
+        <script>
+            Swal.fire(
+            'Usuario Modificado',
+            'Ha sido modificado correctamente',
+            'success'
+            )
+        </script>
+    @endif
+
+    <script>
+        $('.formEliminarUsuario').each(function(){
+
+            $(this).on('click',function(e){
+    
+                e.preventDefault()
+
+                Swal.fire({
+                    title: 'Eliminar Usuario?',
+                    text: "Si no estas seguro, puedes cancerlar esta accion!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar',
+                    }).then((result) => {
+
+                        if (result.value) {
+                            $(this).submit()
+                        }
+    
+                    })
+    
+            })
+
+        })
+
+
+        
+        $('.btnEditarUsuario').each(function(){
+
+            $(this).on('click',function(e){
+
+                let data = JSON.parse($(this).attr('data'))
+
+                $('#formEditarEditar input[name="name"]').val(data.name) 
+                $('#formEditarEditar input[name="email"]').val(data.email) 
+                $('#formEditarEditar input[name="password"]').val(data.password) 
+
+                $('#formEditarVeterinario').attr('action',`/veterinaries/${data.id}`)
+
+            })
+        })
+
+    </script>
+
+@endsection
 
 @section('css')
 @stop

@@ -4,6 +4,7 @@
     'action'=>'producers.store',
 ])
 
+
 @section('modal')
 
     <div class="row">
@@ -22,7 +23,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="renspa" value="{{ $preRenspa }}" required>
+                    <input type="text" class="form-control form-control-lg" name="renspa" value="{{ old('renspa') ?? $preRenspa }}" required>
 
                 </div>
 
@@ -44,7 +45,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="propietario" placeholder="Propietario" required>
+                    <input type="text" class="form-control form-control-lg" name="propietario" placeholder="Propietario" value="{{ old('propietario') }}" required>
 
                 </div>
 
@@ -66,7 +67,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="establecimiento" placeholder="Establecimiento" required>
+                    <input type="text" class="form-control form-control-lg" name="establecimiento" placeholder="Establecimiento" value="{{ old('establecimiento') }}" required>
 
                 </div>
 
@@ -88,7 +89,7 @@
 
                     </div>
 
-                    <select name="tipoExplotacion" id="tipoExplotacion" class="form-control form-control-lg" required>
+                    <select name="explotacion" class="form-control form-control-lg" value="{{ old('explotacion') }}" required>
 
                         
                         <option value="Cabaña">Cabaña</option>
@@ -129,7 +130,7 @@
 
                     </div>
 
-                    <select name="regimen" id="regimen" class="form-control form-control-lg" required>
+                    <select name="regimen" class="form-control form-control-lg" value="{{ old('regimen') }}" required>
 
                         <option value="Arrendatario">Arrendatario</option>
                         
@@ -161,7 +162,7 @@
 
                     </div>
 
-                    <select name="tipoDoc" id="tipoDoc" class="form-control form-control-lg" required>
+                    <select name="tipoDoc" class="form-control form-control-lg" value="{{ old('tipoDoc') }}" required>
 
                         <option value="DNI">DNI</option>
                         
@@ -191,7 +192,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="numDoc" placeholder="N° Documento" required>
+                    <input type="text" class="form-control form-control-lg" name="numDoc" placeholder="N° Documento" value="{{ old('numDoc') }}" required>
 
                 </div>
 
@@ -213,7 +214,7 @@
 
                     </div>
 
-                    <select name="iva" id="iva" class="form-control form-control-lg" required>
+                    <select name="iva" class="form-control form-control-lg" value="{{ old('iva') }}" required>
 
                         <option value="RI">Responsable Inscripto</option>
                         
@@ -250,7 +251,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="telefono" placeholder="Telefono" required>
+                    <input type="text" class="form-control form-control-lg" name="telefono" placeholder="Telefono" value="{{ old('telefono') }}" required>
 
                 </div>
 
@@ -272,7 +273,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="mail" placeholder="E-mail">
+                    <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail" required>
 
                 </div>
 
@@ -294,7 +295,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="domicilio" placeholder="Domicilio" required>
+                    <input type="text" class="form-control form-control-lg" name="domicilio" placeholder="Domicilio" value="{{ old('domicilio') }}" required>
 
                 </div>
 
@@ -316,7 +317,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="localidad" placeholder="Localidad" required>
+                    <input type="text" class="form-control form-control-lg" name="localidad" placeholder="Localidad" value="{{ old('localidad') }}" required>
 
                 </div>
 
@@ -338,11 +339,11 @@
                 
                     <div class="input-group-prepend">
 
-                    <span class="input-group-text"> <i class="fa fa-map-marker"></i></span> 
+                        <span class="input-group-text"> <i class="fa fa-map-marker"></i></span> 
 
-                                                </div>
+                    </div>
 
-                    <input type="text" class="form-control form-control-lg" name="provincia" placeholder="Provincia" required>
+                    <input type="text" class="form-control form-control-lg" name="provincia" placeholder="Provincia" value="{{ old('provincia') }}" required>
 
 
                 </div>
@@ -365,7 +366,7 @@
 
                     </div>
 
-                    <input type="text" class="form-control form-control-lg" name="departamento" value="" readonly>
+                    <input type="text" class="form-control form-control-lg" name="departamento" value="{{ $departamento }}" readonly>
 
                 </div>
 
@@ -383,11 +384,18 @@
                 
                     <div class="input-group-prepend">
 
-                    <span class="input-group-text"> <i class="fa fa-map-marker"></i></span> 
+                        <span class="input-group-text"> <i class="fa fa-map-marker"></i></span> 
 
-                                                </div>
+                        
+                    </div>
+                    
+                    <select name="distrito_id" class="form-control form-control-lg" value="{{ old('distrito_id') }}" required>
 
-                    <select name="distrito" id="distrito" class="form-control form-control-lg" required>
+                        @foreach ($distritos as $distrito)
+                            
+                            <option value="{{ $distrito->key }}">{{ $distrito->name }}</option>
+
+                        @endforeach
 
                     </select>
 
@@ -407,13 +415,22 @@
                 
                     <div class="input-group-prepend">
 
-                    <span class="input-group-text"> <i class="fa fa-map-marker"></i></span> 
+                        <span class="input-group-text"> <i class="fa fa-map-marker"></i></span> 
+             
+                    </div>
+           
+                    <select name="veterinario" class="form-control form-control-lg" value="{{ old('veterinario') }}" required>
+                        
+                        <option value="">Seleccione Veterinario</option>
+                        
+                        @foreach ($vacunadores as $vacunador)
+                        
+                            <option value="{{ $vacunador->matricula }}"> {{ $vacunador->nombre }} </option>
 
-                                                </div>
+                        @endforeach
 
-                        <select name="veterinario" id="veterinario" class="form-control form-control-lg" required>
-                    
                     </select>
+
 
                 </div>
 

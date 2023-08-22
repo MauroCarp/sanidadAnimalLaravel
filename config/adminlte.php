@@ -297,7 +297,7 @@ return [
         ],
         [
             'text'        => 'Productores',
-            'route'       => 'productores',
+            'route'       => 'producers.index',
             'icon'        => 'icon-tractor',
         ],
         [
