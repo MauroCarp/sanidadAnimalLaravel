@@ -13,18 +13,7 @@ class VeterinariesExport implements FromCollection
     */
     public function collection()
     {
-        return Veterinarie::get(['nombre','matricula','domicilio','telefono','email','cuit']);
+        return Veterinarie::orderby('nombre','asc')->get(['nombre','matricula','domicilio','telefono','email','cuit']);
     }
 
-    public function headings(): array
-    {
-        return [
-            'nombre',
-            'matricula',
-            'domicilio',
-            'telefono',
-            'email',
-            'cuit',
-        ];
-    }
 }

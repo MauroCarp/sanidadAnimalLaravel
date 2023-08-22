@@ -130,6 +130,6 @@ class VeterinariesController extends Controller
     }
 
     public function export(){   
-        return Excel::download(new VeterinariesExport, 'veterinaries.xls');
+        return Excel::download(new VeterinariesExport, 'Lista veterinarios.xls');
     }
 }
