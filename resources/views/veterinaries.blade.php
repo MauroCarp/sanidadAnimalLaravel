@@ -4,14 +4,13 @@
 
 @section('content')
 
-
 <div class="box pt-2">
 
     <div class="box-header with-border mb-3">
 
         <div class="input-group justify-content-between">
 
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modalNuevoVeterinario">
+            <button class="btn btn-primary" id="btnNuevoVeterinario" data-toggle="modal" data-target="#modalNuevoVeterinario">
                 Nuevo Vacunador
             </button>
 
@@ -98,7 +97,49 @@
 @stop
 
 @section('js')
-    
+
+    @if ($errors->any())
+
+
+        <script>
+            let formClass,errorDivId;
+        </script>
+
+        @if(old('formType') == 'newVet')
+
+            <script>
+
+                $('#modalNuevoVeterinario').modal('show')
+                formClass = 'formNuevoVeterinario'
+            </script>
+
+        @elseif(old('formType') == 'updateVet')
+
+            <script>
+
+                $('#modalEditarVeterinario').modal('show')
+                $('#formEditarVeterinario').attr('action',`/veterinaries/${ {{ old('id') }} }`)
+                formClass = 'formEditarVeterinario'
+
+            </script>
+
+        @endif
+
+        @foreach ($errors->messages() as $key => $fieldErrors)
+
+            <script>
+
+                errorDivId = `.errors#error{{ ucwords($key) }}`
+
+                $(`.${formClass}`).find(errorDivId).html('{{ $fieldErrors[0] }}')
+
+            </script>
+
+        @endforeach
+
+
+    @endif
+
     @if(session('eliminar') == 'ok')
         <script>
             Swal.fire(
@@ -130,6 +171,7 @@
     @endif
 
     <script>
+
         $('.formEliminarVeterinario').each(function(){
 
             $(this).on('click',function(e){
@@ -154,15 +196,17 @@
             })
 
         })
-
-
         
         $('.btnEditarVeterinario').each(function(){
 
             $(this).on('click',function(e){
 
                 let data = JSON.parse($(this).attr('data'))
+                
+                $('.formEditarVeterinario input').removeClass('is-invalid')
+                $('.formEditarVeterinario select').removeClass('is-invalid')
 
+                $('#formEditarVeterinario input[name="id"]').val(data.id) 
                 $('#formEditarVeterinario input[name="nombre"]').val(data.nombre) 
                 $('#formEditarVeterinario input[name="matricula"]').val(data.matricula) 
                 $('#formEditarVeterinario input[name="domicilio"]').val(data.domicilio) 
@@ -176,6 +220,12 @@
             })
         })
 
+        $('#btnNuevoVeterinario').on('click',()=>{
+            $('.formNuevoVeterinario input').removeClass('is-invalid')
+            $('.formNuevoVeterinario select').removeClass('is-invalid')
+        })
+
+        
     </script>
 
 @endsection

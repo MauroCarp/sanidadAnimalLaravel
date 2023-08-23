@@ -1,7 +1,8 @@
 @extends('modals/layout',[
     'idModal'=>'modalNuevoVeterinario',
     'title'=>'Nuevo Vacunador',
-    'action'=>'veterinaries.store'
+    'action'=>'veterinaries.store',
+    'formClass'=>'formNuevoVeterinario'
 ])
 
 @section('modal')
@@ -20,12 +21,16 @@
                     
                         <span class="input-group-text"><i class="fa fa-user"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="nombre" placeholder="Nombre" required>
-
+                        <input type="text" class="form-control form-control-lg @error('nombre') is-invalid @enderror" name="nombre" placeholder="Nombre" value="@if(old('formType') == 'newVet') {{ old('nombre') }}  @endif" required>
+                        <input type="hidden" name="formType" value="newVet">
+                        
+                        
                     </div>
-
-
+                    
+                    
                 </div>
+
+                <small class="errors" id="errorNombre"></small>
 
             </div>
         
@@ -43,12 +48,14 @@
                     
                         <span class="input-group-text"><i class="fa fa-id-card-alt"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="matricula" placeholder="Matricula" required>
+                        <input type="text" class="form-control form-control-lg @error('matricula') is-invalid @enderror" name="matricula" placeholder="Matricula" value="@if(old('formType') == 'newVet') {{ old('matricula') }}  @endif" required>
 
                     </div>
 
 
                 </div>
+
+                <small class="errors" id="errorMatricula"></small>
 
             </div>
         
@@ -70,12 +77,14 @@
                     
                         <span class="input-group-text"><i class="fa fa-map-marker"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="domicilio" placeholder="Domicilio" required>
+                        <input type="text" class="form-control form-control-lg @error('domicilio') is-invalid @enderror" name="domicilio" placeholder="Domicilio" value="@if(old('formType') == 'newVet') {{ old('domicilio') }}  @endif" required>
 
                     </div>
 
 
                 </div>
+
+                <small class="errors" id="errorDomicilio"></small>
 
             </div>
         
@@ -93,12 +102,14 @@
                     
                         <span class="input-group-text"><i class="fa fa-phone"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="telefono" placeholder="Telefono" required>
+                        <input type="text" class="form-control form-control-lg @error('telefono') is-invalid @enderror" name="telefono" placeholder="Telefono" value="@if(old('formType') == 'newVet') {{ old('telefono') }}  @endif" required>
 
                     </div>
 
 
                 </div>
+
+                <small class="errors" id="errorTelefono"></small>
 
             </div>
         
@@ -120,12 +131,14 @@
                     
                         <span class="input-group-text"><i class="fa fa-at"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail" required>
+                        <input type="text" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" placeholder="E-mail" value="@if(old('formType') == 'newVet') {{ old('email') }}  @endif" required>
 
                     </div>
 
 
                 </div>
+
+                <small class="errors" id="errorEmail"></small>
 
             </div>
         
@@ -143,12 +156,14 @@
                     
                         <span class="input-group-text"><i class="fa fa-credit-card"></i></span> 
 
-                        <input type="text" class="form-control form-control-lg" name="cuit" placeholder="CUIT" required>
+                        <input type="text" class="form-control form-control-lg @error('cuit') is-invalid @enderror" name="cuit" placeholder="CUIT" value="@if(old('formType') == 'newVet') {{ old('cuit') }}  @endif" required>
 
                     </div>
 
 
                 </div>
+
+                <small class="errors" id="errorCuit"></small>
 
             </div>
         
@@ -170,7 +185,7 @@
                     
                         <span class="input-group-text"><i class="fa fa-list-ul"></i></span> 
 
-                        <select name="tipo" id="tipo" class="form-control form-control-lg" required>
+                        <select name="tipo" id="tipo" class="form-control form-control-lg @error('tipo') is-invalid @enderror" value="@if(old('formType') == 'newVet') {{ old('tipo') }}  @endif" required>
 
                             <option value="Veterinario">Veterinario</option>
                             
@@ -182,6 +197,8 @@
 
 
                 </div>
+
+                <small class="errors" id="errorTipo"></small>
 
             </div>
         

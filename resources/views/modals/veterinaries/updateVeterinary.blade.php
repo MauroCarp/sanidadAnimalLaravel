@@ -7,7 +7,8 @@
             role="form" 
             action="/veterinaries"
             method="post" 
-            id="formEditarVeterinario">
+            id="formEditarVeterinario"
+            class="formEditarVeterinario">
 
             @csrf
 
@@ -49,12 +50,17 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-user"></i></span> 
 
-                                            <input type="text" class="form-control form-control-lg" name="nombre" placeholder="Nombre" required>
+                                            <input type="text" class="form-control form-control-lg  @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" name="nombre" placeholder="Nombre" required>
+
+                                            <input type="hidden" name="formType" value="updateVet">
+                                            <input type="hidden" name="id" value="{{ old('id') }}">
 
                                         </div>
 
 
                                     </div>
+
+                                    <small class="errors" id="errorNombre"></small>
 
                                 </div>
 
@@ -72,12 +78,14 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-id-card-alt"></i></span> 
 
-                                            <input type="text" class="form-control form-control-lg" name="matricula" placeholder="Matricula" required>
+                                            <input type="text" class="form-control form-control-lg  @error('matricula') is-invalid @enderror" value="{{ old('matricula') }}" name="matricula" placeholder="Matricula" required>
 
                                         </div>
 
 
                                     </div>
+
+                                    <small class="errors" id="errorMatricula"></small>
 
                                 </div>
 
@@ -99,12 +107,14 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-map-marker"></i></span> 
 
-                                            <input type="text" class="form-control form-control-lg" name="domicilio" placeholder="Domicilio" required>
+                                            <input type="text" class="form-control form-control-lg  @error('domicilio') is-invalid @enderror" value="{{ old('domicilio') }}" name="domicilio" placeholder="Domicilio" required>
 
                                         </div>
 
 
                                     </div>
+
+                                    <small class="errors" id="errorDomicilio"></small>
 
                                 </div>
 
@@ -122,12 +132,14 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-phone"></i></span> 
 
-                                            <input type="text" class="form-control form-control-lg" name="telefono" placeholder="Telefono" required>
+                                            <input type="text" class="form-control form-control-lg  @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}" name="telefono" placeholder="Telefono" required>
 
                                         </div>
 
 
                                     </div>
+
+                                    <small class="errors" id="errorTelefono"></small>
 
                                 </div>
 
@@ -149,12 +161,14 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-at"></i></span> 
 
-                                            <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail" required>
+                                            <input type="text" class="form-control form-control-lg  @error('email') is-invalid @enderror" value="{{ old('email') }}" name="email" placeholder="E-mail" required>
 
                                         </div>
 
 
                                     </div>
+
+                                    <small class="errors" id="errorE"></small>
 
                                 </div>
 
@@ -172,12 +186,14 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-credit-card"></i></span> 
 
-                                            <input type="text" class="form-control form-control-lg" name="cuit" placeholder="CUIT" required>
+                                            <input type="text" class="form-control form-control-lg  @error('cuit') is-invalid @enderror" value="{{ old('cuit') }}" name="cuit" placeholder="CUIT" required>
 
                                         </div>
 
 
                                     </div>
+
+                                    <small class="errors" id="errorCuit"></small>
 
                                 </div>
 
@@ -199,7 +215,7 @@
                                         
                                             <span class="input-group-text"><i class="fa fa-list-ul"></i></span> 
 
-                                            <select name="tipo" id="tipo" class="form-control form-control-lg" required>
+                                            <select name="tipo" id="tipo" class="form-control form-control-lg  @error('tipo') is-invalid @enderror" value="{{ old('tipo') }}" required>
 
                                                 <option value="Veterinario">Veterinario</option>
                                                 
@@ -211,6 +227,8 @@
 
 
                                     </div>
+
+                                    <small class="errors" id="errorTipo"></small>
 
                                 </div>
 

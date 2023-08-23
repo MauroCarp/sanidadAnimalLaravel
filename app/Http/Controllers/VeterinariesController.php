@@ -45,7 +45,7 @@ class VeterinariesController extends Controller
             'matricula' => 'required',
             'domicilio' => 'required',
             'telefono' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'cuit' => 'required',
             'tipo' => 'required',
         ]);
@@ -87,12 +87,12 @@ class VeterinariesController extends Controller
     public function update(Request $request,$id)
     {
         
-        $request->validate([
+        $validator = $request->validate([
             'nombre' => 'required',
             'matricula' => 'required',
             'domicilio' => 'required',
             'telefono' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'cuit' => 'required',
             'tipo' => 'required',
         ]);
@@ -108,7 +108,7 @@ class VeterinariesController extends Controller
         $vet->tipo = $request->tipo;
         $vet->save();
 
-        return redirect()->route('veterinaries.index')->with('editar','ok');
+        return redirect()->route('veterinaries.index')->with('editar','ok')->withErrors($validator);
 
     }
 

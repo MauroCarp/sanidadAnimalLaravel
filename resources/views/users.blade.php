@@ -146,12 +146,11 @@
             $(this).on('click',function(e){
 
                 let data = JSON.parse($(this).attr('data'))
+                console.log(data)
+                $('#formEditarUsuario input[name="name"]').val(data.name) 
+                $('#formEditarUsuario input[name="email"]').val(data.email) 
 
-                $('#formEditarEditar input[name="name"]').val(data.name) 
-                $('#formEditarEditar input[name="email"]').val(data.email) 
-                $('#formEditarEditar input[name="password"]').val(data.password) 
-
-                $('#formEditarVeterinario').attr('action',`/veterinaries/${data.id}`)
+                $('#formEditarUsuario').attr('action',`/users/${data.id}`)
 
             })
         })
