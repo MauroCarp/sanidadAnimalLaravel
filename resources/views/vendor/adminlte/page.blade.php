@@ -104,13 +104,17 @@
 
         $('#btnMenuAftosa').on('click',function(){
 
-            // let campaign = localStorage.getItem('campaign')
             let campaign = getCookie('campaign')
 
             if(campaign == null || campaign == undefined || campaign == ''){
                 $('#modalCampaign').modal('show')
             }else{
+                
+                let arrowIcon = $('.icon-aftosa').next().find('i')
                 $('.icon-aftosa ').next().text(`Aftosa ${campaign}`)
+                $('.icon-aftosa').next().append(arrowIcon)
+
+                $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
             } 
 
         })
@@ -119,24 +123,32 @@
 
             let campaignSelected = $('#campaignSelected').val()
 
-            // localStorage.setItem('campaign',campaignSelected)
-
             var expiracion = new Date();
 
             expiracion.setDate(expiracion.getDate() + 1);
             
             document.cookie = `campaign=${campaignSelected}; expires=${expiracion.toUTCString()}; path=/`;
 
+            let arrowIcon = $('.icon-aftosa').next().find('i')
             $('.icon-aftosa ').next().text(`Aftosa ${campaignSelected}`)
+            $('.icon-aftosa').next().append(arrowIcon)
+
+            $('#campaign_number').html(`Campaña Aftosa Nº${campaignSelected}`)
 
             $('#modalCampaign').modal('hide')
 
         })
 
-        // let campaign = localStorage.getItem('campaign')
         let campaign = getCookie('campaign')
-        console.log(campaign)
-        if(campaign) $('.icon-aftosa ').next().text(`Aftosa ${campaign}`)
+
+        if(campaign) {
+            
+            let arrowIcon = $('.icon-aftosa').next().find('i')
+            $('.icon-aftosa').next().text(`Aftosa ${campaign}`)
+            $('.icon-aftosa').next().append(arrowIcon)
+
+            $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
+        }
 
     </script>
 

@@ -29,10 +29,12 @@
 .icon-brutur:before {  
   content: "\e906";
   font-size:1.9em;
+  padding-right: 2px;
 }
 .icon-aftosa:before {
   content: "\e907";
   font-size:1.9em;
+  padding-right: 2px;
 }
 .icon-jeringa:before {
   content: "\e904";
