@@ -343,13 +343,13 @@ return [
                 ],
                 [
                     'text' => 'Pendientes',
-                    'url'  => 'pendientes',
+                    'route'  => 'brutur.pending',
                     'icon' => 'far fa fa-fw fa-file',
 
                 ],
                 [
                     'text' => 'Notificados',
-                    'url'  => 'notificados',
+                    'route'  => 'brutur.notifieds',
                     'icon' => 'far fa fa-fw fa-check-square',
 
                 ],

@@ -14,5 +14,13 @@ class Producer extends Model
         return $this->belongsTo(District::class,'distrito_id','key');
 
     }
+ 
+    public function veterinarioInfo()
+    {
+        
+        return $this->belongsTo(Veterinarie::class,'veterinario','matricula');
+        
+
+    }
 
 }

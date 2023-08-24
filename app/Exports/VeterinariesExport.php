@@ -3,17 +3,17 @@
 namespace App\Exports;
 
 use App\Veterinarie;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class VeterinariesExport implements FromCollection
+class VeterinariesExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+
+    public function view(): View
     {
-        return Veterinarie::orderby('nombre','asc')->get(['nombre','matricula','domicilio','telefono','email','cuit']);
+        return view('exports.veterinariesExport', [
+            'veterinaries' => Veterinarie::orderby('nombre','asc')->get(['nombre','matricula','domicilio','telefono','email','cuit'])
+        ]);    
     }
 
 }

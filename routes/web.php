@@ -28,17 +28,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('producers', 'ProducersController');
-// Route::get('/producers','ProducersController@index')->name('productores');
-// Route::get('/producers/store','ProducersController@store')->name('producers.store');
-// Route::get('/producers/update','ProducersController@update')->name('producers.update');
 
 
 Route::get('/veterinaries/export','VeterinariesController@export')->name('veterinaries.export');
 Route::resource('veterinaries','VeterinariesController');
-// Route::get('/veterinaries','VeterinariesController@index')->name('veterinaries.index');
-// Route::post('/veterinaries/store','VeterinariesController@store')->name('veterinaries.store');
-// Route::post('/veterinaries/update','VeterinariesController@update')->name('veterinaries.update');
-// Route::delete('/veterinaries/{veterinarie}','VeterinariesController@destroy')->name('veterinaries.destroy');
 
 Route::resource('users','UsersController');
-// Route::get('/users','UsersadminController@index')->name('usuarios');
+
+Route::get('/brutur/notifieds','BruturController@notifieds')->name('brutur.notifieds');
+Route::get('/brutur/pending','BruturController@pending')->name('brutur.pending');
+Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutur.informeSenasa');

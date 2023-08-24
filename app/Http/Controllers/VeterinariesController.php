@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\VeterinariesExport;
 use App\Veterinarie;
 use Illuminate\Http\Request;
+use App\Exports\VeterinariesExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
