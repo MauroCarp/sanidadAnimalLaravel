@@ -102,16 +102,21 @@
 
         });
 
-        $('#btnMenuAftosa').on('click',function(){
+        $('#btnMenuAftosa').on('click',function(e){
 
             let campaign = getCookie('campaign')
 
             if(campaign == null || campaign == undefined || campaign == ''){
+
+                e.stopPropagation();
+                e.preventDefault()
+                
                 $('#modalCampaign').modal('show')
+
             }else{
                 
                 let arrowIcon = $('.icon-aftosa').next().find('i')
-                $('.icon-aftosa ').next().text(`Aftosa ${campaign}`)
+                $('.icon-aftosa ').next().text(`Aftosa Nº${campaign}`)
                 $('.icon-aftosa').next().append(arrowIcon)
 
                 $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
@@ -120,7 +125,7 @@
         })
 
         $('#btnAssignCampaign').on('click',function(){
-
+            
             let campaignSelected = $('#campaignSelected').val()
 
             var expiracion = new Date();
@@ -130,7 +135,7 @@
             document.cookie = `campaign=${campaignSelected}; expires=${expiracion.toUTCString()}; path=/`;
 
             let arrowIcon = $('.icon-aftosa').next().find('i')
-            $('.icon-aftosa ').next().text(`Aftosa ${campaignSelected}`)
+            $('.icon-aftosa ').next().text(`Aftosa Nº${campaignSelected}`)
             $('.icon-aftosa').next().append(arrowIcon)
 
             $('#campaign_number').html(`Campaña Aftosa Nº${campaignSelected}`)
@@ -144,7 +149,7 @@
         if(campaign) {
             
             let arrowIcon = $('.icon-aftosa').next().find('i')
-            $('.icon-aftosa').next().text(`Aftosa ${campaign}`)
+            $('.icon-aftosa').next().text(`Aftosa Nº${campaign}`)
             $('.icon-aftosa').next().append(arrowIcon)
 
             $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
@@ -152,4 +157,14 @@
 
     </script>
 
+@stop
+
+@section('css')
+
+    <style>
+        #btnMenuAftosa > .nav-link{
+            pointer-events: none;
+        }
+
+    </style>
 @stop
