@@ -56,6 +56,24 @@
     @yield('js')
 
     <script>
+
+        const getCookie = function(nombre) {
+
+            let cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+
+                let cookie = cookies[i].trim();
+
+                if (cookie.indexOf(nombre + '=') === 0) {
+                    return cookie.substring(nombre.length + 1);
+                }
+
+            }
+
+            return null; // La cookie no se encontró
+        }
+
         $(".tablas").DataTable({
 
             "language": {
@@ -86,7 +104,8 @@
 
         $('#btnMenuAftosa').on('click',function(){
 
-            let campaign = localStorage.getItem('campaign')
+            // let campaign = localStorage.getItem('campaign')
+            let campaign = getCookie('campaign')
 
             if(campaign == null || campaign == undefined || campaign == ''){
                 $('#modalCampaign').modal('show')
@@ -100,7 +119,13 @@
 
             let campaignSelected = $('#campaignSelected').val()
 
-            localStorage.setItem('campaign',campaignSelected)
+            // localStorage.setItem('campaign',campaignSelected)
+
+            var expiracion = new Date();
+
+            expiracion.setDate(expiracion.getDate() + 1);
+            
+            document.cookie = `campaign=${campaignSelected}; expires=${expiracion.toUTCString()}; path=/`;
 
             $('.icon-aftosa ').next().text(`Aftosa ${campaignSelected}`)
 
@@ -108,8 +133,9 @@
 
         })
 
-        let campaign = localStorage.getItem('campaign')
-
+        // let campaign = localStorage.getItem('campaign')
+        let campaign = getCookie('campaign')
+        console.log(campaign)
         if(campaign) $('.icon-aftosa ').next().text(`Aftosa ${campaign}`)
 
     </script>
