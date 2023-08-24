@@ -84,5 +84,34 @@
 
         });
 
+        $('#btnMenuAftosa').on('click',function(){
+
+            let campaign = localStorage.getItem('campaign')
+
+            if(campaign == null || campaign == undefined || campaign == ''){
+                $('#modalCampaign').modal('show')
+            }else{
+                $('.icon-aftosa ').next().text(`Aftosa ${campaign}`)
+            } 
+
+        })
+
+        $('#btnAssignCampaign').on('click',function(){
+
+            let campaignSelected = $('#campaignSelected').val()
+
+            localStorage.setItem('campaign',campaignSelected)
+
+            $('.icon-aftosa ').next().text(`Aftosa ${campaignSelected}`)
+
+            $('#modalCampaign').modal('hide')
+
+        })
+
+        let campaign = localStorage.getItem('campaign')
+
+        if(campaign) $('.icon-aftosa ').next().text(`Aftosa ${campaign}`)
+
     </script>
+
 @stop

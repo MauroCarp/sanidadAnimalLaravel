@@ -93,6 +93,10 @@
     {{-- Extra Configured Plugins Scripts --}}
     @include('adminlte::plugins', ['type' => 'js'])
 
+
+    {{-- MODALS --}}
+    @include('modals/aftosa/campaign')
+
     {{-- Livewire Script --}}
     @if(config('adminlte.livewire'))
         @if(app()->version() >= 7)

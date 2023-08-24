@@ -359,6 +359,7 @@ return [
         [
             'text'    => 'Aftosa',
             'icon'    => 'icon-aftosa',
+            'id'      => 'btnMenuAftosa',
             'submenu' => [
                 [
                     'text' => 'Vacunas',
