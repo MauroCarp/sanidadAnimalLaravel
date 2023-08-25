@@ -9,7 +9,7 @@
 
         <div class="box-body">
 
-            <form action="{{ 'receptions' }}" method="POST">
+            <form action="" method="POST">
 
                 @csrf
 
@@ -126,21 +126,22 @@
             inputFechaEntrega.setAttribute('required','required')
             inputFechaEntrega.setAttribute('class','form-control')
 
-            let inputUel = inputFechaEntrega.cloneNode(true)
+            let inputOtraMarca = inputFechaEntrega.cloneNode(true)
 
             let inputCantidad =  inputFechaEntrega.cloneNode(true) 
                 
-            let inputMarca =  document.createElement('SELECT') 
-            inputMarca.setAttribute('required','required')
-            inputMarca.setAttribute('class','form-control')
-            inputMarca.setAttribute('name','marca')
+            let selectMarca =  document.createElement('SELECT') 
+            selectMarca.setAttribute('required','required')
+            selectMarca.setAttribute('class','form-control')
+            selectMarca.setAttribute('name','marca')
+            selectMarca.setAttribute('id','marca')
 
             let opt = document.createElement('OPTION')
 
             opt.setAttribute('value','')
             opt.innerText = 'Seleccionar Marca'
 
-            inputMarca.appendChild(opt)
+            selectMarca.appendChild(opt)
 
             let marcas = '{{ $marcasVacunas }}'
             marcas = marcas.trim().split(',') 
@@ -150,10 +151,23 @@
                 let optMarca = opt.cloneNode(true)
                 optMarca.setAttribute('value',marca)
                 optMarca.innerText = marca
-                inputMarca.appendChild(optMarca)
+                selectMarca.appendChild(optMarca)
 
             });
 
+            let optOtraMarca = opt.cloneNode(true)
+            optOtraMarca.setAttribute('value','otro')
+            optOtraMarca.innerText = 'Otra'
+            selectMarca.appendChild(optOtraMarca)
+
+            inputOtraMarca.setAttribute('type','text')
+            let inputUel = inputOtraMarca.cloneNode(true)
+            let inputSerie = inputOtraMarca.cloneNode(true)
+
+            inputOtraMarca.style.display = 'none'
+            inputOtraMarca.setAttribute('id','otraMarca')
+            inputOtraMarca.removeAttribute('required')
+            inputOtraMarca.style.marginTop = '5px'
 
             inputFechaEntrega.setAttribute('type','date')
             let inputFechaVencimiento = inputFechaEntrega.cloneNode(true)
@@ -163,11 +177,7 @@
             inputFechaVencimiento.setAttribute('name','fechaVencimiento')
 
             td6.appendChild(inputFechaVencimiento)
-
-
-            inputUel.setAttribute('type','text')
-            let inputSerie = inputUel.cloneNode(true)
-
+            
             inputUel.setAttribute('name','uel')
             inputUel.setAttribute('value','{{ $uel }}')
             inputUel.setAttribute('readOnly','readOnly')
@@ -181,8 +191,9 @@
             inputCantidad.setAttribute('name','cantidad')
             td3.appendChild(inputCantidad)
 
-            inputMarca.setAttribute('name','marca')
-            td4.appendChild(inputMarca)
+            selectMarca.setAttribute('name','marca')
+            td4.appendChild(selectMarca)
+            td4.appendChild(inputOtraMarca)
   
             tr.appendChild(td1)
             tr.appendChild(td2)
@@ -228,6 +239,25 @@
 
         })
 
+        $('#marca').on('change',function(){
+
+            let marca = $(this).val()
+            
+            if(marca == 'otro'){
+                $('#otraMarca').show()
+                $('#otraMarca').attr('name','marca')
+                $('#marca').attr('name','')
+                $('#otraMarca').attr('required','required')
+                $('#marca').removeAttr('required')
+            }else{
+                $('#otraMarca').hide()
+                $('#marca').attr('name','marca')
+                $('#otraMarca').attr('name','')
+                $('#marca').attr('required','required')
+                $('#otraMarca').removeAttr('required')
+            }
+
+        })
     </script>
 
 @endsection

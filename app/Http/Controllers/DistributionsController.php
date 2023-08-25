@@ -18,7 +18,9 @@ class DistributionsController extends Controller
     {
         $vacunadores = Veterinarie::orderby('nombre','asc')->get(['nombre','matricula']);
 
-        $marcasVacunas = Reception::distinct()->pluck('marca');
+        $campaign = $_COOKIE['campaign'];
+        
+        $marcasVacunas = Reception::where('campaign',$campaign)->distinct()->pluck('marca');
         
         return View('aftosa/distributions',['vacunadores'=>$vacunadores,'marcasVacunas'=>implode(',',$marcasVacunas->toArray())]);
     }

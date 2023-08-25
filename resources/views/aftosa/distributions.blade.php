@@ -108,9 +108,11 @@
             )
 
             $('#vacunador').val("{{ session('matricula') }}")
+
             setTimeout(() => {
                 $('#cargarDistribuciones').trigger('click')
             }, 500);
+            
         </script>
 
     @endif
