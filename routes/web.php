@@ -43,4 +43,7 @@ Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutu
 
 Route::resource('/aftosa/receptions','ReceptionsController');
 Route::get('/aftosa/distributions','DistributionsController@index')->name('distributions.index');
+Route::post('/aftosa/distributions','DistributionsController@store')->name('distributions.store');
+Route::delete('/aftosa/distributions/{id}','DistributionsController@destroy')->name('distributions.destroy');
+Route::post('/aftosa/distributions/showDistributions','DistributionsController@showDistributions')->name('distributions.showDistributions');
 

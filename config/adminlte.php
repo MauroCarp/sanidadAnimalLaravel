@@ -367,13 +367,13 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Recepción',
-                            'url'  => 'recepcion',
+                            'route'  => 'receptions.index',
                             'icon' => 'fa fa-sign-in-alt',
 
                         ],
                         [
                             'text' => 'Distribución',
-                            'url'  => 'distribucion',
+                            'route'  => 'distributions.index',
                             'icon' => 'fa fa-sign-out-alt',
 
                         ],
