@@ -38,3 +38,9 @@ Route::resource('users','UsersController');
 Route::get('/brutur/notifieds','BruturController@notifieds')->name('brutur.notifieds');
 Route::get('/brutur/pending','BruturController@pending')->name('brutur.pending');
 Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutur.informeSenasa');
+
+// Route::resource('receptions','ReceptionsController');
+
+Route::resource('/aftosa/receptions','ReceptionsController');
+Route::get('/aftosa/distributions','DistributionsController@index')->name('distributions.index');
+
