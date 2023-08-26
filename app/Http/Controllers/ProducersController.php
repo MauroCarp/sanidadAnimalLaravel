@@ -16,13 +16,8 @@ class ProducersController extends Controller
      */
     public function index()
     {
-        $preRenspa = '20.008.0';
-
-        $departamento = 'IRIONDO';
 
         return view('producers',[
-            'preRenspa'=>$preRenspa,
-            'departamento'=>$departamento,
             'distritos'=>District::get(['key','name']),
             'vacunadores'=>Veterinarie::orderby('nombre','asc')->get(['nombre','matricula']),
             'productores'=> Producer::all()

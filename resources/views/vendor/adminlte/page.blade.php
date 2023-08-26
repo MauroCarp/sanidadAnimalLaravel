@@ -49,6 +49,10 @@
         @endif
 
     </div>
+
+    {{-- Modals --}}
+    @include('modals/aftosa/actasByProducer')
+
 @stop
 
 @section('adminlte_js')

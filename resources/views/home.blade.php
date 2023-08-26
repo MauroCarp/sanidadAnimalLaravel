@@ -23,3 +23,19 @@
 @endsection
 
 @section('js')
+
+    @if(session('actasProductor') == 'error')
+    
+        <script>
+            
+            Swal.fire(
+                'Actas no encontradas',
+                'El R.E.N.S.P.A que se esta buscando, puede no existir en nuestra base de datos, o no tiene actas asociadas.',
+                'error'
+                )
+
+        </script>
+
+    @endif
+
+@endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actas;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -128,6 +129,27 @@ class AftosaController extends Controller
         );
 
         return view('aftosa/reports',['informes'=>$informes]);
+    }
+
+    public function actasByProducer(Request $request){
+
+        $field = $request->validate([
+            'renspa'=>'required|size:17'
+        ]);
+
+        $actas = Actas::with('veterinario')
+        ->orderby('fechaVacunacion','desc')
+        ->where('renspa',$field['renspa'])
+        ->get();
+
+        if(count($actas) == 0){
+
+            return redirect()->route('home')->with('actasProductor','error');
+
+        };
+
+        return view('aftosa/actasByProducer',['actas'=>$actas]);
+
     }
 
 }

@@ -31,7 +31,8 @@ class CampaignsViewComposerServiceProvider extends ServiceProvider
             $campaigns = Campaign::orderby('numero','desc')->get();
             $uel = 'F.I.S.S.A';
             $departamento = 'IRIONDO';
-            $view->with(['campaigns'=>$campaigns,'uel'=>$uel,'departamento'=>$departamento]);
+            $preRenspa = '20.008.0';
+            $view->with(['campaigns'=>$campaigns,'uel'=>$uel,'departamento'=>$departamento,'preRenspa'=>$preRenspa]);
         });
     }
 }

@@ -398,7 +398,7 @@ return [
                             'url' => '#',
                             'data' => [
                                 'toggle' => 'modal',
-                                'target' => '#ventanaModalRenspaActaProductor',
+                                'target' => '#modalRenspaActaProductor',
                             ],
                             'icon' => 'far fa fa-fw fa-circle',
 
