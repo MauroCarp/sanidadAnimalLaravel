@@ -418,19 +418,19 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Est. NO Vacunados',
-                            'url'  => 'noVacunados',
+                            'route'  => 'aftosa.notVaccinated',
                             'icon' => 'far fa fa-fw fa-circle',
 
                         ],
                         [
                             'text' => 'Busqueda Diferencia',
-                            'url'  => 'diferencia',
+                            'route'  => 'aftosa.diferencia',
                             'icon' => 'far fa fa-fw fa-circle',
 
                         ],
                         [
                             'text' => 'Busqueda Diferencia Parcial',
-                            'url'  => 'diferenciaParcial',
+                            'route'  => 'aftosa.diferenciaParcial',
                             'icon' => 'far fa fa-fw fa-circle',
         
                         ],

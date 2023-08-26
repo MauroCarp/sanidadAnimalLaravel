@@ -42,8 +42,13 @@ Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutu
 // Route::resource('receptions','ReceptionsController');
 
 Route::resource('/aftosa/receptions','ReceptionsController');
+
 Route::get('/aftosa/distributions','DistributionsController@index')->name('distributions.index');
 Route::post('/aftosa/distributions','DistributionsController@store')->name('distributions.store');
 Route::delete('/aftosa/distributions/{id}','DistributionsController@destroy')->name('distributions.destroy');
 Route::post('/aftosa/distributions/showDistributions','DistributionsController@showDistributions')->name('distributions.showDistributions');
+
+Route::get('/aftosa/notVaccinated','AftosaController@notVaccinated')->name('aftosa.notVaccinated');
+Route::get('/aftosa/diffSearch','AftosaController@diffSearch')->name('aftosa.diferencia');
+Route::get('/aftosa/parcialDiffSearch','AftosaController@parcialDiffSearch')->name('aftosa.diferenciaParcial');
 
