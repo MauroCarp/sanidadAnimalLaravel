@@ -408,7 +408,7 @@ return [
                 ],
                 [
                     'text' => 'Informes',
-                    'route'  => 'aftosa.informes',
+                    'route'  => 'reports.informes',
                     'icon' => 'far fa fa-fw fa-file',
 
                 ],

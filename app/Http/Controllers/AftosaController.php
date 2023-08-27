@@ -106,31 +106,6 @@ class AftosaController extends Controller
 
     }
 
-    public function reports(){
-
-        $informes = array(
-            'Animales Totales vacunados por vacunador',
-            'Total de Bovinos Vacunados por localidad y total departamental',
-            'Detalle Animales Vacunados por Vacunador',
-            'Entrega de vacunas por vacunador',
-            'Relacion Dosis entregada y Vacuna suministrada',
-            'Cant. de Establecimientos por distrito con detalle de categorías',
-            'Nomina de Vacunadores ordenada alfabeticamente',
-            'Otras Especies',
-            'Evolución semanal de la campaña',
-            'Informe de Montos',
-            'Informe Carbunclo y Brucelosis Vacunados',
-            'Informe Carbunclo y Brucelosis NO Vacunados',
-            'Cantidad de Establecimientos segun Sistema Productivo',
-            'Cantidad de Animales segun Sistema Productivo',
-            'Cronograma por Veterinario',
-            'Cronograma Actual por Veterinario',
-            'Exportar Base de Datos'
-        );
-
-        return view('aftosa/reports',['informes'=>$informes]);
-    }
-
     public function actasByProducer(Request $request){
 
         $field = $request->validate([
