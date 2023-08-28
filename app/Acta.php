@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Actas extends Model
+class Acta extends Model
 {
     protected $guarded = [];
 

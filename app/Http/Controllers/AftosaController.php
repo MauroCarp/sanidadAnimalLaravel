@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Actas;
-use Facade\FlareClient\View;
+use App\Acta;
+use App\Producer;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class AftosaController extends Controller
@@ -112,7 +113,7 @@ class AftosaController extends Controller
             'renspa'=>'required|size:17'
         ]);
 
-        $actas = Actas::with('veterinario')
+        $actas = Acta::with('veterinario')
         ->orderby('fechaVacunacion','desc')
         ->where('renspa',$field['renspa'])
         ->get();
@@ -125,6 +126,28 @@ class AftosaController extends Controller
 
         return view('aftosa/actasByProducer',['actas'=>$actas]);
 
+    }
+
+    public function producerSituation(Request $request){
+
+        $field = $request->validate([
+            'renspa'=>'required|size:17'
+        ]);
+
+        $campaign = $_COOKIE['campaign'];
+
+        $datosEstablecimiento = Producer::with('distrito')
+        ->join('animals','producers.renspa','=','animals.renspa')
+        ->join('actas','producers.renspa','=','actas.renspa')
+        ->where(['actas.campaign'=>$campaign,'producers.renspa'=>$request->renspa])
+        ->first();
+
+        $today = date('d-m-Y');
+
+        $pdf = Pdf::loadView('aftosa.producerSituation',array('datosEstablecimiento'=>$datosEstablecimiento,'today'=>$today))->setOption(['defaultFont' => 'sans-serif']);
+        $pdf->setPaper('a4', 'landscape');            
+        
+        return $pdf->stream();
     }
 
 }

@@ -442,7 +442,7 @@ return [
                     'url' => '#',
                     'data' => [
                         'toggle' => 'modal',
-                        'target' => '#ventanaModalRenspaSituacionProductor',
+                        'target' => '#modalRenspaSituacionProductor',
                     ],
                     'icon' => 'far fa fa-fw fa-circle',
 
@@ -523,7 +523,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

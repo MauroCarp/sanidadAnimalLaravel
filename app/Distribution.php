@@ -11,4 +11,8 @@ class Distribution extends Model
     protected $casts = [
         'fechaEntrega' => 'datetime'
     ];
+
+    public function veterinario(){
+        return $this->belongsTo(Veterinarie::class,'matricula','matricula');
+    }
 }

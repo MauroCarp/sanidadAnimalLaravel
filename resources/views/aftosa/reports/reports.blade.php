@@ -20,7 +20,7 @@
 
                     @else
 
-                        <a href='#' class='list-group-item list-group-item-action' data-toggle='modal' data-target='@if($informe == 'Cronograma por Veterinario' OR $informe == 'Cronograma Actual por Veterinario')#matricula-cronograma{{ $key + 1 }}@else#matricula-informe{{ $key + 1 }}@endif'> {{ $key+1 }}- {{ $informe }} </a>
+                        <a href='#' class='list-group-item list-group-item-action informeVeterinario' data-report="{{$key + 1}}" data-toggle='modal' data-target='#modalVeterinario'> {{ $key+1 }}- {{ $informe }} </a>
 
                     @endif
 
@@ -32,4 +32,51 @@
     
     </div>
     
+@endsection
+
+@include('modals/aftosa/veterinario')
+
+@section('js')
+    <script>
+
+        $('#selectVeterinario').select2({
+            theme: 'bootstrap',
+            width: '80%',
+        })
+
+        $('.informeVeterinario').on('click',function(){
+
+            let key = $(this).attr('data-report')
+            
+            let report = key
+
+            if(report != 3){
+                report = 'schedule'
+            }
+
+            $('#formVeterinario').attr('action',report)
+            $('#type').val(key)
+
+
+        })
+
+    </script>
+@endsection
+
+@section('css')
+    <style>
+        .select2-container--bootstrap .select2-selection--single {
+            border: solid 1px rgba(100,100,100,.5);
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            vertical-align: middle;
+            height: 100%;
+        }
+
+        .select2-results__options {
+            max-height: 200px; /* Establece la altura máxima */
+            overflow-y: auto; /* Hace que aparezca el scroll si se supera la altura */
+        }
+    </style>
+
 @endsection

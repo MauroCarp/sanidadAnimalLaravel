@@ -30,7 +30,6 @@
 
         </table>
 
-        <br>
         <hr>
 
         @yield('content')

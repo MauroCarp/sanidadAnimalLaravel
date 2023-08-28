@@ -2,8 +2,6 @@
     'title'=>'Animales Totales Vacunados por Vacunador'
 ])
 
-@section('title','Animales Totales Vacunados por Vacunador')
-
 @section('content')
 
     <table align="center" class="table table-striped" style="width:400px">

@@ -52,7 +52,10 @@ Route::get('/aftosa/notVaccinated','AftosaController@notVaccinated')->name('afto
 Route::get('/aftosa/diffSearch','AftosaController@diffSearch')->name('aftosa.diferencia');
 Route::get('/aftosa/parcialDiffSearch','AftosaController@parcialDiffSearch')->name('aftosa.diferenciaParcial');
 Route::post('/aftosa/actasByProducer','AftosaController@actasByProducer')->name('aftosa.actasProductor');
+Route::post('/aftosa/producerSituation','AftosaController@producerSituation')->name('aftosa.situacionProductor');
 
 Route::get('/aftosa/reports/reports','ReportsController@index')->name('reports.informes');
 Route::get('/aftosa/reports/{key}','ReportsController@reportPdf');
+Route::post('/aftosa/reports/schedule','ReportsController@schedule')->name('reports.cronograma');
+Route::post('/aftosa/reports/{key}','ReportsController@reportPdf');
 

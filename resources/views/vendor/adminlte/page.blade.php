@@ -52,6 +52,7 @@
 
     {{-- Modals --}}
     @include('modals/aftosa/actasByProducer')
+    @include('modals/aftosa/producerSituation')
 
 @stop
 

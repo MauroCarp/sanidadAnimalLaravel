@@ -114,15 +114,3 @@
     </table>
 
 @endsection
-
-@section('css')
-
-    <style>
-
-        .border-bottom{
-            border-bottom:solid black 1px;
-        }
-
-    </style>
-
-@endsection
