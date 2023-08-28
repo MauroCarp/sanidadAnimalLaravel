@@ -19,9 +19,67 @@ class BruturController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function index()
     {
-        //
+        $brucelosisInfo = Brucelosi::join('producers','producers.renspa','=','brucelosis.renspa')
+        ->whereIn('brucelosis.estado',['DOES Total','MuVe','Libre','RecertificaciÃ³n','Recertificacion','Recertificación'])
+        ->where('notificado',0)
+        ->where('notificado',0)
+        ->get(['brucelosis.renspa',
+               'producers.establecimiento',
+               'producers.propietario',
+               'producers.explotacion',
+               'producers.veterinario',
+               'brucelosis.estado',
+               'brucelosis.fechaEstado']);
+
+        $tuberculosisInfo = Tuberculosi::join('producers','producers.renspa','=','tuberculosis.renspa')
+        ->whereIn('tuberculosis.estado',['Libre','RecertificaciÃ³n','Recertificacion','Recertificación'])
+        ->get(['tuberculosis.renspa',
+               'producers.establecimiento',
+               'producers.propietario',
+               'producers.explotacion',
+               'producers.veterinario',
+               'tuberculosis.estado',
+               'tuberculosis.fechaEstado']);
+        
+        $alerts = array('vencidos'=>array(),'porVencer'=>array());
+
+        $today = Carbon::today();
+
+        foreach ($brucelosisInfo as $registro) {
+            
+            $fechaVencimiento = $registro->fechaEstado->addDays(365);
+            $fechaMargen = $registro->fechaEstado->addMonths(11);
+
+            $registro->campaign = 'Brucelosis';
+            $registro->fechaVencimiento = $fechaVencimiento->format('d-m-Y');
+
+            if($fechaVencimiento > $today) $alerts['vencidos'][] = $registro;
+
+            if($today < $fechaVencimiento AND $today > $fechaMargen){
+                $alerts['porVencer'][] = $registro;
+            }
+
+        }
+
+        foreach ($tuberculosisInfo as $registro) {
+            
+            $fechaVencimiento = $registro->fechaEstado->addDays(365);
+            $fechaMargen = $registro->fechaEstado->addMonths(11);
+
+            $registro->campaign = 'Tuberculosis';
+            $registro->fechaVencimiento = $fechaVencimiento->format('d-m-Y');
+
+            if($today > $fechaVencimiento) $alerts['vencidos'][] = $registro;
+
+            if($today < $fechaVencimiento AND $today > $fechaMargen){
+                $alerts['porVencer'][] = $registro;
+            }
+
+        }
+
+        return view('brutur/alerts',['alerts'=>$alerts]);
     }
 
     public function notifieds(){

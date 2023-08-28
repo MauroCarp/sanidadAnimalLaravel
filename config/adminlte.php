@@ -292,7 +292,7 @@ return [
     'menu' => [
         [
             'text'        => 'Inicio',
-            'url'         => 'home',
+            'route'         => 'home',
             'icon'        => 'far fa fa-fw fa-home',
         ],
         [

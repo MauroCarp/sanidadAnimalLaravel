@@ -1,52 +1,84 @@
-@extends('modals/layout',[
-    'idModal'=>'modalRenspaActaProductor',
-    'title'=>'Actas por productor',
-    'action'=>'aftosa.actasProductor',
-    'formClass'=>'formActasProductor'
-])
-
-@section('modal')
-
-    <div class="row">
-
-        <div class="col-md-12">
-
-            <div class="form-group">
-
-                <label>Renspa</label>
+<div id="modalRenspaActaProductor" class="modal fade" role="dialog">
+  
+    <div class="modal-dialog modal-xs">
+  
+        <div class="modal-content">
+  
+            <form 
+            role="form" 
+            action="{{ route('aftosa.actasProductor') }}"
+            method="post" 
+            class="formActasProductor"
+            target="_blank">
+    
+                @csrf
+    
+                <!--=====================================
+                CABEZA DEL MODAL
+                ======================================-->
+        
+                <div class="modal-header" style="background:#3c8dbc; color:white">
             
-                <div class="input-group-prepend">
-
-                    <div class="input-group">
+                    <h4 class="modal-title">Actas por productor</h4>
                     
-                        <span class="input-group-text"><i class="fa fa-user"></i></span> 
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+                </div>
+        
+                <!--=====================================
+                CUERPO DEL MODAL
+                ======================================-->
+                
+                <div class="modal-body">
+        
+                    <div class="box-body">
 
-                        <input type="text" class="form-control form-control-lg @error('renspa') is-invalid @enderror" name="renspa" value="{{ $preRenspa }}" required>
-                        
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+
+                                    <label>Renspa</label>
+                                
+                                    <div class="input-group-prepend">
+
+                                        <div class="input-group">
+                                        
+                                            <span class="input-group-text"><i class="fa fa-user"></i></span> 
+
+                                            <input type="text" class="form-control form-control-lg @error('renspa') is-invalid @enderror" name="renspa" value="{{ $preRenspa }}" size="17" required>
+                                            
+                                        </div>
+                                        
+                                        
+                                    </div>
+
+                                </div>
+                            
+                            </div>
+
+                        </div>
+
+
                     </div>
-                    
-                    
+
                 </div>
 
-                <small class="errors" id="errorNombre"></small>
+                <!--=====================================
+                PIE DEL MODAL
+                ======================================-->
 
-            </div>
-        
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary">Buscar Actas</button>
+                
+                </div>
+
+            </form>
+
         </div>
 
     </div>
 
-@endsection
-
-@section('submit')
-    <button type="submit" class="btn btn-primary">Buscar Actas</button>
-@endsection
-
-@section('js')
-
-    <script>
-        $('#modalRenspaActaProductor').children().first().removeClass('modal-lg') 
-        $('#modalRenspaActaProductor').children().first().addClass('modal-xs') 
-    </script>
-
-@endsection
+</div>

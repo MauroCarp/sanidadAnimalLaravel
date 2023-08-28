@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 
 // Route::view('/', 'welcome');
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'BruturController@index');
+Route::get('/home', 'BruturController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('producers', 'ProducersController');
 
