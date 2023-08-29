@@ -51,33 +51,33 @@
 
         <tbody>
 
-        @foreach($veterinarios as $veterinario)
-            <tr>
-                <td>{{ $veterinario->nombre }}</td>
-                <td>{{ $veterinario->matricula }}</td>
-                <td>{{ $veterinario->domicilio }}</td>
-                <td>{{ $veterinario->telefono }}</td>
-                <td>{{ $veterinario->email }}</td>
-                <td>{{ $veterinario->tipo }}</td>
-                <td>
-                     
-                    <div class="btn-group">
-   
-                        <button type="button" class="btn btn-warning btnEditarVeterinario" data-toggle="modal" data-target="#modalEditarVeterinario" data="{{ $veterinario }}"><i class="fas fa-pencil-alt"></i></button>
+            @foreach($veterinarios as $veterinario)
+                <tr>
+                    <td>{{ $veterinario->nombre }}</td>
+                    <td>{{ $veterinario->matricula }}</td>
+                    <td>{{ $veterinario->domicilio }}</td>
+                    <td>{{ $veterinario->telefono }}</td>
+                    <td>{{ $veterinario->email }}</td>
+                    <td>{{ $veterinario->tipo }}</td>
+                    <td>
                         
-                        <form style="all:unset" class="formEliminarVeterinario" action="{{ route('veterinaries.destroy',$veterinario->id) }}" method="POST">
+                        <div class="btn-group">
+    
+                            <button type="button" class="btn btn-warning btnEditarVeterinario" data-toggle="modal" data-target="#modalEditarVeterinario" data="{{ $veterinario }}"><i class="fas fa-pencil-alt"></i></button>
+                            
+                            <form style="all:unset" class="formEliminarVeterinario" action="{{ route('veterinaries.destroy',$veterinario->id) }}" method="POST">
 
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger" type="submit"><i class="fa fa-times"></i></button>
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit"><i class="fa fa-times"></i></button>
 
-                        </form>
+                            </form>
 
-                    </div>  
+                        </div>  
 
-                </td>
-            </tr>
-        @endforeach
+                    </td>
+                </tr>
+            @endforeach
 
         </tbody>
 
