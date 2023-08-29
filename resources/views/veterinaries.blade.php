@@ -118,7 +118,7 @@
             <script>
 
                 $('#modalEditarVeterinario').modal('show')
-                $('#formEditarVeterinario').attr('action',`/veterinaries/${ {{ old('id') }} }`)
+                $('#formEditarVeterinario').attr('action',`/veterinaries/{{ old('id')}}`)
                 formClass = 'formEditarVeterinario'
 
             </script>
