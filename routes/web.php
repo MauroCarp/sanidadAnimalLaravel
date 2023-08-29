@@ -40,6 +40,7 @@ Route::post('/brutur/generalReport','BruturController@generalReport')->name('bru
 
 Route::resource('/aftosa/receptions','ReceptionsController');
 
+
 Route::get('/aftosa/distributions','DistributionsController@index')->name('distributions.index');
 Route::post('/aftosa/distributions','DistributionsController@store')->name('distributions.store');
 Route::delete('/aftosa/distributions/{id}','DistributionsController@destroy')->name('distributions.destroy');
@@ -55,4 +56,7 @@ Route::get('/aftosa/reports/reports','ReportsController@index')->name('reports.i
 Route::get('/aftosa/reports/{key}','ReportsController@reportPdf');
 Route::post('/aftosa/reports/schedule','ReportsController@schedule')->name('reports.cronograma');
 Route::post('/aftosa/reports/{key}','ReportsController@reportPdf');
+
+Route::get('aftosa/acta/{renspa}','ActasController@show')->name('acta.show');
+// Route::resource('aftosa/acta','ActasController');
 

@@ -388,9 +388,10 @@ return [
                             'text' => 'Cargar Acta',
                             'url' => '#',
                             'icon' => 'far fa fa-fw fa-edit',
+                            'id' => 'btnCargarActa',
                             'data' => [
                                 'toggle' => 'modal',
-                                'target' => '#ventanaModalRenspaActa',
+                                'target' => '#modalRenspaActa',
                             ],
                         ],
                         [

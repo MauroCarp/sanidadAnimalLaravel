@@ -44,7 +44,7 @@
                     <td>
                         <div class='btn-group'>
 
-                            <button class='btn btn-warning btnModificarActa' renspa="{{ $diferencia->renspa }}"><i class='fas fa-pencil-alt'></i></button>
+                            <a href="{{ route('acta.show',str_replace('/','-',$diferencia->renspa)) }}" class='btn btn-warning'><i class='fas fa-pencil-alt'></i></a>
                         
                         </div>
                     </td>                   

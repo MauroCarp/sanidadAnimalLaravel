@@ -54,6 +54,7 @@
     @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/producerSituation')
     @include('modals/brutur/dateRangePicker')
+    @include('modals/aftosa/acta')
 
 @stop
 
@@ -150,6 +151,14 @@
 
         })
 
+        $('#btnBuscarActa').on('click',function(e){
+
+            let renspa = $('#renspaActa').val()
+
+            window.location = `aftosa/acta/${renspa.replace('/','-')}`
+
+        })
+
         let campaign = getCookie('campaign')
 
         if(campaign) {
@@ -161,8 +170,23 @@
             $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
         }
 
+
+
     </script>
 
+    @if(session('error') == 'renspa')
+        <script>
+            $('#btnCargarActa a').trigger('click')
+
+            Swal.fire(
+            'RENSPA no encontrado',
+            'El RENSPA ingresado no corresponde a ningun productor',
+            'error'
+            )
+            
+
+        </script>
+    @endif
 @stop
 
 @section('css')
