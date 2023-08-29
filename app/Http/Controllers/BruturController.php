@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use App\Brucelosi;
 use App\Tuberculosi;
 use Illuminate\Http\Request;
-use App\Exports\informeSenasaExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\informeSenasaExport;
+
 
 
 class BruturController extends Controller
@@ -138,6 +140,154 @@ class BruturController extends Controller
         DB::update('UPDATE tuberculosis SET estadoSenasa = "Enviado" WHERE estadoSenasa = "Pendiente"');
         
         return Excel::download(new informeSenasaExport, "Enviados Senasa ($today).xls");
+    }
+
+    public function generalReport(Request $request){
+
+        $dates = explode('*',str_replace(' ','',str_replace('/','-',str_replace('-','*',$request->rangeDate))));
+        list($from,$to) = $dates;
+        $from = date('Y-m-d',strtotime($from));
+        $to = date('Y-m-d',strtotime($to));
+        $today = date('d-m-Y');
+
+        $brucelosis = Brucelosi::whereBetween('fechaEstado',[$from,$to])
+        ->get();
+
+        $dataBrucelosis = array('cantEstablecimientosDOESTotal'=>0,
+                                'cantEstablecimientosDOESParcial'=>0,
+                                'cantEstablecimientosMuVe'=>0,
+                                'cantEstablecimientosSAN'=>0,
+                                'cantEstablecimientosCSM'=>0,
+                                'cantEstablecimientosCtrlInt'=>0,
+                                'cantEstablecimientosRemuestreo'=>0,
+                                'cantEstablecimientosPositivos'=>0,
+                                'cantEstablecimientosNegativos'=>0,
+                                'cantEstablecimientosSospechosos'=>0,
+                                'cantAnimalesSAN'=>0,
+                                'cantAnimalesCSM'=>0,
+                                'cantAnimalesCtrlInt'=>0,
+                                'cantAnimalesRemuestreo'=>0,
+                                'cantAnimalesPositivos'=>0,
+                                'cantAnimalesNegativos'=>0,
+                                'cantAnimalesSospechosos'=>0,
+                                'cantUPLibresCert'=>0,
+                                'cantUPLibresCertCargadas'=>0,
+                                'cantAnimalesLibresTotal'=>0
+        );
+
+        $tuberculosis = Tuberculosi::whereBetween('fechaEstado',[$from,$to])
+        ->get();
+
+        $dataTuberculosis= array('cantAnimalesTuberculinizados'=>0,
+                                 'cantAnimalesLibresTuberculinizados'=>0,
+                                 'cantEstablecimientosLibres'=>0,
+                                 'cantEstablecimientosLibresCargados'=>0        
+        );
+
+        foreach ($brucelosis as $value) {
+            
+            $totalAnimales = $value->vacas + $value->vaquillonas + $value->toros;
+
+            switch ($value->estado) {
+                case 'DOES Total':
+                    $dataBrucelosis['cantEstablecimientosDOESTotal']++;
+                    $dataBrucelosis['cantUPLibresCert']++;
+                    $dataBrucelosis['cantAnimalesLibresTotal'] += $totalAnimales;
+
+                    if($value->fechaCarga >= $from AND $value->fechaCarga <= $to) 
+                        $dataBrucelosis['cantUPLibresCertCargadas']++;
+
+                    break;
+                case 'DOES Parcial':
+                    $dataBrucelosis['cantEstablecimientosDOESParcial']++;
+                    
+                    break;
+                case 'MuVe':
+                    $dataBrucelosis['cantEstablecimientosMuVe']++;
+                    $dataBrucelosis['cantUPLibresCert']++;
+                    $dataBrucelosis['cantAnimalesLibresTotal'] += $totalAnimales;
+
+                    if($value->fechaCarga >= $from AND $value->fechaCarga <= $to) 
+                        $dataBrucelosis['cantUPLibresCertCargadas']++;
+
+                    break;
+                case 'SAN':
+                    $dataBrucelosis['cantEstablecimientosSAN']++;
+                    $dataBrucelosis['cantAnimalesSAN'] += $totalAnimales;
+                    
+                    break;
+                case 'CSM':
+                    $dataBrucelosis['cantEstablecimientosCSM']++;
+                    $dataBrucelosis['cantAnimalesCSM'] += $totalAnimales;
+
+                    break;
+                case 'Remuestreo':
+                    $dataBrucelosis['cantEstablecimientosRemuestreo']++;
+                    $dataBrucelosis['cantAnimalesRemuestreo'] += $totalAnimales;
+                    
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+            if($value->positivo > 0){
+                $dataBrucelosis['cantEstablecimientosPositivos']++;
+                $dataBrucelosis['cantAnimalesPositivos'] += $value->positivo;
+            }
+
+            if($value->negativo > 0){
+                $dataBrucelosis['cantEstablecimientosNegativos']++;
+                $dataBrucelosis['cantAnimalesNegativos'] += $value->negativo;
+            }
+
+            if($value->sospechoso > 0){
+                $dataBrucelosis['cantEstablecimientosSospechosos']++;
+                $dataBrucelosis['cantAnimalesSospechosos'] += $value->sospechoso;
+            }
+            
+        }
+
+        foreach ($tuberculosis as $value) {
+
+            $totalAnimales = $value->vacas + $value->vaquillonas + $value->toros + $value->terneros + $value->terneras + $value->novillos + $value->novillitos;
+
+            switch ($value->estado) {
+                case 'Libre':
+                    $dataTuberculosis['cantEstablecimientosLibres']++;
+                    $dataTuberculosis['cantAnimalesLibresTuberculinizados'] += $totalAnimales;
+                    $dataTuberculosis['cantAnimalesTuberculinizados'] += $totalAnimales;
+
+                    if($value->fechaCarga >= $from AND $value->fechaCarga <= $to) 
+                        $dataTuberculosis['cantEstablecimientosLibresCargados']++;
+
+                    break;
+                case 'RecertificaciÃ³n';
+                case 'Recertificacion';
+                case 'Recertificación':
+                    $dataTuberculosis['cantEstablecimientosLibres']++;
+                    $dataTuberculosis['cantAnimalesTuberculinizados']++;
+
+                    if($value->fechaCarga >= $from AND $value->fechaCarga <= $to) 
+                        $dataTuberculosis['cantEstablecimientosLibresCargados']++;
+                    
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+            
+        }
+
+        $data = ['dataBrucelosis'=>$dataBrucelosis,'dataTuberculosis'=>$dataTuberculosis,'today'=>$today,'periodo'=> $request->rangeDate];
+
+        $pdf = Pdf::loadView('brutur.generalReport',$data)->setOption(['defaultFont' => 'sans-serif']);
+
+        return $pdf->stream();
+
+
     }
 
 }

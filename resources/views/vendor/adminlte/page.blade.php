@@ -53,6 +53,7 @@
     {{-- Modals --}}
     @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/producerSituation')
+    @include('modals/brutur/dateRangePicker')
 
 @stop
 

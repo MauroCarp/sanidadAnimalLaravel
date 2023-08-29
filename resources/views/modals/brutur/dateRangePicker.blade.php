@@ -5,9 +5,8 @@
         <div class="modal-content">
   
             <form 
-            action=""
+            action="{{ route('brutur.informeGeneral') }}"
             method="post" 
-            class=""
             target="_blank">
     
                 @csrf
@@ -18,7 +17,7 @@
         
                 <div class="modal-header" style="background:#3c8dbc; color:white">
             
-                    <h4 class="modal-title">Rango de fechas</h4>
+                    <h4 class="modal-title">Informe Entes Brucelosis-Tuberculosis</h4>
                     
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
         
@@ -38,15 +37,15 @@
 
                                 <div class="form-group">
 
-                                    <label>Rango</label>
+                                    <label>Periodo</label>
                                 
                                     <div class="input-group-prepend">
 
                                         <div class="input-group">
                                         
-                                            <span class="input-group-text"><i class="fa fa-date"></i></span> 
+                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span> 
 
-                                            <input type="text" class="form-control" name="rangeDate" id="rangeDate">
+                                            <input type="text" class="form-control" name="rangeDate" id="rangeDate" placeholder="Rango de fechas">
 
                                         </div>
                                         
@@ -81,3 +80,11 @@
     </div>
 
 </div>
+
+@section('js')
+    <script>
+        $('#rangeDate').daterangepicker({
+            opens: 'left'
+        });
+    </script>
+@endsection

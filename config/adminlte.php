@@ -311,7 +311,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Alertas',
-                    'url'  => 'alertas',
+                    'route'  => 'home',
                     'icon' => 'far fa fa-fw fa-exclamation-triangle',
 
                 ],
@@ -330,7 +330,7 @@ return [
                     'url' => '#',
                     'data' => [
                         'toggle' => 'modal',
-                        'target' => '#ventanaModalInforme',
+                        'target' => '#modalDateRangePicker',
                     ],
                     'icon' => 'far fa fa-fw fa-file',
 
@@ -601,7 +601,34 @@ return [
                     'location' => 'vendor/icomoon/fonts/icomoon.woff',
                 ],
             ],
+        ],   
+        'Moment' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/moment/moment.min.js',
+                ]
+            ],
         ],
+        'DateRangePicker' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/daterangepicker/daterangepicker.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/daterangepicker/daterangepicker.js',
+                ]
+            ],
+        ],
+
+
     ],
 
     /*

@@ -26,9 +26,7 @@ Route::get('/home', 'BruturController@index')->name('home');
 
 Auth::routes();
 
-
 Route::resource('producers', 'ProducersController');
-
 
 Route::get('/veterinaries/export','VeterinariesController@export')->name('veterinaries.export');
 Route::resource('veterinaries','VeterinariesController');
@@ -38,8 +36,7 @@ Route::resource('users','UsersController');
 Route::get('/brutur/notifieds','BruturController@notifieds')->name('brutur.notifieds');
 Route::get('/brutur/pending','BruturController@pending')->name('brutur.pending');
 Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutur.informeSenasa');
-
-// Route::resource('receptions','ReceptionsController');
+Route::post('/brutur/generalReport','BruturController@generalReport')->name('brutur.informeGeneral');
 
 Route::resource('/aftosa/receptions','ReceptionsController');
 
