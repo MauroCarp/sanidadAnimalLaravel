@@ -335,12 +335,12 @@ return [
                     'icon' => 'far fa fa-fw fa-file',
 
                 ],
-                [
-                    'text' => 'Status por Veterinario',
-                    'url'  => 'statusVeterinario',
-                    'icon' => 'far fa fa-fw fa-medkit',
+                // [
+                //     'text' => 'Status por Veterinario',
+                //     'url'  => 'statusVeterinario',
+                //     'icon' => 'far fa fa-fw fa-medkit',
 
-                ],
+                // ],
                 [
                     'text' => 'Pendientes',
                     'route'  => 'brutur.pending',
