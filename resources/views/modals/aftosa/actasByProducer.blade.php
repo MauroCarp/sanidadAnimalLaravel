@@ -6,7 +6,7 @@
   
             <form 
             role="form" 
-            action="{{ route('aftosa.actasProductor') }}"
+            action="/aftosa/actasByProducer"
             method="post" 
             class="formActasProductor"
             target="_blank">

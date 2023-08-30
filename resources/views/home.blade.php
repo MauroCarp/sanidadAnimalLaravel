@@ -38,4 +38,19 @@
 
     @endif
 
+    @dd(session())
+    @if(session('actaCreated') == 'ok')
+    
+        <script>
+            
+            Swal.fire(
+                'Acta cargada',
+                'Ha sido cargada correctamente',
+                'success'
+            )
+
+        </script>
+
+    @endif
+
 @endsection

@@ -31,8 +31,8 @@
                             <div class="form-group">
 
                                 <label>Redondeo Aftosa</label>
-                            
-                                <input type="number" class="form-control" step="0.01" name="redondeoAf" value="{{$acta['redondeoAf'] ?? 0}}" >
+
+                                <input type="number" class="form-control" step="0.01" name="redondeoAf" @isset($acta){{ 'value='.$acta['redondeoAf']}}@else value="0" @endisset>
 
                             </div>
                         
@@ -48,7 +48,7 @@
 
                                 <label>Redondeo Carbunclo</label>
                             
-                                <input type="number" class="form-control" step="0.01" name="redondeoCar" value="{{$acta['redondeoCar'] ?? 0}}" >
+                                <input type="number" class="form-control" step="0.01" name="redondeoCar" @isset($acta){{ 'value=' . $acta['redondeoCar']}}@else value="0" @endisset>
 
                             </div>
                         

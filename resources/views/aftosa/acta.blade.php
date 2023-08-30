@@ -59,18 +59,24 @@
 
         </div>
        
-        <form action="" method="post">
-    
-            <div class="row border-bottom">
+        <form action="/aftosa/acta" method="post" id="formActa">
 
-                <div class="col-md-1"></div>
+            @if($action == 'Modificar')
+                @method('PATCH')
+            @else
+                <input type="hidden" name="renspa" value="{{$data['renspa']}}">
+            @endif
+
+            @csrf
+
+            <div class="row border-bottom">
 
                 <div class="col-md-2">
     
                     <div class="form-group">
                         
                         <label for="fechaVacunacion"><b>Fecha de Vacunaci&oacute;n</b></label>
-                        <input type="date" class="form-control" name="fechaVacunacion" value="{{ $acta['fechaVacunacion']->format('Y-m-d') ?? ''}}" required>
+                        <input type="date" class="form-control" name="fechaVacunacion" value="@isset($acta){{$acta['fechaVacunacion']->format('Y-m-d')}}@endisset" required>
                             
                     </div>
                 
@@ -82,7 +88,7 @@
                         
                         <label for="fechaRecepcion"><b>Fecha Recepci&oacute;n</b></label>
                         
-                        <input type="date" class="form-control" id="fechaRecepcion" name="fechaRecepcion" value="{{$acta['fechaRecepcion']->format('Y-m-d') ?? ''}}" required>
+                        <input type="date" class="form-control" id="fechaRecepcion" name="fechaRecepcion" value="@isset($acta){{ $acta->fechaRecepcion->format('Y-m-d')}}@endisset" required>
                         
                     </div>
                     
@@ -94,7 +100,7 @@
                             
                         <label for="cantidad"><b>Vacunador</b></label>
 
-                        <select class="form-control" name="vacunador" id="vacunador">
+                        <select class="form-control" name="matricula" id="matricula">
 
                             @foreach ($vets as $vet)
                                 <option value="{{$vet->matricula}}"
@@ -121,7 +127,19 @@
                             
                         <label for="cantidad"><b>Vacunas Suministradas</b></label>
                         
-                        <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{$acta['cantidad'] ?? ''}}" required>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" value="@isset($acta){{$acta['cantidad']}}@endisset" required>
+                        
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-2">
+                
+                    <div class="form-group">
+                            
+                        <label for="cantidad"><b>Acta</b></label>
+                        
+                        <input type="text" class="form-control" id="acta" name="acta" value="@isset($acta) {{ $acta['acta'] }} @endisset" required>
                         
                     </div>
                     
@@ -166,7 +184,7 @@
                         
                         <label for="vacas"><b>Vacas</b></label>
                         
-                        <input type="number" class="form-control" name="vacas" value="{{ $data['vacas'] ?? 0}}">
+                        <input type="number" class="form-control total" name="vacas" value="{{ $data['vacas'] ?? 0}}">
                             
                     </div>
                 
@@ -178,7 +196,7 @@
                         
                         <label for="toros"><b>Toros</b></label>
                         
-                        <input type="number" class="form-control" name="toros" value="{{ $data['toros'] ?? 0}}">
+                        <input type="number" class="form-control total" name="toros" value="{{ $data['toros'] ?? 0}}">
                             
                     </div>
                 
@@ -190,7 +208,7 @@
                         
                         <label for="toritos"><b>Toritos</b></label>
                         
-                        <input type="number" class="form-control" name="toritos" value="{{ $data['toritos'] ?? 0}}">
+                        <input type="number" class="form-control parcial total" name="toritos" value="{{ $data['toritos'] ?? 0}}">
                             
                     </div>
                 
@@ -202,7 +220,7 @@
                         
                         <label for="novillos"><b>Novillos</b></label>
                         
-                        <input type="number" class="form-control" name="novillos" value="{{ $data['novillos'] ?? 0}}">
+                        <input type="number" class="form-control parcial total" name="novillos" value="{{ $data['novillos'] ?? 0}}">
                             
                     </div>
                 
@@ -214,7 +232,7 @@
                         
                         <label for="novillitos"><b>Novillitos</b></label>
                         
-                        <input type="number" class="form-control" name="novillitos" value="{{ $data['novillitos'] ?? 0}}">
+                        <input type="number" class="form-control parcial total" name="novillitos" value="{{ $data['novillitos'] ?? 0}}">
                             
                     </div>
                 
@@ -226,7 +244,7 @@
                         
                         <label for="vaquillonas"><b>Vaquillonas</b></label>
                         
-                        <input type="number" class="form-control" name="vaquillonas" value="{{ $data['vaquillonas'] ?? 0}}">
+                        <input type="number" class="form-control parcial total" name="vaquillonas" value="{{ $data['vaquillonas'] ?? 0}}">
                             
                     </div>
                 
@@ -238,7 +256,7 @@
                         
                         <label for="terneras"><b>Terneras</b></label>
                         
-                        <input type="number" class="form-control" name="terneras" value="{{ $data['terneras'] ?? 0}}">
+                        <input type="number" class="form-control parcial total" name="terneras" value="{{ $data['terneras'] ?? 0}}">
                             
                     </div>
                 
@@ -250,7 +268,7 @@
                         
                         <label for="terneros"><b>Terneros</b></label>
                         
-                        <input type="number" class="form-control" name="terneros" value="{{ $data['terneros'] ?? 0}}">
+                        <input type="number" class="form-control parcial total" name="terneros" value="{{ $data['terneros'] ?? 0}}">
                             
                     </div>
                 
@@ -396,7 +414,7 @@
 
                             <div class="input-group-text">
 
-                                <input type="checkbox" class="checkbox" name="vacunoCar" @isset($acta['vacunoBruce']) @if($acta['vacunoBruce']) checked @endif @endisset>
+                                <input type="checkbox" class="checkbox" name="vacunoBruce" @isset($acta['vacunoBruce']) @if($acta['vacunoBruce']) checked @endif @endisset>
 
                             </div>
 
@@ -413,7 +431,7 @@
 
             <div class="row">
                 <div class="col-md-4"></div>
-                <div class="col-md-4 border-top border-bottom border-primary py-2"><button class="btn btn-primary btn-block" type="submit">{{$action}} Acta</button></div>
+                <div class="col-md-4 border-top border-bottom border-primary py-2"><button class="btn btn-primary btn-block" id="btnCargarActa" type="submit">{{$action}} Acta</button></div>
                 <div class="col-md-4"></div>
             </div>
         </form>
@@ -432,15 +450,70 @@
 
         <script>
 
-            Swal.fire(
-                'Modificar Acta',
-                'El acta asociada a este RENSPA, ya se encuentra cargada.',
-                'info'
-            )
+            let renspa = $('#renspaProductor').val().replace('/','-')
+        
+            $('#formActa').attr('action',`/aftosa/acta/${renspa}`)
 
         </script>
 
+        @if(session('updated') == 'ok')
+
+            <script>
+
+                Swal.fire(
+                    'Acta Modificada',
+                    'Ha sido modificada correctamente',
+                    'success'
+                )
+
+            </script>
+
+        @else
+
+            <script>
+
+                Swal.fire(
+                    'Modificar Acta',
+                    'El acta asociada a este RENSPA, ya se encuentra cargada.',
+                    'info'
+                )
+
+            </script>
+
+        @endif
+
     @endif
+
+    <script>
+        let total = 0
+        let parcial = 0
+        $('.total').each(function(){total += parseFloat($(this).val())});
+        $('.parcial').each(function(){parcial += parseFloat($(this).val())});
+
+        $('input[name="total"]').val(total)
+        $('input[name="parcial"]').val(parcial)
+        
+        $('.parcial').on('change',function(){
+            let total = 0
+            let parcial = 0
+
+            $('.total').each(function(){total += parseFloat($(this).val())});
+            $('.parcial').each(function(){parcial += parseFloat($(this).val())});
+            $('input[name="total"]').val(total)
+            $('input[name="parcial"]').val(parcial)
+            
+        })
+        
+        $('.total').on('change',function(){
+            let total = 0
+            $('.total').each(function(){total += parseFloat($(this).val())});
+            $('input[name="total"]').val(total)
+
+        })
+
+        </script>
+    
+
 {{--
 
     @if ($errors->any())
@@ -484,7 +557,7 @@
 
 
     @endif
-
+--}}
     @if(session('eliminar') == 'ok')
         <script>
             Swal.fire(
@@ -495,30 +568,4 @@
         </script>
     @endif
 
-    @if(session('crear') == 'ok')
-        <script>
-            Swal.fire(
-            'Vacunador Creado',
-            'Ha sido creado correctamente',
-            'success'
-            )
-        </script>
-    @endif
-
-    @if(session('editar') == 'ok')
-        <script>
-            Swal.fire(
-            'Vacunador Modificado',
-            'Ha sido modificado correctamente',
-            'success'
-            )
-        </script>
-    @endif
-
-    <script>
-
-        
-    </script>
-
-    --}}
 @endsection

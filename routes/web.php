@@ -57,6 +57,6 @@ Route::get('/aftosa/reports/{key}','ReportsController@reportPdf');
 Route::post('/aftosa/reports/schedule','ReportsController@schedule')->name('reports.cronograma');
 Route::post('/aftosa/reports/{key}','ReportsController@reportPdf');
 
-Route::get('aftosa/acta/{renspa}','ActasController@show')->name('acta.show');
-// Route::resource('aftosa/acta','ActasController');
+// Route::get('aftosa/acta/{renspa}','ActasController@show')->name('acta.show');
+Route::resource('aftosa/acta','ActasController');
 

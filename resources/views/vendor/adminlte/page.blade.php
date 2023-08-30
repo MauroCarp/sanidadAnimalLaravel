@@ -155,7 +155,7 @@
 
             let renspa = $('#renspaActa').val()
 
-            window.location = `aftosa/acta/${renspa.replace('/','-')}`
+            window.location = `/aftosa/acta/${renspa.replace('/','-')}`
 
         })
 
