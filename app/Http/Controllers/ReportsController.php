@@ -149,7 +149,7 @@ class ReportsController extends Controller
         $actasByVet = Producer::with('veterinarioInfo')
         ->join('actas','producers.renspa','=','actas.renspa')
         ->where(['actas.campaign'=>$campaign,'actas.matricula'=>$matricula])
-        ->orderby('producers.propietario')
+        ->orderby('actas.acta','asc')
         ->get();
 
         $actasByVet = $actasByVet->toArray();

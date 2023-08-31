@@ -316,11 +316,11 @@ return [
 
                 ],
                 [
-                    'text' => 'Actualizar Status',
+                    'text' => 'Status Sanitario',
                     'url' => '#',
                     'data' => [
                         'toggle' => 'modal',
-                        'target' => '#ventanaModalModificarStatus',
+                        'target' => '#modalRenspaStatusSanitario',
                     ],
                     'icon' => 'far fa fa-fw fa-recycle',
 

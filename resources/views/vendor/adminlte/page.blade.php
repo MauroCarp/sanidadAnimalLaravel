@@ -54,6 +54,7 @@
     @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/producerSituation')
     @include('modals/brutur/dateRangePicker')
+    @include('modals/brutur/updateStatus')
     @include('modals/aftosa/acta')
 
 @stop
@@ -171,6 +172,16 @@
         }
 
 
+        $('#btnStatusSanitario').on('click',function(e){
+
+            e.preventDefault()
+
+            let renspa = $('#renspaStatusSanitario').val().replace('/','-')
+
+            $('.formRenspaStatusSanitario').attr('action',`/brutur/updateStatus/${renspa}`)
+            $('.formRenspaStatusSanitario').submit()
+
+        })
 
     </script>
 

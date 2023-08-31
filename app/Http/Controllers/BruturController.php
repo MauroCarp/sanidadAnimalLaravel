@@ -10,8 +10,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\informeSenasaExport;
-
-
+use App\Producer;
+use App\Record;
 
 class BruturController extends Controller
 {
@@ -290,4 +290,23 @@ class BruturController extends Controller
 
     }
 
+    public function updateStatus($renspa){
+
+        $renspa = str_replace('-','/',$renspa);
+
+        $dataEstablecimiento = Producer::with(['tuberculosis','brucelosis','veterinarioInfo'])->where('renspa',$renspa)->first();
+
+        $registrosBrucelosis = Record::where(['campaign'=>'brucelosis','renspa'=>$renspa])
+        ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
+        ->orderby('fechaCarga','asc')
+        ->get();
+
+        $registrosTuberculosis = Record::where(['campaign'=>'tuberculosis','renspa'=>$renspa])
+        ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
+        ->orderby('fechaCarga','asc')
+        ->get();
+
+        return view('/brutur/updateStatus',['dataEstablecimiento'=>$dataEstablecimiento,'registrosBrucelosis'=>$registrosBrucelosis,'registrosTuberculosis'=>$registrosTuberculosis]);
+
+    }
 }

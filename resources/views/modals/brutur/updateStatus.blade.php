@@ -1,4 +1,4 @@
-<div id="modalDateRangePicker" class="modal fade" role="dialog">
+<div id="modalRenspaStatusSanitario" class="modal fade" role="dialog">
   
     <div class="modal-dialog modal-xs">
   
@@ -6,19 +6,16 @@
   
             <form 
             action=""
-            method="post" 
-            class=""
-            target="_blank">
-    
-                @csrf
-    
+            method="get" 
+            class="formRenspaStatusSanitario">
+        
                 <!--=====================================
                 CABEZA DEL MODAL
                 ======================================-->
         
                 <div class="modal-header" style="background:#3c8dbc; color:white">
             
-                    <h4 class="modal-title">Rango de fechas</h4>
+                    <h4 class="modal-title">Actualizar Satus Sanitario Bru-Tur</h4>
                     
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
         
@@ -38,15 +35,15 @@
 
                                 <div class="form-group">
 
-                                    <label>Rango</label>
+                                    <label>Renspa</label>
                                 
                                     <div class="input-group-prepend">
 
                                         <div class="input-group">
                                         
-                                            <span class="input-group-text"><i class="fa fa-date"></i></span> 
+                                            <span class="input-group-text"><i class="fa fa-barcode"></i></span> 
 
-                                            <input type="text" class="form-control" name="rangeDate" id="rangeDate">
+                                            <input type="text" class="form-control form-control-lg" id="renspaStatusSanitario" value="{{$preRenspa}}">
 
                                         </div>
                                         
@@ -70,7 +67,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="submit" class="btn btn-primary">Generar</button>
+                    <button type="submit" id="btnStatusSanitario" class="btn btn-primary">Actualizar Status</button>
                 
                 </div>
 

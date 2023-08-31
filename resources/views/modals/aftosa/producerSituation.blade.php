@@ -45,7 +45,7 @@
 
                                         <div class="input-group">
                                         
-                                            <span class="input-group-text"><i class="fa fa-user"></i></span> 
+                                            <span class="input-group-text"><i class="fa fa-barcode"></i></span> 
 
                                             <input type="text" class="form-control form-control-lg @error('renspa') is-invalid @enderror" name="renspa" value="{{ $preRenspa }}" size="17" required>
                                             

@@ -20,4 +20,10 @@ class Tuberculosi extends Model
         return $this->belongsTo(Producer::class,'renspa','renspa');
 
     }
+
+    public function brucelosis(){
+
+        return $this->belongsTo(Brucelosi::class,'renspa','renspa');
+
+    }
 }

@@ -21,4 +21,10 @@ class Brucelosi extends Model
 
     }
 
+    public function tuberculosis(){
+        
+        return $this->belongsTo(Tuberculosi::class,'renspa','renspa');
+
+    }
+
 }

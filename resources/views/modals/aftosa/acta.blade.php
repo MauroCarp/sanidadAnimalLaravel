@@ -36,7 +36,7 @@
 
                                     <div class="input-group">
                                     
-                                        <span class="input-group-text"><i class="fa fa-user"></i></span> 
+                                        <span class="input-group-text"><i class="fa fa-barcode"></i></span> 
 
                                         <input type="text" class="form-control form-control-lg" id="renspaActa" value="{{ $preRenspa }}" size="17" minlength="17" maxlength="17" required>
                                         

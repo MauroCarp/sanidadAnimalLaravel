@@ -23,4 +23,16 @@ class Producer extends Model
 
     }
 
+    public function tuberculosis(){
+        
+        return $this->belongsTo(Tuberculosi::class,'renspa','renspa');
+
+    }
+
+    public function brucelosis(){
+
+        return $this->belongsTo(Brucelosi::class,'renspa','renspa');
+
+    }
+
 }

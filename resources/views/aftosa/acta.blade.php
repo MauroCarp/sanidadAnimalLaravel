@@ -14,7 +14,7 @@
 
                 <div class="form-group">
                     
-                    <label for="renspa"><b>R.E.N.S.P.A: </b></label>
+                    <label for="renspa"><b><i class="fa fa-barcode margin-r-5"></i> R.E.N.S.P.A: </b></label>
                     
                     <input type="text" class="form-control"  style="font-size:1.2em;" name="renspaProductor" id="renspaProductor" value="{{$data['renspa']}}" readOnly>
                         
@@ -26,7 +26,7 @@
 
                 <div class="form-group">
                     
-                    <label for="propietario"><b>Propietario: </b></label>
+                    <label for="propietario"><b><i class="icon-tractor margin-r-5"></i> Propietario: </b></label>
                     
                     <input type="text" class="form-control" style="font-size:1.2em;"  id="propietario" name="propietario" value="{{$data['propietario']}}" readOnly>
                   
@@ -38,7 +38,7 @@
               
                 <div class="form-group">
                       
-                      <label for="establecimiento"><b>Establecimiento: </b></label>
+                      <label for="establecimiento"><b><i class="fa fa-home margin-r-5"></i> Establecimiento: </b></label>
                       
                       <input type="text" class="form-control" style="font-size:1.2em;"  id="establecimiento" name="establecimiento"  value="{{$data['establecimiento']}}" readOnly>
                     
@@ -50,7 +50,7 @@
               
                 <div class="form-group">
                       
-                      <label for="veterinario"><b>Veterinario: </b></label>
+                      <label for="veterinario"><b><i class="icon-jeringa margin-r-5" style="font-size:0.7em"></i> Veterinario: </b></label>
                       <input type="text" class="form-control" style="font-size:1.2em;"  id="veterinario"  name="veterinario"  value="{{$data['veterinario_info']['nombre']}}" readOnly>
                     
                 </div>
