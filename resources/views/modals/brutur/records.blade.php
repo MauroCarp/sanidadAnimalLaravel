@@ -42,7 +42,7 @@
                                 
                                 <tr>
 
-                                    <td>{{$registro->fechaEstado->format('d-m-Y')}}</td>
+                                    <td>{{date('d-m-Y',strtotime($registro->fechaEstado))}}</td>
                                     <td>{{$registro->protocolo}}</td>
                                     <td>{{$registro->estado}}</td>
                                     <td>{{$registro->total}}</td>
@@ -79,7 +79,7 @@
                                 
                                 <tr>
 
-                                    <td>{{$registro->fechaEstado->format('d-m-Y')}}</td>
+                                    <td>{{date('d-m-Y',strtotime($registro->fechaEstado))}}</td>
                                     <td>{{$registro->protocolo}}</td>
                                     <td>{{$registro->estado}}</td>
                                     <td>{{$registro->total}}</td>

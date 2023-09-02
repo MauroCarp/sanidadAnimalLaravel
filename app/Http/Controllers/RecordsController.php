@@ -26,4 +26,5 @@ class RecordsController extends Controller
         return redirect("/brutur/updateStatus/$renspa")->with('eliminarRegistro','ok'); 
     
     }
+    
 }

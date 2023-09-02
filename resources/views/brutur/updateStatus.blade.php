@@ -2,6 +2,10 @@
 
 @section('title', 'Status Sanitaro')
 
+@php
+$brucelosis = $dataEstablecimiento->brucelosis;    
+$tuberculosis = $dataEstablecimiento->tuberculosis;    
+@endphp
 
 @section('content')
 
@@ -63,72 +67,80 @@
                                 
                     <strong>Fecha de Vencimiento</strong>
 
-                    <p class="text-muted" id="fechaVencimientoBrucelosis" style="font-size: 1em;">@if($dataEstablecimiento->brucelosis->fechaEnviado != null){{ $dataEstablecimiento->brucelosis->fechaEnviado->addDays(365)->format('d-m-Y')}}@endif</p>
+                    <p class="text-muted" id="fechaVencimientoBrucelosis" style="font-size: 1em;">{{ $brucelosis->fechaEstado->addDays(365)->format('d-m-Y')}}</p>
 
                     <hr>
                     
                     <strong>Animales</strong>
-                    
+
                     <p class="text-muted" style="font-size: 1em;">
-                    <b>Vacas: </b><span class="animalesBrucelosis" id="vacasBruce">{{$dataEstablecimiento->brucelosis->vacas}}&nbsp;</span>  
-                    <b> Vaquillonas: </b><span class="animalesBrucelosis" id="vaquillonasBruce">{{$dataEstablecimiento->brucelosis->vaquillonas}}&nbsp;</span>
-                    <b> Toros: </b><span class="animalesBrucelosis" id="torosBruce">{{$dataEstablecimiento->brucelosis->toros}}</span> <br>
-                    <b> Total: </b><span id="totalBruce"></span>
+                        <b>Vacas: </b><span id="vacasBruce">{{$brucelosis->vacas}}&nbsp;</span>  
+                        <b> Vaquillonas: </b><span id="vaquillonasBruce">{{$brucelosis->vaquillonas}}&nbsp;</span>
+                        <b> Toros: </b><span id="torosBruce">{{$brucelosis->toros}}</span> <br>
+                        <b> Total: </b><span class="totalBrucelosis"></span>
                     </p>
 
                     <hr>
                     
                     <strong>Protocolo</strong>
 
-                    <p class="text-muted" id="protocoloBrucelosis" style="font-size: 1em;">{{$dataEstablecimiento->brucelosis->protocolo}}</p>
+                    <p class="text-muted" id="protocoloBrucelosis" style="font-size: 1em;">{{$brucelosis->protocolo}}</p>
 
                     <hr>
                     
                     <strong>Estado</strong>
 
-                    <p class="text-muted" id="estadoBrucelosis" style="font-size: 1em;">{{$dataEstablecimiento->brucelosis->estado}}</p>
-
-                    <hr>
-                    
-                                
-                    <strong>Estado SENASA</strong>
-
-                    <p class="text-muted" id="estadoSenasaBrucelosis" style="font-size: 1em;">{{$dataEstablecimiento->brucelosis->estadoSenasa}}</p>
+                    <p class="text-muted" id="estadoBrucelosis" style="font-size: 1em;">{{$brucelosis->estado}}</p>
 
                     <hr>
 
-                    <div id="inputCertificadoBruce">
+                    @if($brucelosis->estado == 'DOES Total' || $brucelosis->estado == 'MuVe')                
+                        <strong>Estado SENASA</strong>
+
+                        <p class="text-muted" id="estadoSenasaBrucelosis" style="font-size: 1em;">{{$brucelosis->estadoSenasa}}</p>
+
+                        <hr>
+                    @endif
+               
+                    <div id="inputCertificadoBrucelosis" @if(($brucelosis->estado == 'DOES Total' || $brucelosis->estado == 'MuVe') && $brucelosis->estadoSenasa == 'Enviado') style="display:block" @else style="display:none" @endif>
 
                         <strong>N° Certificado</strong>
 
-                        <div class="row">
+                        <form action="{{route('brutur.asignarCertificado')}}" method="post" id="formCertBrucelosis">
+                            @csrf
+                            <div class="row">
 
-                            <div class="col-md-8">
+                                <div class="col-md-8">
 
-                                <div class="input-group mb-3">          
-        
-                                    <input type="text" size="20" name="certificaBrucelosisisInput" id="certificadoBrucelosisInput" class="form-control">
-        
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-primary aprobarSenasa" databutton="Brucelosis"><b>Aprobar</b></button>
+                                    <div class="input-group mb-3">          
+
+                                        <input type="text" name="certificado" id="certificadoBrucelosisInput" class="form-control" required>
+                                        
+                                        <input type="hidden" name="type" value="brucelosis">
+                                        <input type="hidden" name="renspa" value="{{$dataEstablecimiento->renspa}}">
+                                        
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-outline-primary aprobarSenasa" data-type="Brucelosis"><b>Aprobar</b></button>
+                                        </div>
+            
                                     </div>
-        
+                                    
                                 </div>
-
+                                
                             </div>
 
-                        </div>
+                        </form>
 
                         <hr>
                     
                     </div>
 
-                    <div id="divEstadoBruce" style="display:none;">
+                    <div id="certificadoBrucelosis" @if($brucelosis->certificado == '' || $brucelosis->estadoSenasa != 'Aprobado') style="display:none;" @endif>
 
 
                         <strong>N° Certificado</strong>
 
-                        <p class="text-muted" id="certificadoBrucelosis" style="font-size: 1em;">{{$dataEstablecimiento->brucelosis->certificado}}</p>
+                        <p class="text-muted" id="certificadoBrucelosis" style="font-size: 1em;">{{$brucelosis->certificado}}</p>
 
                         <hr>
                         
@@ -137,13 +149,13 @@
 
                     <strong>Fecha de Muestra</strong>
 
-                    <p class="text-muted" id="fechaEstadoBrucelosis" style="font-size: 1em;">{{$dataEstablecimiento->brucelosis->fechaEstado->format('d-m-Y')}}</p>
+                    <p class="text-muted" id="fechaEstadoBrucelosis" style="font-size: 1em;">{{$brucelosis->fechaEstado->format('d-m-Y')}}</p>
 
                     <hr>
 
                     <strong>Fecha de Carga</strong>
 
-                    <p class="text-muted" id="fechaCargaBrucelosis" style="font-size: 1em;">{{$dataEstablecimiento->brucelosis->fechaCarga->format('d-m-Y')}}</p>
+                    <p class="text-muted" id="fechaCargaBrucelosis" style="font-size: 1em;">{{$brucelosis->updated_at->format('d-m-Y')}}</p>
 
                     <hr>
                                 
@@ -156,7 +168,7 @@
                     <h3 class="box-title"><b>Tuberculosis</b></h3>
                             
                     <strong>Fecha de Vencimiento</strong>
-                    <p class="text-muted" id="fechaVencimientoTuberculosis" style="font-size: 1em;">@if($dataEstablecimiento->tuberculosis->fechaEnviado != null){{$dataEstablecimiento->tuberculosis->fechaEnviado->addDays(365)->format('d-m-Y')}}@endif</p>
+                    <p class="text-muted" id="fechaVencimientoTuberculosis" style="font-size: 1em;">@if($tuberculosis->fechaEstado != null){{$tuberculosis->fechaEstado->addDays(365)->format('d-m-Y')}}@endif</p>
 
                     <hr>
                     
@@ -164,14 +176,14 @@
                     
                     <p class="text-muted" style="font-size: 1em;">
 
-                        <b>Vacas:</b><span class="animalesTuberculosis" id="vacasTuber">{{$dataEstablecimiento->tuberculosis->vacas}}</span>&nbsp;
-                        <b>Vaquillonas:</b><span class="animalesTuberculosis" id="vaquillonasTuber">{{$dataEstablecimiento->tuberculosis->vaquillonas}}</span>&nbsp;
-                        <b>Terneros:</b><span class="animalesTuberculosis" id="ternerosTuber">{{$dataEstablecimiento->tuberculosis->terneros}}</span>&nbsp;
-                        <b>Terneras:</b><span class="animalesTuberculosis" id="ternerasTuber">{{$dataEstablecimiento->tuberculosis->terneras}}</span>&nbsp;
-                        <b>Novillos:</b><span class="animalesTuberculosis" id="novillosTuber">{{$dataEstablecimiento->tuberculosis->novillos}}</span>&nbsp;
-                        <b>Novillitos:</b><span class="animalesTuberculosis" id="novillitosTuber">{{$dataEstablecimiento->tuberculosis->novillitos}}</span>&nbsp;
-                        <b>Toros:</b><span class="animalesTuberculosis" id="torosTuber">{{$dataEstablecimiento->tuberculosis->toros}}</span><br>  
-                        <b>Total:</b><span id="totalTuber">1</span>
+                        <b>Vacas: </b><span id="vacasTuber">{{$tuberculosis->vacas}}</span>&nbsp;
+                        <b>Vaquillonas: </b><span id="vaquillonasTuber">{{$tuberculosis->vaquillonas}}</span>&nbsp;
+                        <b>Terneros: </b><span id="ternerosTuber">{{$tuberculosis->terneros}}</span>&nbsp;
+                        <b>Terneras: </b><span id="ternerasTuber">{{$tuberculosis->terneras}}</span>&nbsp;
+                        <b>Novillos: </b><span id="novillosTuber">{{$tuberculosis->novillos}}</span>&nbsp;
+                        <b>Novillitos: </b><span id="novillitosTuber">{{$tuberculosis->novillitos}}</span>&nbsp;
+                        <b>Toros: </b><span id="torosTuber">{{$tuberculosis->toros}}</span><br>  
+                        <b>Total: </b><span class="totalTuberculosis">1</span>
                         
                     </p>
 
@@ -179,56 +191,65 @@
                     
                     <strong>Protocolo</strong>
 
-                    <p class="text-muted" id="protocoloTuberculosis" style="font-size: 1em;">27490</p>
+                    <p class="text-muted" id="protocoloTuberculosis" style="font-size: 1em;">{{$tuberculosis->protocolo}}</p>
 
                     <hr>
                     
                     <strong>Estado</strong>
 
-                    <p class="text-muted" id="estadoTuberculosis" style="font-size: 1em;">MuVe</p>
+                    <p class="text-muted" id="estadoTuberculosis" style="font-size: 1em;">{{$tuberculosis->estado}}</p>
 
                     <hr>
                     
-                                
-                    <strong>Estado SENASA</strong>
+                    @if($tuberculosis->estado == 'Libre' || $tuberculosis->estado == 'Recertificación')       
+                        <strong>Estado SENASA</strong>
 
-                    <p class="text-muted" id="estadoSenasaTuberculosis" style="font-size: 1em;">Enviado</p>
+                        <p class="text-muted" id="estadoSenasaTuberculosis" style="font-size: 1em;">{{$tuberculosis->estadoSenasa}}</p>
 
-                    <hr>
+                        <hr>
+                    @endif
 
-                    <div id="inputCertificadoBruce">
+                    <div id="inputCertificadoTuberculosis" @if(($tuberculosis->estado == 'Libre' || $tuberculosis->estado == 'Recertificación') && $tuberculosis->estadoSenasa == 'Enviado') style="display:block" @else style="display:none" @endif>
 
                         <strong>N° Certificado</strong>
 
-                        <div class="row">
+                        <form style="all:unset" action="{{route('brutur.asignarCertificado')}}" method="post" id="formCertTuberculosis">
+                            @csrf
 
-                            <div class="col-md-6">
+                            <div class="row">
 
-                                <div class="input-group mb-3">          
+                                <div class="col-md-6">
 
-                                    <input type="text" name="certificaTuberculosisisInput" id="certificadoTuberculosisInput" class="form-control">
-        
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-primary aprobarSenasa" databutton="Tuberculosis"><b>Aprobar</b></button>
+                                    <div class="input-group mb-3">          
+
+                                        <input type="text" name="certificado" id="certificadoTuberculosisInput" class="form-control" required>
+                                        
+                                        <input type="hidden" name="type" value="tuberculosis">
+                                        <input type="hidden" name="renspa" value="{{$dataEstablecimiento->renspa}}">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-outline-primary aprobarSenasa" data-type="Tuberculosis"><b>Aprobar</b></button>
+                                        </div>
+
+                                        
                                     </div>
-
+                                    
                                 </div>
 
                             </div>
-
-                        </div>
+                                
+                        </form>
 
                         <hr>
                     
                     </div>
 
-                    <div id="divEstadoBruce" style="display:none;">
+                    <div id="certificadoTuberculosis" @if($tuberculosis->certificado == '' || $tuberculosis->estadoSenasa != 'Aprobado') style="display:none;" @endif>
 
 
                         <strong>N° Certificado</strong>
 
-                        <p class="text-muted" id="certificadoTuberculosis" style="font-size: 1em;">
-                        </p>
+                        <p class="text-muted" id="certificadoTuberculosis" style="font-size: 1em;">{{$tuberculosis->certificado}}</p>
 
                         <hr>
                         
@@ -237,13 +258,13 @@
 
                     <strong>Fecha de Muestra</strong>
 
-                    <p class="text-muted" id="fechaEstadoTuberculosis" style="font-size: 1em;">14/03/2023</p>
+                    <p class="text-muted" id="fechaEstadoTuberculosis" style="font-size: 1em;">{{$tuberculosis->fechaEstado->format('d-m-Y')}}</p>
 
                     <hr>
 
                     <strong>Fecha de Carga</strong>
 
-                    <p class="text-muted" id="fechaCargaTuberculosis" style="font-size: 1em;">07/06/2023</p>
+                    <p class="text-muted" id="fechaCargaTuberculosis" style="font-size: 1em;">{{$tuberculosis->updated_at->format('d-m-Y')}}</p>
 
                     <hr>
                     
@@ -273,7 +294,7 @@
 
                 <div class="col-md-12">
 
-                    <button class="btn btn-primary btn-block">Actualizar Status</button>
+                    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalStatusSanitario">Actualizar Status</button>
 
                 </div>
 
@@ -285,11 +306,13 @@
 @endsection
 
 @include('modals/brutur/records')
+@include('modals/brutur/updateStatus')
 
 @section('js')
     
     <script>
 
+        // RECORDS
         $('.btnHistorial').on('click',function(){
 
             let type = $(this).attr('data-type')
@@ -323,7 +346,7 @@
     
                         if (result.value) {
                             console.log(id)
-                            $('.formEliminarRegistro').attr('action',`/brutur/updateStatus/${id}`)
+                            $('.formEliminarRegistro').attr('action',`/brutur/updateStatus/record/${id}`)
                             $('.formEliminarRegistro input[name="renspaRegistro"]').val(renspa)
 
                             $('.formEliminarRegistro').submit()
@@ -331,6 +354,75 @@
                         }
     
                     })
+        })
+
+        // COUNT ANIMALS
+        const sumAnimalsInputs = (type)=>{
+
+            let total = 0
+
+            $(`.animales${type}`).each((i,e)=>total += parseFloat(e.value))
+
+            return total
+
+        }
+
+        let totalBrucelosis = sumAnimalsInputs('Brucelosis')
+        
+        $('.totalBrucelosis').each((i,e)=>(e.localName == 'input') ? e.value = totalBrucelosis : e.innerText = totalBrucelosis)
+
+        let totalTuberculosis = sumAnimalsInputs('Tuberculosis')
+
+        console.log(totalTuberculosis)
+
+        $('.totalTuberculosis').each((i,e)=>(e.localName == 'input') ? e.value = totalTuberculosis : e.innerText = totalTuberculosis)
+        
+        $('.animalesBrucelosis').on('change',()=>$('#totalBrucelosis').val(sumAnimalsInputs('Brucelosis')))
+
+        $('.animalesTuberculosis').on('change',()=>$('#totalTuberculosis').val(sumAnimalsInputs('Tuberculosis')))
+
+        $('#estadoTuberculosis').on('change',(e)=>(e.target.value == 'En Saneamiento') ? $('#saneamientoInfoTuberculosis').show() : $('#saneamientoInfoTuberculosis').hide())
+
+
+        // APROBAR CERTIFICADO SENASA
+        $('.aprobarSenasa').on('click',function(e){
+
+            e.preventDefault()
+
+            let type = $(this).attr('data-type')
+
+            let certificado
+
+            if($(`#certificado${type}Input`).val() != ''){ 
+
+                certificado = $(`#certificado${type}Input`).val()
+
+            }else{
+
+                return Swal.fire(
+                    'El numero de certificado no puede estar vacio',
+                    '',
+                    'error'
+                )
+
+            } 
+
+            Swal.fire({
+                    title: 'Desea aprobar el Estado?',
+                    text: "Si no estas seguro, puedes cancerlar esta accion!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Si, Aprobar',
+            }).then((result) => {
+
+                if (result.value) {
+                    $(`#formCert${type}`).submit()
+                }
+
+            })
+
         })
 
     </script>
@@ -343,6 +435,50 @@
                 'Ha sido eliminado correctamente',
                 'success'
             )
+
+        </script>
+    @endif
+    
+    @if(session('certificado') == 'ok')
+        <script>
+
+            Swal.fire(
+                'Certificado asignado',
+                'Ha sido asignado correctamente',
+                'success'
+            )
+
+        </script>
+    @endif
+    
+    @if(session('update') == 'ok')
+        <script>
+
+            Swal.fire(
+                'Status Sanitario actualizado',
+                'Ha sido actualizado correctamente',
+                'success'
+            ).then(()=>{
+
+                Swal.fire({
+                        title: '¿Notificar a Vacunador?',
+                        text: "Si no estas seguro, puedes cancerlar esta accion!",
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonText: 'Notificar',
+                }).then((result) => {
+    
+                    if (result.value) {
+                        console.log('Enviar mail a veterinario')
+                    }
+    
+                })
+                
+            })
+
+
 
         </script>
     @endif

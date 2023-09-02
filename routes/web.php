@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BruturController;
 use GuzzleHttp\Middleware;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 
 
 // Route::view('/', 'welcome');
-Route::get('/', 'BruturController@index');
-Route::get('/home', 'BruturController@index')->name('home');
+Route::get('/', 'BruturController@alerts');
+Route::get('/home', 'BruturController@alerts')->name('home');
 
 Auth::routes();
 
@@ -37,11 +38,12 @@ Route::get('/brutur/notifieds','BruturController@notifieds')->name('brutur.notif
 Route::get('/brutur/pending','BruturController@pending')->name('brutur.pending');
 Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutur.informeSenasa');
 Route::post('/brutur/generalReport','BruturController@generalReport')->name('brutur.informeGeneral');
-Route::get('/brutur/updateStatus/{renspa}','BruturController@updateStatus')->name('brutur.actualizarStatus');
-Route::delete('/brutur/updateStatus/{renspa}','RecordsController@destroy');
+Route::delete('/brutur/updateStatus/record/{renspa}','RecordsController@destroy');
+
+Route::resource('brutur/updateStatus','BruturController');
+Route::post('/brutur/setCertificate','BruturController@setCertificate')->name('brutur.asignarCertificado');
 
 Route::resource('/aftosa/receptions','ReceptionsController');
-
 
 Route::get('/aftosa/distributions','DistributionsController@index')->name('distributions.index');
 Route::post('/aftosa/distributions','DistributionsController@store')->name('distributions.store');
@@ -59,6 +61,5 @@ Route::get('/aftosa/reports/{key}','ReportsController@reportPdf');
 Route::post('/aftosa/reports/schedule','ReportsController@schedule')->name('reports.cronograma');
 Route::post('/aftosa/reports/{key}','ReportsController@reportPdf');
 
-// Route::get('aftosa/acta/{renspa}','ActasController@show')->name('acta.show');
 Route::resource('aftosa/acta','ActasController');
 

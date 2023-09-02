@@ -77,15 +77,16 @@
 
             window.open(url, '_blank');
 
-
-            window.location = `{{ route('brutur.pending',['status'=>'enviado']) }}`;
+            setTimeout(() => {
+                window.location = `{{ route('brutur.pending',['status'=>'enviado']) }}`;
+            }, 500);
 
 
         }
 
         $('#btnEnviarSenasa').on('click',()=>{
 
-        enviarPendientes();
+            enviarPendientes();
 
         })    
     </script>

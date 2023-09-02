@@ -54,7 +54,7 @@
     @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/producerSituation')
     @include('modals/brutur/dateRangePicker')
-    @include('modals/brutur/updateStatus')
+    @include('modals/brutur/updateStatusRenspa')
     @include('modals/aftosa/acta')
 
 @stop

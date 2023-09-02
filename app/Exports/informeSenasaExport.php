@@ -13,16 +13,14 @@ class informeSenasaExport implements FromView
     public function view(): View
     {
         $pendientesBrucelosis = Brucelosi::with(['establecimiento','establecimiento.veterinarioInfo'])
-        ->where('estadoSenasa','Pendiente')
-        ->where('positivo',0)
-        ->whereNotIn('estado',['S/D','En Saneamiento','Saneado','DOES Total'])
+        ->where(['positivo'=>0,'estadoSenasa'=>'Pendiente'])
+        ->whereIn('brucelosis.estado',['DOES Total','MuVe'])
         ->get();
 
         $pendientesTuberculosis = Tuberculosi::with(['establecimiento','establecimiento.veterinarioInfo'])
-        ->where('estadoSenasa','Pendiente')
-        ->where('positivo',0)
-        ->whereNotIn('estado',['S/D','En Saneamiento','Saneado','DOES Total'])
-        ->get(['renspa','estado','fechaEstado']);
+        ->where(['positivo'=>0,'estadoSenasa'=>'Pendiente'])
+        ->whereIn('estado',['Libre','Recertificación'])
+        ->get();
 
         $pendientesBrucelosis = $pendientesBrucelosis->map(function ($registro) {
             $registro->campania = "Brucelosis";

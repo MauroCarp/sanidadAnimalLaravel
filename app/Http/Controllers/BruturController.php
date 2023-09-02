@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\informeSenasaExport;
 use App\Producer;
 use App\Record;
+use DateTime;
 
 class BruturController extends Controller
 {
@@ -23,9 +24,146 @@ class BruturController extends Controller
      */
     public function index()
     {
+
+    }
+
+    public function show($renspa){
+
+        $renspa = str_replace('-','/',$renspa);
+
+        $dataEstablecimiento = Producer::with(['tuberculosis','brucelosis','veterinarioInfo'])->where('renspa',$renspa)->first();
+
+        $registrosBrucelosis = Record::where(['campaign'=>'brucelosis','renspa'=>$renspa])
+        ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
+        ->orderby('created_at','desc')
+        ->get();
+
+        $registrosTuberculosis = Record::where(['campaign'=>'tuberculosis','renspa'=>$renspa])
+        ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
+        ->orderby('created_at','desc')
+        ->get();
+
+        $estados = array('brucelosis'=>array('DOES Total','DOES Muestreo','Tecnica PAL','MuVe','SAN','CSM','Control Interno','Remuestreo'),'tuberculosis'=>array('Libre','No Libre','Recertificación','En Saneamiento'));
+
+        return view('/brutur/updateStatus',['dataEstablecimiento'=>$dataEstablecimiento,
+                                            'registrosBrucelosis'=>$registrosBrucelosis,
+                                            'registrosTuberculosis'=>$registrosTuberculosis,
+                                            'estados'=>$estados]);
+
+    }
+
+    public function store(Request $request){
+                
+    }
+
+    public function update(Request $request,$renspa){
+        
+        $renspaUrl = $renspa;
+        $renspa = str_replace('-','/',$renspa);
+
+        $request->validate([
+            'fechaEstadoBrucelosis' => 'required',
+            'fechaEstadoTuberculosis' => 'required'
+        ]);
+
+        $brucelosis = Brucelosi::where('renspa',$renspa)->first();
+        $tuberculosis = Tuberculosi::where('renspa',$renspa)->first();
+
+        $changes = BruturController::hasChanges($request->toArray(),$brucelosis->toArray(),$tuberculosis->toArray());
+
+        $registroTuberculosis = ['campaign'=>'Tuberculosis',
+                                'renspa'=>$renspa,
+                                'protocolo'=>$request->protocoloTuberculosis,
+                                'estado'=>$request->estadoTuberculosis,
+                                'fechaEstado'=>$request->fechaEstadoTuberculosis,
+                                'saneamiento'=>$request->saneamientoTuberculosis,
+                                'positivo'=>$request->positivoTuberculosis,
+                                'negativo'=>$request->negativoTuberculosis,
+                                'sospechoso'=>$request->sospechosoTuberculosis
+        ];
+
+        $registroBrucelosis = ['campaign'=>'Brucelosis',
+                                'renspa'=>$renspa,
+                                'protocolo'=>$request->protocoloBrucelosis,
+                                'estado'=>$request->estadoBrucelosis,
+                                'fechaEstado'=>$request->fechaEstadoBrucelosis,
+                                'saneamiento'=>$request->saneamientoBrucelosis,
+                                'positivo'=>$request->positivoBrucelosis,
+                                'negativo'=>$request->negativoBrucelosis,
+                                'sospechoso'=>$request->sospechosoBrucelosis
+        ];
+
+        if($changes['brucelosis'] && $changes['tuberculosis']){
+        Record::create($registroTuberculosis);
+        Record::create($registroBrucelosis);
+        }else if($changes['brucelosis']){
+        Record::create($registroBrucelosis);
+        }else if($changes['tuberculosis']){
+        Record::create($registroTuberculosis);
+        }
+
+        $brucelosis->vacas = $request->vacasBrucelosis;
+        $brucelosis->vaquillonas = $request->vaquillonasBrucelosis;
+        $brucelosis->toros = $request->torosBrucelosis;
+        $brucelosis->protocolo = $request->protocoloBrucelosis;
+
+        $brucelosis->saneamiento = $request->saneamientoBrucelosis;
+        $brucelosis->positivo = $request->positivoBrucelosis;
+        $brucelosis->negativo = $request->negativoBrucelosis;
+        $brucelosis->sospechoso = $request->sospechosoBrucelosis;
+
+        if($brucelosis->estado == 'DOES Total' || $brucelosis->estado == 'MuVe'){
+
+            if($brucelosis->estado != $request->estadoBrucelosis) $brucelosis->estadoSenasa = 'Pendiente';
+
+            $brucelosis->saneamiento = 0;
+            $brucelosis->positivo = 0;
+            $brucelosis->negativo = 0;
+            $brucelosis->sospechoso = 0;
+
+        }
+
+        $brucelosis->estado = $request->estadoBrucelosis;
+        $brucelosis->fechaEstado = $request->fechaEstadoBrucelosis;
+
+        $brucelosis->save();
+
+        $tuberculosis->vacas = $request->vacasTuberculosis;
+        $tuberculosis->vaquillonas = $request->vaquillonasTuberculosis;
+        $tuberculosis->terneros = $request->ternerosTuberculosis;
+        $tuberculosis->terneras = $request->ternerasTuberculosis;
+        $tuberculosis->novillos = $request->novillosTuberculosis;
+        $tuberculosis->novillitos = $request->novillitosTuberculosis;
+        $tuberculosis->toros = $request->torosTuberculosis;
+        $tuberculosis->protocolo = $request->protocoloTuberculosis;
+        $tuberculosis->saneamiento = $request->saneamientoTuberculosis;
+        $tuberculosis->positivo = $request->positivoTuberculosis;
+        $tuberculosis->negativo = $request->negativoTuberculosis;
+        $tuberculosis->sospechoso = $request->sospechosoTuberculosis;
+
+        if($tuberculosis->estado == 'Libre' || $tuberculosis->estado == 'Recertificación'){
+
+            if($tuberculosis->estado != $request->estadoTuberculosis) $tuberculosis->estadoSenasa = 'Pendiente';
+
+            $tuberculosis->saneamiento = 0;
+            $tuberculosis->positivo = 0;
+            $tuberculosis->negativo = 0;
+            $tuberculosis->sospechoso = 0;
+
+        }
+
+        $tuberculosis->estado = $request->estadoTuberculosis;
+        $tuberculosis->fechaEstado = $request->fechaEstadoTuberculosis;
+        $tuberculosis->save();
+            
+        return redirect("/brutur/updateStatus/$renspaUrl")->with(['update'=>'ok']);
+
+    }
+
+    public function alerts()
+    {
         $brucelosisInfo = Brucelosi::join('producers','producers.renspa','=','brucelosis.renspa')
         ->whereIn('brucelosis.estado',['DOES Total','MuVe','Libre','RecertificaciÃ³n','Recertificacion','Recertificación'])
-        ->where('notificado',0)
         ->where('notificado',0)
         ->get(['brucelosis.renspa',
                'producers.establecimiento',
@@ -37,6 +175,7 @@ class BruturController extends Controller
 
         $tuberculosisInfo = Tuberculosi::join('producers','producers.renspa','=','tuberculosis.renspa')
         ->whereIn('tuberculosis.estado',['Libre','RecertificaciÃ³n','Recertificacion','Recertificación'])
+        ->where('notificado',0)
         ->get(['tuberculosis.renspa',
                'producers.establecimiento',
                'producers.propietario',
@@ -112,7 +251,7 @@ class BruturController extends Controller
         ->get();
         $pendientesTuberculosis = Tuberculosi::with('establecimiento')
         ->where('estadoSenasa','Pendiente')
-        ->whereNotIn('estado',['S/D','En Saneamiento','Saneado'])
+        ->whereNotIn('estado',['S/D','En Saneamiento','Saneado','No Libre'])
         ->get();
 
         $pendientesBrucelosis = $pendientesBrucelosis->map(function ($registro) {
@@ -135,11 +274,13 @@ class BruturController extends Controller
     public function exportSenasa(){
 
         $today = Carbon::now()->format('d-m-Y');
+        
+        $excel = Excel::download(new informeSenasaExport, "Enviados Senasa ($today).xls");
 
         DB::update('UPDATE brucelosis SET estadoSenasa = "Enviado" WHERE estadoSenasa = "Pendiente"');
         DB::update('UPDATE tuberculosis SET estadoSenasa = "Enviado" WHERE estadoSenasa = "Pendiente"');
         
-        return Excel::download(new informeSenasaExport, "Enviados Senasa ($today).xls");
+        return $excel;
     }
 
     public function generalReport(Request $request){
@@ -290,23 +431,93 @@ class BruturController extends Controller
 
     }
 
-    public function updateStatus($renspa){
+    public function setCertificate(Request $request){
 
-        $renspa = str_replace('-','/',$renspa);
+        if($request->type == 'brucelosis'){
+            $registro = Brucelosi::where('renspa',$request->renspa)->first();
+        } else {
+            $registro = Tuberculosi::where('renspa',$request->renspa)->first();
+        }
 
-        $dataEstablecimiento = Producer::with(['tuberculosis','brucelosis','veterinarioInfo'])->where('renspa',$renspa)->first();
+        $registro->certificado = $request->certificado;
+        $registro->estadoSenasa = 'Aprobado';
 
-        $registrosBrucelosis = Record::where(['campaign'=>'brucelosis','renspa'=>$renspa])
-        ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
-        ->orderby('fechaCarga','asc')
-        ->get();
+        $registro->save();
+        
+        $renspa = str_replace('/','-',$request->renspa);
 
-        $registrosTuberculosis = Record::where(['campaign'=>'tuberculosis','renspa'=>$renspa])
-        ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
-        ->orderby('fechaCarga','asc')
-        ->get();
-
-        return view('/brutur/updateStatus',['dataEstablecimiento'=>$dataEstablecimiento,'registrosBrucelosis'=>$registrosBrucelosis,'registrosTuberculosis'=>$registrosTuberculosis]);
+        return redirect("/brutur/updateStatus/$renspa")->with('certificado','ok');
 
     }
+
+    public function hasChanges($request,$brucelosis,$tuberculosis){
+
+        $changes = array('brucelosis'=>false,'tuberculosis'=>false);
+
+        $ignore = ['id',
+                   'renspa',
+                   'fechaEnviado',
+                   'fechaCarga',
+                   'certificado',
+                   'notificado',
+                   'fechaNotificado',
+                   'estadoSenasa',
+                   'created_at',
+                   'updated_at'
+                ];
+                
+        foreach ($brucelosis as $key => $value) {
+
+
+            if(!in_array($key,$ignore)){
+                
+                if($key == 'fechaEstado') $value = date('Y-m-d',strtotime($value));
+                
+                if($value != $request[$key . "Brucelosis"]) $changes['brucelosis'] = true;    
+
+            }
+
+        }
+
+        foreach ($tuberculosis as $key => $value) {
+
+
+            if(!in_array($key,$ignore)){
+                
+                if($key == 'fechaEstado') $value = date('Y-m-d',strtotime($value));
+                
+                if($value != $request[$key . "Tuberculosis"]) $changes['tuberculosis'] = true;    
+
+            }
+
+        }
+
+        return $changes;
+
+    }
+
+    // public function updateStatus($renspa){
+
+    //     $renspa = str_replace('-','/',$renspa);
+
+    //     $dataEstablecimiento = Producer::with(['tuberculosis','brucelosis','veterinarioInfo'])->where('renspa',$renspa)->first();
+
+    //     $registrosBrucelosis = Record::where(['campaign'=>'brucelosis','renspa'=>$renspa])
+    //     ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
+    //     ->orderby('fechaCarga','asc')
+    //     ->get();
+
+    //     $registrosTuberculosis = Record::where(['campaign'=>'tuberculosis','renspa'=>$renspa])
+    //     ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
+    //     ->orderby('fechaCarga','asc')
+    //     ->get();
+
+    //     $estados = array('brucelosis'=>array('DOES Total','DOES Muestreo','Tecnica PAL','MuVe','SAN','CSM','Control Interno','Remuestreo'),'tuberculosis'=>array('Libre','No Libre','Recertificacíon','En Saneamiento'));
+
+    //     return view('/brutur/updateStatus',['dataEstablecimiento'=>$dataEstablecimiento,
+    //                                         'registrosBrucelosis'=>$registrosBrucelosis,
+    //                                         'registrosTuberculosis'=>$registrosTuberculosis,
+    //                                         'estados'=>$estados]);
+
+    // }
 }

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Productores')
+@section('title', 'Alertas Bru-Tur')
 
 
 @section('content')
