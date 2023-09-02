@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Record;
+use App\Producer;
 use Carbon\Carbon;
 use App\Brucelosi;
 use App\Tuberculosi;
+use App\Mail\Notified;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\informeSenasaExport;
-use App\Producer;
-use App\Record;
-use DateTime;
+use Illuminate\Support\Facades\Mail;
 
 class BruturController extends Controller
 {
@@ -94,12 +95,18 @@ class BruturController extends Controller
         ];
 
         if($changes['brucelosis'] && $changes['tuberculosis']){
-        Record::create($registroTuberculosis);
-        Record::create($registroBrucelosis);
+            Record::create($registroTuberculosis);
+            Record::create($registroBrucelosis);
+            $type = 'brutur';
+            $estado = $request->estadoBrucelosis . '-' . $request->estadoTuberculosis;
         }else if($changes['brucelosis']){
-        Record::create($registroBrucelosis);
+            Record::create($registroBrucelosis);
+            $type = 'brucelosis';
+            $estado = $request->estadoBrucelosis;
         }else if($changes['tuberculosis']){
-        Record::create($registroTuberculosis);
+            Record::create($registroTuberculosis);
+            $type = 'tuberculosis';
+            $estado = $request->estadoTuberculosis;
         }
 
         $brucelosis->vacas = $request->vacasBrucelosis;
@@ -156,7 +163,7 @@ class BruturController extends Controller
         $tuberculosis->fechaEstado = $request->fechaEstadoTuberculosis;
         $tuberculosis->save();
             
-        return redirect("/brutur/updateStatus/$renspaUrl")->with(['update'=>'ok']);
+        return redirect("/brutur/updateStatus/$renspaUrl")->with(['update'=>'ok','type'=>$type]);
 
     }
 
@@ -496,28 +503,83 @@ class BruturController extends Controller
 
     }
 
-    // public function updateStatus($renspa){
+    public function notify(Request $request){
 
-    //     $renspa = str_replace('-','/',$renspa);
+        $producerData = Producer::with(['brucelosis','tuberculosis','veterinarioInfo'])->where('renspa',$request->renspa)->first();
 
-    //     $dataEstablecimiento = Producer::with(['tuberculosis','brucelosis','veterinarioInfo'])->where('renspa',$renspa)->first();
+        $producerData = $producerData->toArray();
 
-    //     $registrosBrucelosis = Record::where(['campaign'=>'brucelosis','renspa'=>$renspa])
-    //     ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
-    //     ->orderby('fechaCarga','asc')
-    //     ->get();
+        if($producerData['veterinario_info']['email'] != ''){
 
-    //     $registrosTuberculosis = Record::where(['campaign'=>'tuberculosis','renspa'=>$renspa])
-    //     ->selectRaw("id,fechaEstado,protocolo,estado,(positivo + negativo + sospechoso) as total, saneamiento, positivo,negativo,sospechoso")
-    //     ->orderby('fechaCarga','asc')
-    //     ->get();
+            $email = $producerData['veterinario_info']['email'];
 
-    //     $estados = array('brucelosis'=>array('DOES Total','DOES Muestreo','Tecnica PAL','MuVe','SAN','CSM','Control Interno','Remuestreo'),'tuberculosis'=>array('Libre','No Libre','Recertificacíon','En Saneamiento'));
+        } else {
 
-    //     return view('/brutur/updateStatus',['dataEstablecimiento'=>$dataEstablecimiento,
-    //                                         'registrosBrucelosis'=>$registrosBrucelosis,
-    //                                         'registrosTuberculosis'=>$registrosTuberculosis,
-    //                                         'estados'=>$estados]);
+             return response(json_encode(array('error'=>'emailNotFount')));
+        } 
 
-    // }
+        $dataEmail = array('Brucelosis'=>'','Tuberculosis'=>'');
+
+        if($request->type == 'brucelosis'){
+
+            $dataEmail['Brucelosis'] = BruturController::getEmailData($request->type,$producerData,'status');
+
+        } else if($request->type == 'tuberculosis'){
+
+            $dataEmail['Tuberculosis'] = BruturController::getEmailData($request->type,$producerData,'status');
+            
+        }else {
+
+            $dataEmail['Brucelosis'] = BruturController::getEmailData('brucelosis',$producerData,'status');
+            $dataEmail['Tuberculosis'] = BruturController::getEmailData('tuberculosis',$producerData,'status');
+
+        }
+
+        Mail::to($email)->queue(new Notified($dataEmail));
+
+        return response('ok',200);
+    }
+
+    public function getEmailData($type,$producerData,$typeEmail){
+
+        $txt_message = "Le comunicamos al veterinario " . $producerData['veterinario_info']['nombre'] . " que el establecimiento " . $producerData['establecimiento'] . ", de " . $producerData['propietario'] . ",";
+
+        if($type == 'brucelosis'){
+
+            if ($typeEmail == 'status'){
+                
+                if ($producerData['brucelosis']['estado'] == "MuVe" || $producerData['brucelosis']['estado'] == "DOES Total" || $producerData['brucelosis']['estado'] == "DOES Muestreo")
+                    $txt_message .= "su status sanitario es " . $producerData['brucelosis']['estado'];
+                                
+                if ($producerData['brucelosis']['estado'] == "Tecnica PAL" || $producerData['brucelosis']['estado'] == "CSM" || $producerData['brucelosis']['estado'] == "SAN")
+                    $txt_message .= " pidio " . $producerData['brucelosis']['estado'];
+                                   
+                if ($producerData['brucelosis']['estado'] == "Control Interno" || $producerData['brucelosis']['estado'] == "Remuestreo")
+                    $txt_message .= " hizo un " . $producerData['brucelosis']['estado'];
+
+            }
+
+            $dataEmail['Brucelosis'] = $txt_message;
+
+        } else {
+             
+            if ($typeEmail == 'status'){
+
+                if ($producerData['tuberculosis']['estado'] == "En Saneamiento")
+                    $txt_message .= " esta en Saneamiento. Dentro de los 90 - 120 d&iacute;as, deber&aacute; realizar un nuevo an&aacute;lisis para estar en condici&oacute;n de libre.";
+               
+                if ($producerData['tuberculosis']['estado'] == "Libre" || $producerData['tuberculosis']['estado'] == "Recertificacion" || $producerData['tuberculosis']['estado'] == "Recertificación")
+                    $txt_message .= " esta Libre de Tuberculosis.";
+               
+                if ($producerData['tuberculosis']['estado'] == "No Libre")
+                    $txt_message .= " su status sanitario es " . $producerData['tuberculosis']['estado'];
+
+            }
+
+        }
+
+        return $txt_message;
+    }
+
 }
+

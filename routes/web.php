@@ -39,6 +39,7 @@ Route::get('/brutur/pending','BruturController@pending')->name('brutur.pending')
 Route::get('/brutur/informeSenasa','BruturController@exportSenasa')->name('brutur.informeSenasa');
 Route::post('/brutur/generalReport','BruturController@generalReport')->name('brutur.informeGeneral');
 Route::delete('/brutur/updateStatus/record/{renspa}','RecordsController@destroy');
+Route::post('/brutur/notify','BruturController@notify')->name('brutur.notificar');
 
 Route::resource('brutur/updateStatus','BruturController');
 Route::post('/brutur/setCertificate','BruturController@setCertificate')->name('brutur.asignarCertificado');

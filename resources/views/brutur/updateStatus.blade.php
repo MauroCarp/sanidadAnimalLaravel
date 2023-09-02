@@ -373,8 +373,6 @@ $tuberculosis = $dataEstablecimiento->tuberculosis;
 
         let totalTuberculosis = sumAnimalsInputs('Tuberculosis')
 
-        console.log(totalTuberculosis)
-
         $('.totalTuberculosis').each((i,e)=>(e.localName == 'input') ? e.value = totalTuberculosis : e.innerText = totalTuberculosis)
         
         $('.animalesBrucelosis').on('change',()=>$('#totalBrucelosis').val(sumAnimalsInputs('Brucelosis')))
@@ -471,7 +469,38 @@ $tuberculosis = $dataEstablecimiento->tuberculosis;
                 }).then((result) => {
     
                     if (result.value) {
-                        console.log('Enviar mail a veterinario')
+
+                        let type = "{{session('type')}}"
+
+                        let token = $('.formStatusSanitario input[name="_token"]').val()
+
+                        let renspa = $('#renspaProductor').text()
+
+                        $.ajax({
+                            method:'POST',
+                            url:"{{route('brutur.notificar')}}",
+                            data:`_token=${token}&renspa=${renspa}&type=${type}&email=status`,
+                            success:function(response){
+
+                                if(response == 'ok'){
+                                    Swal.fire(
+                                        'Notificación enviada',
+                                        'Se ha enviado correctamente',
+                                        'success'
+                                    )
+                                } else {
+
+                                    Swal.fire(
+                                        'El veterinario no tiene un email asignado',
+                                        'La notificación no ha podido ser enviada',
+                                        'error'
+                                    )
+
+                                }
+
+                            }
+
+                        })
                     }
     
                 })
