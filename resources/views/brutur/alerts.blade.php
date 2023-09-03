@@ -58,9 +58,7 @@
                                 <button 
                                 class='btn btn-secondary btnNotificar' 
                                 data-renspa='{{$alert->renspa}}' 
-                                data-campaign='{{$alert->campaign}}' 
-                                data-alert='{{$key_tipo}}'
-                                data-estado='{{$alert->estado}}'><i class='fa fa-bell'></i></button>
+                                data-type='{{ strtolower($alert->campaign) }}'><i class='fa fa-bell'></i></button>
                                 
                             </td>
                         </tr>
@@ -77,6 +75,53 @@
 @endsection
 
 @section('js')
+
+
+    <script>
+
+        $('.btnNotificar').on('click',function(){
+            let token = $('input[name="_token"]').val()
+            let renspa = $(this).attr('data-renspa');
+            let type = $(this).attr('data-type');
+            let data = `_token=${token}&renspa=${renspa}&type=${type}&emailType=alert`
+            let btn = $(this)
+
+            $.ajax({
+                method:'POST',
+                url:'{{route("brutur.notificar")}}',
+                data,
+                beforeSend:function(){
+                    btn.find('i').removeClass('fa-bell')
+                    btn.find('i').addClass('fa-sync-alt')
+                    btn.find('i').addClass('rotating')
+                },
+                success:function(response){
+
+                    if(response == 'ok'){
+
+                        Swal.fire({
+                            toast:true,
+                            type: 'success',
+                            title: 'Alerta enviada',
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            onOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                        btn.parent().parent().hide(1000)
+                        
+                    }
+                }
+
+            })
+
+        })
+        
+    </script>
 
     @if(session('actasProductor') == 'error')
         
@@ -106,4 +151,20 @@
 
     @endif
     
+@endsection
+
+@section('css')
+
+    <style>
+        .rotating {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+
 @endsection

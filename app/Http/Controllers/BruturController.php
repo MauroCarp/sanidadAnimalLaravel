@@ -17,6 +17,15 @@ use Illuminate\Support\Facades\Mail;
 
 class BruturController extends Controller
 {
+
+    // AGREGAR CONSTRUCTOR Y MIDDLEWARE DE AUTENTICACION A DEMAS CONTROLADORES
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+
     /**
      * Handle the incoming request.
      *
@@ -203,7 +212,7 @@ class BruturController extends Controller
             $registro->campaign = 'Brucelosis';
             $registro->fechaVencimiento = $fechaVencimiento->format('d-m-Y');
 
-            if($fechaVencimiento > $today) $alerts['vencidos'][] = $registro;
+            if($today > $fechaVencimiento) $alerts['vencidos'][] = $registro;
 
             if($today < $fechaVencimiento AND $today > $fechaMargen){
                 $alerts['porVencer'][] = $registro;
@@ -522,16 +531,20 @@ class BruturController extends Controller
 
         if($request->type == 'brucelosis'){
 
-            $dataEmail['Brucelosis'] = BruturController::getEmailData($request->type,$producerData,'status');
+            $dataEmail['Brucelosis'] = BruturController::getEmailData($request->type,$producerData,$request->emailType);
+            DB::update("UPDATE brucelosis SET notificado = 1 WHERE renspa = '$request->renspa'");
 
         } else if($request->type == 'tuberculosis'){
 
-            $dataEmail['Tuberculosis'] = BruturController::getEmailData($request->type,$producerData,'status');
+            $dataEmail['Tuberculosis'] = BruturController::getEmailData($request->type,$producerData,$request->emailType);
+            DB::update("UPDATE tuberculosis SET notificado = 1 WHERE renspa = '$request->renspa'");
             
         }else {
 
             $dataEmail['Brucelosis'] = BruturController::getEmailData('brucelosis',$producerData,'status');
             $dataEmail['Tuberculosis'] = BruturController::getEmailData('tuberculosis',$producerData,'status');
+            DB::update("UPDATE brucelosis SET notificado = 1 WHERE renspa = '$request->renspa'");
+            DB::update("UPDATE tuberculosis SET notificado = 1 WHERE renspa = '$request->renspa'");
 
         }
 
@@ -559,7 +572,21 @@ class BruturController extends Controller
 
             }
 
-            $dataEmail['Brucelosis'] = $txt_message;
+            if($typeEmail == 'alert')
+
+                $today = Carbon::today();
+                $fechaVencimiento =  Carbon::parse($producerData['brucelosis']['fechaEstado'])->addDays(365);
+                $fechaMargen =  Carbon::parse($producerData['brucelosis']['fechaEstado'])->addMonths(11);
+
+                if($today > $fechaVencimiento) $txt_message .= " esta VENCIDO el DOES.";
+
+                if($today < $fechaVencimiento AND $today > $fechaMargen){
+                    $txt_message .=  "esta por vencer el DOES.";
+                }
+                
+                $txt_message .= " Por favor comunicarse con el propietario para dar aviso.";
+
+            
 
         } else {
              
@@ -574,6 +601,22 @@ class BruturController extends Controller
                 if ($producerData['tuberculosis']['estado'] == "No Libre")
                     $txt_message .= " su status sanitario es " . $producerData['tuberculosis']['estado'];
 
+            }
+
+            if($typeEmail == 'alert'){
+
+                $today = Carbon::today();
+
+                $fechaVencimiento =  Carbon::parse($producerData['tuberculosis']['fechaEstado'])->addDays(365);
+                $fechaMargen =  Carbon::parse($producerData['tuberculosis']['fechaEstado'])->addMonths(11);
+
+                if($today > $fechaVencimiento) $txt_message .= " esta VENCIDO en su condici&oacute;n de LIBRE.";
+
+                if($today < $fechaVencimiento AND $today > $fechaMargen){
+                    $txt_message .=  "esta por vencer su condici&oacute;n de LIBRE.";
+                }
+                
+                $txt_message .= " Por favor comunicarse con el propietario para dar aviso.";
             }
 
         }

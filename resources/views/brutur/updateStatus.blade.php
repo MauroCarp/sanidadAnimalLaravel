@@ -479,7 +479,7 @@ $tuberculosis = $dataEstablecimiento->tuberculosis;
                         $.ajax({
                             method:'POST',
                             url:"{{route('brutur.notificar')}}",
-                            data:`_token=${token}&renspa=${renspa}&type=${type}&email=status`,
+                            data:`_token=${token}&renspa=${renspa}&type=${type}&emailType=status`,
                             success:function(response){
 
                                 if(response == 'ok'){
