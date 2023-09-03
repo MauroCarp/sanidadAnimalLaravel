@@ -51,7 +51,7 @@
 
                                         </div>
 
-                                        <input type="text" class="form-control form-control-lg" name="renspa" id="renspa" required>
+                                        <input type="text" class="form-control form-control-lg" name="renspa" id="renspa" readonly required>
 
                                     </div>
 

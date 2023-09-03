@@ -106,15 +106,19 @@ class BruturController extends Controller
             Record::create($registroTuberculosis);
             Record::create($registroBrucelosis);
             $type = 'brutur';
-            $estado = $request->estadoBrucelosis . '-' . $request->estadoTuberculosis;
+            $brucelosis->notificado = 0;
+            $tuberculosis->notificado = 0;
+
         }else if($changes['brucelosis']){
             Record::create($registroBrucelosis);
             $type = 'brucelosis';
-            $estado = $request->estadoBrucelosis;
+            $brucelosis->notificado = 0;
+
         }else if($changes['tuberculosis']){
             Record::create($registroTuberculosis);
             $type = 'tuberculosis';
-            $estado = $request->estadoTuberculosis;
+            $tuberculosis->notificado = 0;
+
         }
 
         $brucelosis->vacas = $request->vacasBrucelosis;
@@ -169,6 +173,7 @@ class BruturController extends Controller
 
         $tuberculosis->estado = $request->estadoTuberculosis;
         $tuberculosis->fechaEstado = $request->fechaEstadoTuberculosis;
+
         $tuberculosis->save();
             
         return redirect("/brutur/updateStatus/$renspaUrl")->with(['update'=>'ok','type'=>$type]);
@@ -573,19 +578,25 @@ class BruturController extends Controller
 
             }
 
-            if($typeEmail == 'alert')
+            if($typeEmail == 'alert'){
 
                 $today = Carbon::today();
+    
                 $fechaVencimiento =  Carbon::parse($producerData['brucelosis']['fechaEstado'])->addDays(365);
                 $fechaMargen =  Carbon::parse($producerData['brucelosis']['fechaEstado'])->addMonths(11);
-
-                if($today > $fechaVencimiento) $txt_message .= " esta VENCIDO el DOES.";
-
+    
+                if($today > $fechaVencimiento){
+                    $txt_message .= " esta VENCIDO el DOES.";
+                } 
+    
                 if($today < $fechaVencimiento AND $today > $fechaMargen){
-                    $txt_message .=  "esta por vencer el DOES.";
+                    $txt_message .=  " esta por vencer el DOES.";
                 }
                 
                 $txt_message .= " Por favor comunicarse con el propietario para dar aviso.";
+
+            }
+
 
             
 
