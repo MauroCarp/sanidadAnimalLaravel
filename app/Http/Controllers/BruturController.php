@@ -529,22 +529,24 @@ class BruturController extends Controller
 
         $dataEmail = array('Brucelosis'=>'','Tuberculosis'=>'');
 
+        $today = date('Y-m-d');
+
         if($request->type == 'brucelosis'){
 
             $dataEmail['Brucelosis'] = BruturController::getEmailData($request->type,$producerData,$request->emailType);
-            DB::update("UPDATE brucelosis SET notificado = 1 WHERE renspa = '$request->renspa'");
+            DB::update("UPDATE brucelosis SET notificado = 1, fechaNotificado = '$today' WHERE renspa = '$request->renspa'");
 
         } else if($request->type == 'tuberculosis'){
 
             $dataEmail['Tuberculosis'] = BruturController::getEmailData($request->type,$producerData,$request->emailType);
-            DB::update("UPDATE tuberculosis SET notificado = 1 WHERE renspa = '$request->renspa'");
+            DB::update("UPDATE tuberculosis SET notificado = 1, fechaNotificado = '$today' WHERE renspa = '$request->renspa'");
             
         }else {
 
             $dataEmail['Brucelosis'] = BruturController::getEmailData('brucelosis',$producerData,'status');
             $dataEmail['Tuberculosis'] = BruturController::getEmailData('tuberculosis',$producerData,'status');
-            DB::update("UPDATE brucelosis SET notificado = 1 WHERE renspa = '$request->renspa'");
-            DB::update("UPDATE tuberculosis SET notificado = 1 WHERE renspa = '$request->renspa'");
+            DB::update("UPDATE brucelosis SET notificado = 1, fechaNotificado = '$today' WHERE renspa = '$request->renspa'");
+            DB::update("UPDATE tuberculosis SET notificado = 1, fechaNotificado = '$today' WHERE renspa = '$request->renspa'");
 
         }
 
