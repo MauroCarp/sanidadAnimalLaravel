@@ -16,7 +16,7 @@ class RecordsController extends Controller
      */
     public function destroy(Request $request,$id)
     {
-        
+        return $id;
         $renspa = $request->renspaRegistro;
 
         $record = Record::find($id);
@@ -24,6 +24,18 @@ class RecordsController extends Controller
         $record->delete();
 
         return redirect("/brutur/updateStatus/$renspa")->with('eliminarRegistro','ok'); 
+    
+    }
+
+    public function deleteRecord(Request $request,$id)
+    {
+        $renspa = $request->renspa;
+
+        $record = Record::find($id);
+
+        $record->delete();
+
+        return response('ok'); 
     
     }
     

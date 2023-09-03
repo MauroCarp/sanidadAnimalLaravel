@@ -335,8 +335,13 @@ $tuberculosis = $dataEstablecimiento->tuberculosis;
 
             let renspa = $('#renspaProductor').text().replace('/','-')
 
+            let token = $('input[name="_token"]').val()
+
+            let btn = $(this)
+
             Swal.fire({
                     title: 'Eliminar Registro?',
+                    type:'question',
                     text: "Si no estas seguro, puedes cancerlar esta accion!",
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -345,11 +350,59 @@ $tuberculosis = $dataEstablecimiento->tuberculosis;
                     }).then((result) => {
     
                         if (result.value) {
-                            console.log(id)
-                            $('.formEliminarRegistro').attr('action',`/brutur/updateStatus/record/${id}`)
-                            $('.formEliminarRegistro input[name="renspaRegistro"]').val(renspa)
 
-                            $('.formEliminarRegistro').submit()
+                            $.ajaxSetup({
+                                headers:{
+                                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                                }
+                            })
+
+                            $.ajax({
+                                type:'DELETE',
+                                url:`/brutur/record/${id}`,
+                                data:{
+                                    _token:token,
+                                    renspa
+                                },
+                                success:function(response){
+
+                                    if(response == 'ok'){
+
+                                        Swal.fire({
+                                            toast:true,
+                                            type: 'success',
+                                            title: 'Registro Eliminado',
+                                            position: 'top-end',
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            onOpen: (toast) => {
+                                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                            }
+                                        })
+                                    
+                                        btn.parent().parent().hide(1000)
+
+                                    } else {
+
+                                        Swal.fire({
+                                            toast:true,
+                                            type: 'error',
+                                            title: 'No se ha podido eliminar el registro',
+                                            position: 'top-end',
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            onOpen: (toast) => {
+                                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                            }
+                                        })
+
+                                    }
+
+                                }
+
+                            })
 
                         }
     
@@ -422,6 +475,7 @@ $tuberculosis = $dataEstablecimiento->tuberculosis;
             })
 
         })
+
 
     </script>
     

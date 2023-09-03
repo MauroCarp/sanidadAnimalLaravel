@@ -108,9 +108,9 @@
 
 </div>
 
-<form class="formEliminarRegistro" action="" method="POST">
+{{-- <!-- <form class="formEliminarRegistro" action="" method="POST">
 
     @csrf
     @method('DELETE')
     <input type="hidden" name="renspaRegistro">
-</form> 
+</form>  --> --}}
