@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <table align="center" class="table table-striped" style="width:400px">
+    <table align="center" class="table-sm table-striped" style="width:400px">
 
         <thead>
             <th>Sistema Productivo</th>

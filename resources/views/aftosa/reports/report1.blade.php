@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <table align="center" class="table table-striped" style="width:400px">
+    <table align="center" class="table-sm table-striped" style="width:400px">
 
         <tr>
             <td colspan="2"><center><small><b>(Incluyendo establecimientos de distintos Distritos)</b></small></center></td>
