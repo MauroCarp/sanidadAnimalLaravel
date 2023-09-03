@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 class RecordsController extends Controller
 {
 
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Remove the specified resource from storage.
      *

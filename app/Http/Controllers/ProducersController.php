@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class ProducersController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *

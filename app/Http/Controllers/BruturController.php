@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Mail;
 class BruturController extends Controller
 {
 
-    // AGREGAR CONSTRUCTOR Y MIDDLEWARE DE AUTENTICACION A DEMAS CONTROLADORES
     function __construct()
     {
         $this->middleware('auth');
