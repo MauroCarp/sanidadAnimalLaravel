@@ -139,7 +139,7 @@ class AftosaController extends Controller
         $field = $request->validate([
             'renspa'=>'required|size:17'
         ]);
-
+        
         $campaign = $_COOKIE['campaign'];
 
         $datosEstablecimiento = Producer::with('distrito')
@@ -147,6 +147,10 @@ class AftosaController extends Controller
         ->join('actas','producers.renspa','=','actas.renspa')
         ->where(['actas.campaign'=>$campaign,'producers.renspa'=>$request->renspa])
         ->first();
+
+        if(is_null($datosEstablecimiento)){
+            return redirect()->back()->with('error','noData');
+        }
 
         $today = date('d-m-Y');
 

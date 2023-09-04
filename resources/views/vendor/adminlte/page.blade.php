@@ -199,6 +199,19 @@
 
         </script>
     @endif
+
+    @if(session('error') == 'noData')
+        <script>
+
+            Swal.fire(
+            'RENSPA no encontrado',
+            'El RENSPA ingresado no corresponde a ningun productor, o no tiene actas asociadas',
+            'error'
+            )
+            
+
+        </script>
+    @endif
 @stop
 
 @section('css')
