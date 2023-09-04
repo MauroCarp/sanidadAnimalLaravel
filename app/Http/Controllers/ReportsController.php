@@ -101,13 +101,13 @@ class ReportsController extends Controller
     }
 
 
-    public function sendSchedule($matricula){
+    public function sendSchedule(Request $request){
 
         $campaign = $_COOKIE['campaign'];
 
         $today = date('d-m-Y');
 
-        $data = ReportsController::getReport15($campaign,$matricula);
+        $data = ReportsController::getReport15($campaign,$request->matricula);
 
         $data['today'] = $today; 
 
@@ -123,6 +123,7 @@ class ReportsController extends Controller
 
         Mail::to($data['vet']->email)->queue(new Schedule($dataEmail));
 
+        return response('ok');
     }
 
 

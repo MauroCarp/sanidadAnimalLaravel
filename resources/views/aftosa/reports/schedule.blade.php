@@ -16,15 +16,14 @@
                 <form action="{{ $informe }}" method="post" target="_blank">
                     @csrf
                     <input type="hidden" name="selectVeterinario" value="{{ $vet->matricula}}">
-                    <input type="hidden" name="output" value="view">
                     <button type="submit" class="btn btn-primary" id="btnImprimirCronograma" style="margin-right:5px">
                         Imprimir Cronograma
                     </button>
                 </form>
 
-                <a href="{{route('reports.enviarCronograma',$vet->matricula)}}" class="btn btn-primary" id="btnEnviarEmail" target="_blank">
+                <button href="{{route('reports.enviarCronograma',$vet->matricula)}}" class="btn btn-primary" id="btnEnviarCronograma">
                     Enviar por E-mail
-                </a>
+                </button>
 
             </div>
 
@@ -81,5 +80,71 @@
 
 </div>
     
+
+@endsection
+
+@section('js')
+
+    <script>
+        $('#btnEnviarCronograma').on('click',()=>{
+            let matricula = $('input[name="selectVeterinario"]').val()
+            
+            let token = $('input[name="_token"]').val()
+
+            let swalSending = Swal.mixin({
+                            toast:true,
+                            type: 'info',
+                            title: 'Enviando cronograma',
+                            position: 'top-end',
+                            showConfirmButton: false,
+            })
+
+            $.ajax({
+                method:'post',
+                url: '{{route("reports.enviarCronograma")}}',
+                data: `_token=${token}&matricula=${matricula}`,
+                beforeSend:function(){
+                        swalSending.fire()
+                },
+                success:function(response){
+
+                    if(response == 'ok'){
+
+                        swalSending.close()
+
+                        Swal.fire({
+                            toast:true,
+                            type: 'success',
+                            title: 'Cronograma enviado',
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            onOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                    } else {
+                        swalSending.close()
+
+                        Swal.fire({
+                            toast:true,
+                            type: 'error',
+                            title: 'El cronograma no se ha podido enviar',
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            onOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                    }
+                }
+
+            })
+        })
+    </script>
 
 @endsection
