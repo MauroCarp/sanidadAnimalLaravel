@@ -114,6 +114,7 @@
 
             let campaign = getCookie('campaign')
 
+            console.log(campaign)
             if(campaign == null || campaign == undefined || campaign == ''){
 
                 e.stopPropagation();

@@ -13,17 +13,18 @@
             <h5>Vacunador: <b>{{ $vet->nombre }}</b></h5>
             <div class="btn-group">
 
-                <form action="{{ $informe}}" method="post" target="_blank">
+                <form action="{{ $informe }}" method="post" target="_blank">
                     @csrf
                     <input type="hidden" name="selectVeterinario" value="{{ $vet->matricula}}">
+                    <input type="hidden" name="output" value="view">
                     <button type="submit" class="btn btn-primary" id="btnImprimirCronograma" style="margin-right:5px">
                         Imprimir Cronograma
-                    </a>
+                    </button>
                 </form>
 
-                <button class="btn btn-primary" id="btnEnviarEmail">
+                <a href="{{route('reports.enviarCronograma',$vet->matricula)}}" class="btn btn-primary" id="btnEnviarEmail" target="_blank">
                     Enviar por E-mail
-                </button>
+                </a>
 
             </div>
 

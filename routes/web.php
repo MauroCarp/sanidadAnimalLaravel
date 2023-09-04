@@ -58,9 +58,10 @@ Route::get('/aftosa/parcialDiffSearch','AftosaController@parcialDiffSearch')->na
 Route::post('/aftosa/actasByProducer','AftosaController@actasByProducer')->name('aftosa.actasProductor');
 Route::post('/aftosa/producerSituation','AftosaController@producerSituation')->name('aftosa.situacionProductor');
 
+Route::get('/aftosa/reports/email/{matricula}','ReportsController@sendSchedule')->name('reports.enviarCronograma');
 Route::get('/aftosa/reports/reports','ReportsController@index')->name('reports.informes');
-Route::get('/aftosa/reports/{key}','ReportsController@reportPdf');
 Route::post('/aftosa/reports/schedule','ReportsController@schedule')->name('reports.cronograma');
+Route::get('/aftosa/reports/{key}','ReportsController@reportPdf');
 Route::post('/aftosa/reports/{key}','ReportsController@reportPdf');
 
 Route::resource('aftosa/acta','ActasController');

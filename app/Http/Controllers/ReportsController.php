@@ -9,10 +9,11 @@ use App\Producer;
 use Carbon\Carbon;
 use App\Veterinarie;
 use App\Distribution;
+use App\Mail\Schedule;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
 
 class ReportsController extends Controller
 {
@@ -82,7 +83,7 @@ class ReportsController extends Controller
         if (in_array($key,$landscape)){
             $pdf->setPaper('a4', 'landscape');            
         }
-
+        
         return $pdf->stream();
 
     }
@@ -98,6 +99,32 @@ class ReportsController extends Controller
         return view('aftosa/reports/schedule',$data);
         
     }
+
+
+    public function sendSchedule($matricula){
+
+        $campaign = $_COOKIE['campaign'];
+
+        $today = date('d-m-Y');
+
+        $data = ReportsController::getReport15($campaign,$matricula);
+
+        $data['today'] = $today; 
+
+        $route = 'aftosa.reports.report15';
+        
+        $pdf = Pdf::loadView($route,$data)->setOption(['defaultFont' => 'sans-serif']);
+        
+        $ruta_destino = public_path('pdf/schedule.pdf');
+        
+        $pdf->save($ruta_destino);
+
+        $dataEmail = array('path'=>$ruta_destino,'vet'=>$data['vet']);
+
+        Mail::to($data['vet']->email)->queue(new Schedule($dataEmail));
+
+    }
+
 
     public function getReport1($campaign){
 
@@ -449,7 +476,7 @@ class ReportsController extends Controller
         ->orderby('actas.fechaVacunacion','asc')
         ->get();
 
-        $vet = Veterinarie::where('matricula',$matricula)->first(['nombre','matricula']);
+        $vet = Veterinarie::where('matricula',$matricula)->first(['nombre','matricula','email']);
 
         foreach ($actasByVet as $acta) {
                 
