@@ -56,7 +56,7 @@ class ReportsController extends Controller
     }
 
     public function reportPdf(Request $request,$key){
-        set_time_limit(60);
+        set_time_limit(120);
 
         $today = date('d-m-Y');
 
@@ -77,13 +77,13 @@ class ReportsController extends Controller
         $route = 'aftosa.reports.report' . $key;
 
         $landscape = [3,4,5,6,8,15,16];
-        
+ 
         $pdf = Pdf::loadView($route,$data)->setOption(['defaultFont' => 'sans-serif']);
 
         if (in_array($key,$landscape)){
             $pdf->setPaper('a4', 'landscape');            
         }
-        
+
         return $pdf->stream();
 
     }
@@ -99,7 +99,6 @@ class ReportsController extends Controller
         return view('aftosa/reports/schedule',$data);
         
     }
-
 
     public function sendSchedule(Request $request){
 
@@ -125,7 +124,6 @@ class ReportsController extends Controller
 
         return response('ok');
     }
-
 
     public function getReport1($campaign){
 
@@ -321,6 +319,49 @@ class ReportsController extends Controller
         return $data;
     }
 
+    public function getReport9($campaign){
+
+        $data = Acta::where('campaign',$campaign)->get(['fechaVacunacion','cantidad']);
+         
+        $output = array('totalActa'=>0,'totalAnimales'=>0);
+        foreach ($data as $key => $acta) {
+
+            $date = Carbon::createFromFormat('Y-m-d',$acta->fechaVacunacion->format('Y-m-d'));   
+            $month = Carbon::createFromDate(null, $date->month, 1)->format('F');
+            $week = $date->weekOfMonth;
+
+            if(isset($data[$month][$week]['animales'])){
+
+                $output['meses'][$month][$week]['animales'] += $acta->cantidad;
+                
+            } else {
+                
+                $output['meses'][$month][$week]['animales'] = $acta->cantidad;
+                
+            }
+
+            if(isset($output['meses'][$month][$week]['actas'])){
+
+                $output['meses'][$month][$week]['actas']++;
+
+            } else {
+
+                $output['meses'][$month][$week]['actas'] = 1;
+
+            }
+
+            ksort($output['meses'][$month]);
+
+            $output['totalActa']++;
+            $output['totalAnimales'] += $acta->cantidad;
+
+        }
+
+        return array('campaign'=>$campaign,'data'=>$output);
+
+
+    }
+
     public function getReport10($campaign){
 
         $campaignData = Campaign::where('numero',$campaign)->get();
@@ -329,7 +370,7 @@ class ReportsController extends Controller
         ->selectRaw('SUM(admAf) AS admAf, SUM(vacunadorAf) AS vacunadorAf, SUM(vacunaAf) AS vacunaAf, SUM(admCar) AS admCar, SUM(vacunadorCar) AS vacunadorCar, SUM(vacunaCar) AS vacunaCar, SUM(redondeoAf) AS redondeoAf, SUM(redondeoCar) AS redondeoCar')
         ->get();
 
-         $data = array('campaignData'=>$campaignData->toArray(),'montosActas'=>$montosActas->toArray());
+        $data = array('campaignData'=>$campaignData->toArray(),'montosActas'=>$montosActas->toArray());
 
         return $data;
     }
