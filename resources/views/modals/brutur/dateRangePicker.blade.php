@@ -80,11 +80,3 @@
     </div>
 
 </div>
-
-@section('js')
-    <script>
-        $('#rangeDate').daterangepicker({
-            opens: 'left'
-        });
-    </script>
-@endsection

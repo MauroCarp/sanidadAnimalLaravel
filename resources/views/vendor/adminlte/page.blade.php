@@ -217,6 +217,10 @@
 
         })
 
+        $('#rangeDate').daterangepicker({
+            opens: 'left'
+        });
+        
     </script>
 
     @if(session('error') == 'renspa')
