@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Animals;
+use App\Brucelosi;
+use App\Campaign;
 use App\District;
 use App\Producer;
+use App\Tuberculosi;
 use App\Veterinarie;
 use Illuminate\Http\Request;
 
@@ -72,6 +76,12 @@ class ProducersController extends Controller
         $fields['departamento'] = $departamento;
         
         Producer::create($fields);
+
+        $campaign = Campaign::max('numero');
+
+        Brucelosi::create(['renspa'=>$fields['renspa']]);
+        Tuberculosi::create(['renspa'=>$fields['renspa']]);
+        Animals::create(['renspa'=>$fields['renspa'],'campaign'=>$campaign]);
 
         return redirect()->route('producers.index')->with('crear','ok');
     }

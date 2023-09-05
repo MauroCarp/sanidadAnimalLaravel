@@ -8,6 +8,7 @@ use App\Producer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CampaignController extends Controller
 {
@@ -18,14 +19,6 @@ class CampaignController extends Controller
      */
     public function index()
     {
-
-        $renspas = Producer::distinct('renspa')->get('renspa');
-        $campaign = 150;
-        foreach ($renspas as $key => $value) {
-            $value->campaign = $campaign;
-        }
-
-        Animals::insert($renspas->toArray());
 
     }
 
@@ -121,7 +114,12 @@ class CampaignController extends Controller
         $campaign->vacunaC = $request->precioVacunaCarb;
 
         $campaign->save();
+        dd($request->file('existenciaAnimal'));
+        if(!is_null($request->file('existenciaAnimal'))){
 
+            Excel::import(new ExistenciaAnimal,$request->file('existenciaAnimal'));
+            
+        }
         return redirect()->route('home')->with('updateCampaign','ok');
     }
 
