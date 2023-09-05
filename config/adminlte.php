@@ -454,7 +454,7 @@ return [
                     'id' => 'btnMenuCampaign',
                     'data' => [
                         'toggle' => 'modal',
-                        'target' => '#modalEditCampaign',
+                        'target' => '#modalUpdateCampaign',
                     ],
                     'icon' => 'far fa fa-fw fa-circle',
 

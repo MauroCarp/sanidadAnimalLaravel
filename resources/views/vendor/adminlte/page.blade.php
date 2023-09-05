@@ -57,7 +57,7 @@
     
     @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/acta')
-    @include('modals/aftosa/editCampaign')
+    @include('modals/aftosa/updateCampaign')
 
 @stop
 
@@ -275,7 +275,7 @@
             'success'
             ).then(()=>{
                 $('#btnMenuCampaign').trigger('click')
-                $('#modalEditCampaign').modal('show')
+                $('#modalUpdateCampaign').modal('show')
 
             })
 

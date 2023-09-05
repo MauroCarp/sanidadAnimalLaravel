@@ -1,4 +1,4 @@
-<div id="modalEditCampaign" class="modal fade" role="dialog">
+<div id="modalUpdateCampaign" class="modal fade" role="dialog">
     
     <div class="modal-dialog modal-lg">
         
