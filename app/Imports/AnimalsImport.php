@@ -2,20 +2,19 @@
 
 namespace App\Imports;
 
-use App\Animal;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Animals;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class AnimalsImport implements ToModel
+class AnimalsImport implements ToCollection
 {
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        return new Animal([
-            //
-        ]);
+
     }
 }

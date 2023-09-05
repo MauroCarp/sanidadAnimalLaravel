@@ -297,6 +297,19 @@
 
         </script>
 
+        @if(session('checkProducers') != ''){
+            <script>
+
+                Swal.fire(
+                'Corroborar manualmente los siguientes productores',
+                '{{session("checkProducers")}}',
+                'info'
+                )
+
+            </script>
+        }
+            
+        @endif
     @endif
 
 @stop

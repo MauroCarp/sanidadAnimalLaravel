@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Animals;
 use App\Campaign;
+use App\Imports\AnimalsImport;
 use App\Producer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -123,15 +124,53 @@ class CampaignController extends Controller
 
         $campaign->save();
 
-        if(!is_null($request->file('existenciaAnimal'))){
+        $productores = array();
 
-            Excel::import(new ExistenciaAnimal,$request->file('existenciaAnimal'));
-            
+        if (!is_null($request->file('existenciaAnimal'))){
+
+            $rows = Excel::toArray(new AnimalsImport(),$request->file('existenciaAnimal'));
+        
+            foreach ($rows[0] as $key => $row) {
+    
+                if ($key != 0 && $key != count($rows[0]) - 1 ){
+
+                    $data[] = ['vacas' => $row[3],
+                               'toros' => $row[4],
+                               'vaquillonas' => $row[5],
+                               'novillos' => $row[6],
+                               'novillitos' => $row[7],
+                               'terneras' => $row[8],
+                               'terneros' => $row[9],
+                               'toritos' => $row[10]];
+
+                    $animals = Animals::where(['renspa'=>$row[0],'campaign'=>$fields['campaignNumero']])->first();
+
+                    if($animals){
+
+                        $animals->vacas = $row[3];
+                        $animals->toros = $row[4];
+                        $animals->vaquillonas = $row[5];
+                        $animals->novillos = $row[6];
+                        $animals->novillitos = $row[7];
+                        $animals->terneras = $row[8];
+                        $animals->terneros = $row[9];
+                        $animals->toritos = $row[10];
+    
+                        $animals->save();
+
+                    } else { 
+                        $productores[] = $row[0];
+                    }
+
+                }
+    
+            } 
+
         }
 
         Cache::tags('campaign')->flush();
 
-        return redirect()->route('home')->with('updateCampaign','ok');
+        return redirect()->route('home')->with(['updateCampaign'=>'ok','checkProducers'=>implode(' | ',$productores)]);
     }
 
     /**
