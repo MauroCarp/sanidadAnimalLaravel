@@ -55,6 +55,49 @@
 
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-success btn-block" type="button" id="btnNuevaCampania">Nueva Campa&ntilde;a</button>
+                            </div>
+                        </div>
+
+                        <form action="/campaign" id="formNewCampaign" method="POST" style="display:none">
+                            @csrf
+                            <hr>
+                            <div class="row">
+    
+                                <div class="col-md-6">
+    
+                                    <div class="form-group">
+                                    
+                                        <label>Campa&ntilde;a</label>
+
+                                        <div class="input-group">
+
+                                            <div class="input-group-prepend">
+        
+                                                <span class="input-group-text">N°</span> 
+
+                                            </div>
+
+                                            <input type="numero" name="numero" class="form-control" required>
+
+                                        </div>
+    
+                                    </div>    
+    
+                                </div>
+    
+                                <div class="col-md-6">
+                                    <br>
+                                    <button type="submit" class="btn btn-success mt-2">Crear</button>
+    
+                                </div>
+    
+                            </div>
+
+                        </form>
+
                     </div>
 
                 </div>

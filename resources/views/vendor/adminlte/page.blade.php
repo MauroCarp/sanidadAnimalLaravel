@@ -51,11 +51,13 @@
     </div>
 
     {{-- Modals --}}
-    @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/producerSituation')
     @include('modals/brutur/dateRangePicker')
     @include('modals/brutur/updateStatusRenspa')
+    
+    @include('modals/aftosa/actasByProducer')
     @include('modals/aftosa/acta')
+    @include('modals/aftosa/editCampaign')
 
 @stop
 
@@ -114,7 +116,6 @@
 
             let campaign = getCookie('campaign')
 
-            console.log(campaign)
             if(campaign == null || campaign == undefined || campaign == ''){
 
                 e.stopPropagation();
@@ -131,6 +132,10 @@
                 $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
             } 
 
+        })
+
+        $('#btnNuevaCampania').on('click',function(){
+            $('#formNewCampaign').toggle(500);
         })
 
         $('#btnAssignCampaign').on('click',function(){
@@ -172,7 +177,6 @@
             $('#campaign_number').html(`Campaña Aftosa Nº${campaign}`)
         }
 
-
         $('#btnStatusSanitario').on('click',function(e){
 
             e.preventDefault()
@@ -184,6 +188,31 @@
 
         })
 
+
+        $('#btnMenuCampaign').on('click',()=>{
+
+            $.ajax({
+                method:'get',
+                url:`/campaign/${campaign}`,
+                success:function(response){
+
+                    let data = JSON.parse(response)
+
+                    $('#campaignNumero').val(data.numero)
+                    $('#fechaInicio').val(data.inicio)
+                    $('#fechaCierre').val(data.final)
+                    $('#precioAdmAftosa').val(data.admA)
+                    $('#precioVacunaAftosa').val(data.vacunadorA)
+                    $('#precioVeterinarioAftosa').val(data.vacunaA)
+                    $('#precioAdmCarb').val(data.admC)
+                    $('#precioVacunaCarb').val(data.vacunadorC)
+                    $('#precioVeterinarioCarb').val(data.vacunaC)
+
+                }
+            })
+
+        })
+        
     </script>
 
     @if(session('error') == 'renspa')
@@ -212,6 +241,7 @@
 
         </script>
     @endif
+
 @stop
 
 @section('css')

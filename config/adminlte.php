@@ -451,9 +451,10 @@ return [
                 [
                     'text' => 'Campaña',
                     'url' => '#',
+                    'id' => 'btnMenuCampaign',
                     'data' => [
                         'toggle' => 'modal',
-                        'target' => '#ventanaModalEditarCampania',
+                        'target' => '#modalEditCampaign',
                     ],
                     'icon' => 'far fa fa-fw fa-circle',
 

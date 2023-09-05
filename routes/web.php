@@ -66,3 +66,4 @@ Route::post('/aftosa/reports/{key}','ReportsController@reportPdf');
 
 Route::resource('aftosa/acta','ActasController');
 
+Route::resource('campaign','CampaignController');
