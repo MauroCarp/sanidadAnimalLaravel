@@ -190,6 +190,8 @@
 
 
         $('#btnMenuCampaign').on('click',()=>{
+            
+            let campaign = getCookie('campaign')
 
             $.ajax({
                 method:'get',
@@ -207,12 +209,14 @@
                     $('#precioAdmCarb').val(data.admC)
                     $('#precioVacunaCarb').val(data.vacunadorC)
                     $('#precioVeterinarioCarb').val(data.vacunaC)
+                    $('#formUpdateCampaign').attr('action',`/campaign/${data.id}`)
+
 
                 }
             })
 
         })
-        
+
     </script>
 
     @if(session('error') == 'renspa')
@@ -240,6 +244,55 @@
             
 
         </script>
+    @endif
+
+    @if(session('newCampaign') == 'ok')
+
+        <script>
+
+            
+            
+            let number = "{{session('campaign')}}"
+            let expiracion = new Date();
+
+            expiracion.setDate(expiracion.getDate() + 1);
+
+            document.cookie = `campaign=${number}; expires=${expiracion.toUTCString()}; path=/`;
+
+            let arrowIcon = $('.icon-aftosa').next().find('i')
+            $('.icon-aftosa').next().text(`Aftosa Nº${number}`)
+            $('.icon-aftosa').next().append(arrowIcon)
+
+            $('#campaign_number').html(`Campaña Aftosa Nº${number}`)
+
+            Swal.fire(
+            'Campaña creada correctamente',
+            'Puede continuar la configuración de la campaña en la seccion "Campaña"',
+            'success'
+            ).then(()=>{
+                $('#btnMenuCampaign').trigger('click')
+                $('#modalEditCampaign').modal('show')
+
+            })
+
+
+
+        </script>
+
+    @endif
+
+    @if(session('updateCampaign') == 'ok')
+
+        <script>
+
+            Swal.fire(
+            'Campaña modificada correctamente',
+            'Se ha modificado correctamente',
+            'success'
+            )
+
+        </script>
+
     @endif
 
 @stop

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Animals;
 use App\Campaign;
+use App\Producer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
@@ -14,8 +18,17 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        //
+
+        $renspas = Producer::distinct('renspa')->get('renspa');
+        $campaign = 150;
+        foreach ($renspas as $key => $value) {
+            $value->campaign = $campaign;
+        }
+
+        Animals::insert($renspas->toArray());
+
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,9 +54,15 @@ class CampaignController extends Controller
 
         Campaign::create($field);
 
-        $_COOKIE['campaign'] = $request->numero;
+        $renspas = Producer::distinct('renspa')->get('renspa');
+
+        foreach ($renspas as $value) {
+            $value->campaign = $request->numero;
+        }
         
-        return redirect()->route('home')->with('newCampaign','ok');
+        Animals::insert($renspas->toArray());
+
+        return redirect()->route('home')->with(['newCampaign'=>'ok','campaign'=>$request->numero]);
 
     }
 
@@ -58,8 +77,8 @@ class CampaignController extends Controller
         
         $campaignData = Campaign::where('numero',$id)->first();
 
-        if(!is_null($campaignData->inicio)) $campaignData->inicio->format('Y-m-d'); 
-        if(!is_null($campaignData->final)) $campaignData->final->format('Y-m-d'); 
+        if(!is_null($campaignData->inicio)) $campaignData->inicio = Carbon::parse($campaignData->inicio)->format('Y-m-d'); 
+        if(!is_null($campaignData->final))  $campaignData->final = Carbon::parse($campaignData->final)->format('Y-m-d'); 
 
         return json_encode($campaignData->toArray());
     }
@@ -84,7 +103,26 @@ class CampaignController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $fields = $request->validate([
+            'campaignNumero' => 'required',
+            'fechaInicio' => 'required',
+            'fechaCierre' => 'required',
+        ]);
+
+        $campaign = Campaign::find($id);
+
+        $campaign->inicio = $request->fechaInicio;
+        $campaign->final = $request->fechaCierre;
+        $campaign->admA = $request->precioAdmAftosa;
+        $campaign->vacunadorA = $request->precioVeterinarioAftosa;
+        $campaign->vacunaA = $request->precioVacunaAftosa;
+        $campaign->admC = $request->precioAdmCarb;
+        $campaign->vacunadorC = $request->precioVeterinarioCarb;
+        $campaign->vacunaC = $request->precioVacunaCarb;
+
+        $campaign->save();
+
+        return redirect()->route('home')->with('updateCampaign','ok');
     }
 
     /**
