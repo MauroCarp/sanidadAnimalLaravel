@@ -25,13 +25,19 @@ class Producer extends Model
 
     public function tuberculosis(){
         
-        return $this->belongsTo(Tuberculosi::class,'renspa','renspa');
+        return $this->hasOne(Tuberculosi::class,'renspa','renspa');
 
     }
 
     public function brucelosis(){
 
-        return $this->belongsTo(Brucelosi::class,'renspa','renspa');
+        return $this->hasOne(Brucelosi::class,'renspa','renspa');
+
+    }
+
+    public function animals(){
+
+        return $this->belongsTo(Animals::class,'renspa','renspa');
 
     }
 

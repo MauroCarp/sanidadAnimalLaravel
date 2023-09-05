@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Brucelosi extends Model
 {
 
+    protected $guarded = [];
+    
     protected $casts = [
         'fechaCarga' => 'datetime', 
         'fechaEstado' => 'datetime', 
@@ -17,13 +19,13 @@ class Brucelosi extends Model
 
     public function establecimiento(){
         
-        return $this->belongsTo(Producer::class,'renspa','renspa');
+        return $this->hasOne(Producer::class,'renspa','renspa');
 
     }
 
     public function tuberculosis(){
         
-        return $this->belongsTo(Tuberculosi::class,'renspa','renspa');
+        return $this->hasOne(Tuberculosi::class,'renspa','renspa');
 
     }
 
