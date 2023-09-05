@@ -7,7 +7,7 @@ use App\Campaign;
 use App\Producer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CampaignController extends Controller
@@ -68,10 +68,18 @@ class CampaignController extends Controller
     public function show($id)
     {
         
-        $campaignData = Campaign::where('numero',$id)->first();
+        $campaignData = Cache::tags('campaign')->rememberForever('campaignData',function() use ($id) {
 
-        if(!is_null($campaignData->inicio)) $campaignData->inicio = Carbon::parse($campaignData->inicio)->format('Y-m-d'); 
-        if(!is_null($campaignData->final))  $campaignData->final = Carbon::parse($campaignData->final)->format('Y-m-d'); 
+            $data = Campaign::where('numero',$id)->first();
+
+            if(!is_null($data->inicio)) $data->inicio = Carbon::parse($data->inicio)->format('Y-m-d'); 
+            if(!is_null($data->final))  $data->final = Carbon::parse($data->final)->format('Y-m-d'); 
+
+            Cache::tags('campaign')->flush();
+
+            return $data;
+
+        });
 
         return json_encode($campaignData->toArray());
     }
@@ -114,12 +122,15 @@ class CampaignController extends Controller
         $campaign->vacunaC = $request->precioVacunaCarb;
 
         $campaign->save();
-        dd($request->file('existenciaAnimal'));
+
         if(!is_null($request->file('existenciaAnimal'))){
 
             Excel::import(new ExistenciaAnimal,$request->file('existenciaAnimal'));
             
         }
+
+        Cache::tags('campaign')->flush();
+
         return redirect()->route('home')->with('updateCampaign','ok');
     }
 

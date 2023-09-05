@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Veterinarie;
 use Illuminate\Http\Request;
 use App\Exports\VeterinariesExport;
+use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -23,7 +24,13 @@ class VeterinariesController extends Controller
     public function index()
     {
 
-        return view('veterinaries',['veterinarios'=> Veterinarie::all()]);
+        $veterinaries = Cache::tags('veterinaries')->rememberForever('veterinaries',function(){
+
+            return Veterinarie::all();
+
+        });
+
+        return view('veterinaries',['veterinarios'=> $veterinaries]);
 
     }
 
@@ -56,6 +63,8 @@ class VeterinariesController extends Controller
         ]);
 
         Veterinarie::create($fields);
+
+        Cache::tags('veterinaries')->flush();
 
         return redirect()->route('veterinaries.index')->with('crear','ok');
     }
@@ -113,6 +122,8 @@ class VeterinariesController extends Controller
         $vet->tipo = $request->tipo;
         $vet->save();
 
+        Cache::tags('veterinaries')->flush();
+
         return redirect()->route('veterinaries.index')->with('editar','ok')->withErrors($validator);
 
     }
@@ -129,6 +140,8 @@ class VeterinariesController extends Controller
         $vet = Veterinarie::find($id);
 
         $vet->delete();
+        
+        Cache::tags('veterinaries')->flush();
 
         return redirect()->route('veterinaries.index')->with('eliminar','ok');
 

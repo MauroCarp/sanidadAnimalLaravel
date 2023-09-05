@@ -10,6 +10,7 @@ use App\Producer;
 use App\Tuberculosi;
 use App\Veterinarie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProducersController extends Controller
 {
@@ -26,10 +27,29 @@ class ProducersController extends Controller
     public function index()
     {
 
+        $distritos = Cache::rememberForever('districtsProducers',function(){
+              
+            return District::get(['key','name']);
+              
+        });
+            
+        $vacunadores = Cache::tags('producers')->rememberForever('veterinariesProducers',function(){
+
+
+            return Veterinarie::orderby('nombre','asc')->get(['nombre','matricula']);
+
+        });
+
+        $productores = Cache::tags('producers')->rememberForever('producers',function(){
+
+            return Producer::all();
+
+        });
+
         return view('producers',[
-            'distritos'=>District::get(['key','name']),
-            'vacunadores'=>Veterinarie::orderby('nombre','asc')->get(['nombre','matricula']),
-            'productores'=> Producer::all()
+            'distritos'=>$distritos,
+            'vacunadores'=>$vacunadores,
+            'productores'=> $productores
         ]);
 
     }
@@ -82,6 +102,8 @@ class ProducersController extends Controller
         Brucelosi::create(['renspa'=>$fields['renspa']]);
         Tuberculosi::create(['renspa'=>$fields['renspa']]);
         Animals::create(['renspa'=>$fields['renspa'],'campaign'=>$campaign]);
+
+        Cache::tags('producers')->flush();
 
         return redirect()->route('producers.index')->with('crear','ok');
     }
@@ -158,6 +180,8 @@ class ProducersController extends Controller
 
         $productor->save();
 
+        Cache::tags('producers')->flush();
+
         return redirect()->route('producers.index')->with('editar','ok');
     }
 
@@ -172,6 +196,8 @@ class ProducersController extends Controller
         $productor = Producer::find($id);
 
         $productor->delete();
+        
+        Cache::tags('producers')->flush();
 
         return redirect()->route('producers.index')->with('eliminar','ok');
     
