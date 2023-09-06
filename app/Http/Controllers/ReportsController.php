@@ -57,6 +57,10 @@ class ReportsController extends Controller
 
     public function reportPdf(Request $request,$key){
         set_time_limit(120);
+        
+        if($key == 8){
+            set_time_limit(240);
+        }
 
         $today = date('d-m-Y');
 
@@ -84,7 +88,13 @@ class ReportsController extends Controller
             $pdf->setPaper('a4', 'landscape');            
         }
 
-        return $pdf->stream();
+        if($key == 8){
+
+            $pdf->save(storage_path('app/public/temp/pdf_generated.pdf'));
+            return response()->json(['pdf_url' => asset('storage/temp/pdf_generated.pdf')]);
+        } else {
+            return $pdf->stream();
+        }
 
     }
 

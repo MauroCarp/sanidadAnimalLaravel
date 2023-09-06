@@ -12,11 +12,17 @@
 
                 @foreach($informes as $key => $informe)
                 
-                    @if($informe != 'Detalle Animales Vacunados por Vacunador' AND $informe != 'Cronograma por Veterinario' AND $informe != 'Cronograma Actual por Veterinario')
+                    @if($informe != 'Detalle Animales Vacunados por Vacunador' && $informe != 'Cronograma por Veterinario' && $informe != 'Cronograma Actual por Veterinario' && ($key + 1) != 8)
                         
                         <a href="{{ $key + 1 }}" class='list-group-item list-group-item-action' target='_blank'>
                             {{ $key + 1 }}- {{$informe}}
                         </a>
+
+                    @elseif($key + 1 == 8)
+
+                        <button class='list-group-item list-group-item-action' id="informe8" data-key="{{$key + 1}}">
+                            {{ $key + 1 }}- {{$informe}}
+                        </button>
 
                     @else
 
@@ -59,6 +65,38 @@
 
 
         })
+
+        $('#informe8').on('click',function(){
+
+            let key = $(this).attr('data-key')
+
+            let swalGenerating = Swal.mixin({
+                            toast:true,
+                            type: 'info',
+                            title: 'Generando informe',
+                            position: 'top-end',
+                            showConfirmButton: false,
+            })
+
+            $.ajax({
+                method:'GET',
+                url:`${key}`,
+                beforeSend:function(){
+                    swalGenerating.fire()
+                },
+                success:function(data){
+
+                    swalGenerating.close()
+                    window.open(data.pdf_url, '_blank');
+
+                },
+                error:function(er){
+                    console.log(er)
+                }
+
+            })
+        })
+
 
     </script>
 @endsection
