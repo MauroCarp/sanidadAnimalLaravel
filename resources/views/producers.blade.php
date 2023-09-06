@@ -304,8 +304,9 @@
     
                 Swal.fire({
                     title: 'Eliminar Productor?',
-                    text: "Si no estas seguro, puedes cancerlar esta accion!",
+                    text: "Al eliminar el productor, se eliminaran toda su informacion asociada (Bru-Tur, Actas, Existencia Animal)",
                     showCancelButton: true,
+                    type:'error',
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Confirmar',
