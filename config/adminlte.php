@@ -467,6 +467,11 @@ return [
             'route'         => 'users.index',
             'icon'        => 'far fa fa-fw fa-user',
         ],
+        [
+            'text'        => 'Backups',
+            'url'         => 'backups',
+            'icon'        => 'far fa fa-fw fa-database',
+        ],
     ],
 
     /*
