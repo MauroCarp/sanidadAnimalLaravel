@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\BackupProcess;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,7 +26,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-    }
+        $schedule->command('database:backup')->everyMinute();
+        // $schedule->job(new BackupProcess())->everyMinute();
+
+    }   
 
     /**
      * Register the commands for the application.

@@ -43,7 +43,6 @@ class BackupProcess implements ShouldQueue
         $cmd = 'mysqldump --column-statistics=0 -u root --databases sanidadanimal > ' . $path . '.sql';
         exec($cmd,$output,$err);
 
-        sleep(10);
         $backup->status = 'Done';
         
         $backup->url = 'storage/backups/backup_' . $date . '.sql';

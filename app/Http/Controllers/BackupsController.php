@@ -92,7 +92,7 @@ class BackupsController extends Controller
 
         $path = explode('storage/',$backup->url);
 
-        Storage ::delete('public/' . $path[1] . '.sql');
+        Storage ::delete('public/' . $path[1]);
 
         $backup->delete();
         
