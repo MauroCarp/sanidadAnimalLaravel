@@ -30,6 +30,8 @@
                 <th>Nombre</th>
 
                 <th>Email</th>
+
+                <th>Rol</th>
         
                 <th>Fecha de creaci&oacute;n</th>
     
@@ -46,6 +48,7 @@
             <tr>
                 <td>{{ $usuario->name }}</td>
                 <td>{{ $usuario->email }}</td>
+                <td>{{ $usuario->role}}</td>
                 <td>{{ $usuario->created_at }}</td>
                 <td>
                     <div class="btn-group">

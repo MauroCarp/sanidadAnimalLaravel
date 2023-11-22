@@ -310,7 +310,17 @@
         }
             
         @endif
+
     @endif
+
+    @if(auth()->user()->role == 'User')
+        <script>
+            $('#menuUsuarios').hide()
+            $('#menuBackups').hide()
+
+        </script>
+    @endif
+
 
 @stop
 
@@ -322,4 +332,5 @@
         }
 
     </style>
+
 @stop

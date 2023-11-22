@@ -465,11 +465,13 @@ return [
         [
             'text'        => 'Usuarios',
             'route'         => 'users.index',
+            'id'            => 'menuUsuarios',
             'icon'        => 'far fa fa-fw fa-user',
         ],
         [
             'text'        => 'Backups',
             'url'         => 'backups',
+            'id'            => 'menuBackups',
             'icon'        => 'far fa fa-fw fa-database',
         ],
     ],

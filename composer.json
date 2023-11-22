@@ -22,6 +22,7 @@
         "s-ichikawa/laravel-sendgrid-driver": "^2.1"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.9",
         "facade/ignition": "^2.0",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
